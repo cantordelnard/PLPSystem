@@ -1,0 +1,456 @@
+{% extends "base.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}PLP Grading System{% endblock %}
+
+<!-- =============== Sidebars ================ -->
+{% block sidebar %}
+<li class="studentHome">
+  <a href="studentsHome">
+    <span class="icon">
+      <ion-icon name="home-outline"></ion-icon>
+    </span>
+    <span class="title">HOME</span>
+  </a>
+</li>
+<li>
+  <a href="students">
+    <span class="icon">
+      <ion-icon name="newspaper-outline"></ion-icon>
+    </span>
+    <span class="title">GRADES</span>
+  </a>
+</li>
+<li class="active">
+  <a href="studentsExplore">
+    <span class="icon">
+      <ion-icon name="sparkles-outline"></ion-icon>
+    </span>
+    <span class="title">EXPLORE</span>
+  </a>
+</li>
+<li>
+  <a href="studentsBehavioral">
+    <span class="icon">
+      <ion-icon name="bulb-outline"></ion-icon>
+    </span>
+    <span class="title">SURVEY</span>
+  </a>
+</li>
+<li>
+  <a href="{{ 'studentsIntervention' if prediction_info == 'WILL NOT GRADUATE ON TIME' else 'studentsEvent' }}">
+    <span class="icon">
+      <ion-icon name="calendar-clear-outline"></ion-icon>
+    </span>
+    <span class="title">{{ 'INTERVENTIONS' if prediction_info == 'WILL NOT GRADUATE ON TIME' else 'EVENTS' }}</span>
+  </a>
+</li>
+{% endblock %}
+
+<!-- =============== Flash Message ================ -->
+{% block popupmessage %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div id="flash-message" class="info">
+  <div class="info__icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
+      <path fill="#393a37"
+        d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
+      </path>
+    </svg>
+  </div>
+  <div class="info__title">{{ message }}</div>
+  <div class="info__close">
+    <svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+        fill="#393a37"></path>
+    </svg>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+<!-- =============== Main Content ================ -->
+{% block main %}
+<div class="content">
+  <div class="exploreTitle">
+    <h1>PREDICTING PROGRAM COMPLETION</h1>
+    <div id="prediction-result" class="result-section">
+      <p style="font-size: 12px; color: var(--black2);">Use this tool to assess your likelihood of completing your
+        program on time. Click the "Predict Now" button to see your chances of graduating on time and receive
+        personalized suggestions to help you stay on track.</p>
+    </div>
+  </div>
+
+  <form id="prediction-form">
+    <div class="submitBtnSpace">
+      <input type="submit" value="PREDICT NOW" class="submit-button">
+    </div>
+    <div class="content-info-explore">
+      <div class="details-explore">
+        <div class="explore-list">
+          <div class="cardheaderExp">
+            <h2>ATTRIBUTES</h2>
+          </div>
+          <div class="tbl-content-exp">
+            <table>
+              <tr>
+                <td><label for="studID">StudID</label></td>
+                <td class="centerUpdate"><input type="number" id="stud" name="stud" value="{{ student_info.StudentID }}"
+                    readonly required style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="age">Age</label></td>
+                <td class="centerUpdate"><input type="number" id="age" name="age" value="{{ student_info.Age }}"
+                    readonly required style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="gender">Gender</label></td>
+                <td class="centerUpdate"><input type="text" id="gender" name="gender" value="{{ student_info.Gender }}"
+                    readonly required style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="no_of_siblings">Number of Siblings</label></td>
+                <td class="centerUpdate"><input type="number" id="no_of_siblings" name="no_of_siblings"
+                    value="{{ student_info.NumberOfSiblings }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="mother_occupation">Mother's Occupation</label></td>
+                <td class="centerUpdate"><input type="text" id="mother_occupation" name="mother_occupation"
+                    value="{{ student_info.MotherOccupation }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="mother_monthly_income">Mother's Monthly Income</label></td>
+                <td class="centerUpdate"><input type="number" id="mother_monthly_income" name="mother_monthly_income"
+                    value="{{ student_info.MotherSalary }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="father_occupation">Father's Occupation</label></td>
+                <td class="centerUpdate"><input type="text" id="father_occupation" name="father_occupation"
+                    value="{{ student_info.FatherOccupation }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="father_monthly_income">Father's Monthly Income</label></td>
+                <td class="centerUpdate"><input type="number" id="father_monthly_income" name="father_monthly_income"
+                    value="{{ student_info.FatherSalary }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="average_grade_g12">Average Grade during G12 Senior High School</label></td>
+                <td class="centerUpdate"><input type="number" id="average_grade_g12" name="average_grade_g12"
+                    value="{{ student_info.SeniorHighSchoolAverage }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="average_grade_first_year">Average Grade during 1st Year College</label></td>
+                <td class="centerUpdate"><input type="number" id="average_grade_first_year"
+                    name="average_grade_first_year" value="{{ student_info.AverageGradeFirstYear }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td colspan="2" class="centerUpdate"><strong>Grade per Subjects</strong></td>
+              </tr>
+              <tr>
+                <td><label for="grades_understanding_self">Grades in Understanding the Self</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_understanding_self"
+                    name="grades_understanding_self"
+                    value="{{ student_info.Grades['GE 001']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_purposive_communication">Grades in Purposive Communication</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_purposive_communication"
+                    name="grades_purposive_communication"
+                    value="{{ student_info.Grades['GE 005']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_art_appreciation">Grades in Art Appreciation</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_art_appreciation"
+                    name="grades_art_appreciation"
+                    value="{{ student_info.Grades['GE 006']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_sts">Grades in Science, Technology, and Society</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_sts" name="grades_sts"
+                    value="{{ student_info.Grades['GE 007']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_environmental_science">Grades in Environmental Science</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_environmental_science"
+                    name="grades_environmental_science"
+                    value="{{ student_info.Grades['GEE 001']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_intermediate_programming">Grades in Intermediate Programming</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_intermediate_programming"
+                    name="grades_intermediate_programming"
+                    value="{{ student_info.Grades['COMP 103']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_discrete_mathematics">Grades in Discrete Mathematics</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_discrete_mathematics"
+                    name="grades_discrete_mathematics"
+                    value="{{ student_info.Grades['IT 101']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_contemporary_world_with_peace_education">Grades in Contemporary World with Peace
+                    Education</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_contemporary_world_with_peace_education"
+                    name="grades_contemporary_world_with_peace_education"
+                    value="{{ student_info.Grades['GE 003']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_mathematics_in_the_modern_world">Grades in Mathematics in the Modern
+                    World</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_mathematics_in_the_modern_world"
+                    name="grades_mathematics_in_the_modern_world"
+                    value="{{ student_info.Grades['GE 004']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_introduction_computing">Grades in Introduction to Computing</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_introduction_computing"
+                    name="grades_introduction_computing"
+                    value="{{ student_info.Grades['COMP 101']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td><label for="grades_fundamentals_of_programming">Grades in Fundamentals of Programming</label></td>
+                <td class="centerUpdate"><input type="number" id="grades_fundamentals_of_programming"
+                    name="grades_fundamentals_of_programming"
+                    value="{{ student_info.Grades['COMP 102']['AverageGrade'] | default(0) }}" readonly required
+                    style="border: none; text-align: center; background-color: transparent;"></td>
+              </tr>
+              <tr>
+                <td colspan="2" class="centerUpdate"><strong>Behavioral Factors</strong></td>
+              </tr>
+              <tr>
+                <td>Study Hours</td>
+                <td class="centerUpdate" id="study_hours_value">{{ student_info.BehavioralFactors.StudyHours }}</td>
+              </tr>
+              <tr>
+                <td>Study Strategies</td>
+                <td class="centerUpdate" id="study_strategies_value">{{ student_info.BehavioralFactors.StudyStrategies }}</td>
+              </tr>
+              <tr>
+                <td>Regular Study Schedule</td>
+                <td class="centerUpdate" id="regular_study_schedule_value">{{ student_info.BehavioralFactors.RegularStudySchedule }}</td>
+              </tr>
+              <tr>
+                <td>Attendance Rate</td>
+                <td class="centerUpdate" id="attendance_rate_value">{{ student_info.BehavioralFactors.AttendanceRate }}</td>
+              </tr>
+              <tr>
+                <td>Class Participation</td>
+                <td class="centerUpdate" id="class_participation_value">{{ student_info.BehavioralFactors.ClassParticipation }}</td>
+              </tr>
+              <tr>
+                <td>Time Management Rating</td>
+                <td class="centerUpdate" id="time_management_rating_value">{{ student_info.BehavioralFactors.TimeManagementRating }}</td>
+              </tr>
+              <tr>
+                <td>Study Deadlines Frequency</td>
+                <td class="centerUpdate" id="study_deadlines_frequency_value">{{ student_info.BehavioralFactors.StudyDeadlinesFrequency }}
+                </td>
+              </tr>
+              <tr>
+                <td>Motivation Level</td>
+                <td class="centerUpdate" id="motivation_level_value">{{ student_info.BehavioralFactors.MotivationLevel }}</td>
+              </tr>
+              <tr>
+                <td>Engagement Level</td>
+                <td class="centerUpdate" id="engagement_level_value">{{ student_info.BehavioralFactors.EngagementLevel }}</td>
+              </tr>
+              <tr>
+                <td>Stress Frequency</td>
+                <td class="centerUpdate" id="stress_frequency_value">{{ student_info.BehavioralFactors.StressFrequency }}</td>
+              </tr>
+              <tr>
+                <td>Coping Effectiveness</td>
+                <td class="centerUpdate" id="coping_effectiveness_value">{{ student_info.BehavioralFactors.CopingEffectiveness }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Modal structure -->
+<div id="customPopup" class="popup-modal">
+  <div class="popup-content-explore">
+    <h3>No Behavioral Data Available</h3>
+    <p id="popupText">Please complete the survey information before proceeding with the prediction.</p>
+    <div class="popup-buttons">
+      <button id="confirmButton" class="confirm-btn-explore" onclick="handleConfirm()">Take Survey</button>
+      <button onclick="hidePopup()" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal structure for grades -->
+<div id="gradesPopup" class="popup-modal">
+  <div class="popup-content-explore">
+    <h3>Incomplete Grade Data</h3>
+    <p id="popupText">You cannot proceed with the prediction until all grade fields are completed.</p>
+    <div class="popup-buttons">
+      <button id="closeButton" class="cancel-btn" onclick="hidePopup()">Close</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  document.getElementById('prediction-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Collect the form data
+    const formData = {
+      stud: document.getElementById('stud').value,
+      age: document.getElementById('age').value,
+      gender: document.getElementById('gender').value,
+      no_of_siblings: document.getElementById('no_of_siblings').value,
+      mother_occupation: document.getElementById('mother_occupation').value,
+      mother_monthly_income: document.getElementById('mother_monthly_income').value,
+      father_occupation: document.getElementById('father_occupation').value,
+      father_monthly_income: document.getElementById('father_monthly_income').value,
+      average_grade_g12: document.getElementById('average_grade_g12').value,
+      average_grade_first_year: document.getElementById('average_grade_first_year').value,
+      study_hours: document.getElementById('study_hours_value').textContent,
+      study_strategies: document.getElementById('study_strategies_value').textContent,
+      regular_study_schedule: document.getElementById('regular_study_schedule_value').textContent,
+      attendance_rate: document.getElementById('attendance_rate_value').textContent,
+      class_participation: document.getElementById('class_participation_value').textContent,
+      time_management_rating: document.getElementById('time_management_rating_value').textContent,
+      study_deadlines_frequency: document.getElementById('study_deadlines_frequency_value').textContent,
+      motivation_level: document.getElementById('motivation_level_value').textContent,
+      engagement_level: document.getElementById('engagement_level_value').textContent,
+      stress_frequency: document.getElementById('stress_frequency_value').textContent,
+      coping_effectiveness: document.getElementById('coping_effectiveness_value').textContent
+    };
+
+    // Collect subject grades
+    document.querySelectorAll('input[id^="grades_"]').forEach(input => {
+      // Set value to an empty string if not filled, instead of 0
+      formData[input.name] = input.value.trim() || ''; // Using trim() to prevent spaces
+    });
+
+    // Check for missing grade info
+    const grades = {
+      grades_understanding_self: formData.grades_understanding_self,
+      grades_purposive_communication: formData.grades_purposive_communication,
+      grades_art_appreciation: formData.grades_art_appreciation,
+      grades_sts: formData.grades_sts,
+      grades_environmental_science: formData.grades_environmental_science,
+      grades_intermediate_programming: formData.grades_intermediate_programming,
+      grades_discrete_mathematics: formData.grades_discrete_mathematics,
+      grades_contemporary_world_with_peace_education: formData.grades_contemporary_world_with_peace_education,
+      grades_mathematics_in_the_modern_world: formData.grades_mathematics_in_the_modern_world,
+      grades_introduction_computing: formData.grades_introduction_computing,
+      grades_fundamentals_of_programming: formData.grades_fundamentals_of_programming
+    };
+
+    const hasMissingGrades = Object.values(grades).some(value =>
+      value === null || value === undefined || value === '' || value === '0'
+    );
+
+
+    // Check for missing behavioral factors
+    const behavioralFactors = {
+      study_hours: formData.study_hours,
+      study_strategies: formData.study_strategies,
+      regular_study_schedule: formData.regular_study_schedule,
+      attendance_rate: formData.attendance_rate,
+      class_participation: formData.class_participation,
+      time_management_rating: formData.time_management_rating,
+      study_deadlines_frequency: formData.study_deadlines_frequency,
+      motivation_level: formData.motivation_level,
+      engagement_level: formData.engagement_level,
+      stress_frequency: formData.stress_frequency,
+      coping_effectiveness: formData.coping_effectiveness
+    };
+
+    // Check if any behavioral factor is missing or has 'N/A'
+    const hasMissingBehavioralFactors = Object.values(behavioralFactors).some(value => !value || value === 'N/A');
+
+    if (hasMissingGrades) {
+      showPopupGrades();
+    } else if (hasMissingBehavioralFactors) {
+      showPopupBehavioral();
+    } else {
+      // If all behavioral factors are present, proceed with form submission
+      fetch('/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          const resultDiv = document.getElementById('prediction-result');
+          resultDiv.innerHTML = `
+            <h2>${data.output}</h2>
+            <p>${data.result}</p>
+          `;
+
+          if (data.comment) {
+            resultDiv.innerHTML += `
+              <div class="interventions">
+                <h3>MAIN FACTOR/S:</h3>
+                <ul>
+                  ${data.comment.split('\n').map(line => `<li>${line}</li>`).join('')}
+                </ul>
+              </div>
+            `;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('prediction-result').innerHTML = `<p>Error: Unable to fetch the prediction. Please try again later.</p>`;
+        });
+    }
+  });
+
+  function showPopupBehavioral() {
+    let modal = document.getElementById('customPopup');
+    modal.classList.add('show');
+  }
+
+  function showPopupGrades() {
+    let modal = document.getElementById('gradesPopup');
+    modal.classList.add('show');
+  }
+
+  function handleConfirm() {
+    hidePopup(); // Close the popup
+    console.log('Redirecting to the survey page'); // Debugging line
+    window.location.href = '/studentsBehavioral'; // Redirect to the survey page
+  }
+
+  function hidePopup() {
+    let modal = document.getElementById('gradesPopup');
+    modal.classList.remove('show'); // Remove 'show' class to hide the modal
+  }
+
+
+</script>
+
+{% endblock %}

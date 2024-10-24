@@ -1,0 +1,50 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Admin | Update {% endblock %}
+
+{% block updateTitle %}
+    <h1>Update Admin</h1>
+{% endblock %}
+
+{% block updateContent %}
+    <form method="POST" action="/update/{{ admin.AdminID }}">
+
+        <div class="input-group-update">
+            <label class="label" for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" class="input" value="{{ admin.FirstName }}" required>
+        </div>
+
+        <div class="input-group-update">
+            <label class="label" for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" class="input" value="{{ admin.LastName }}" required>
+        </div>
+
+        <div class="input-group-update">
+            <label class="label" for="username">Username:</label>
+            <input type="text" id="username" name="username" class="input" value="{{ admin.Username }}" required>
+        </div>
+
+        <div class="input-group-update">
+            <label class="label" for="email">Email:</label>
+            <input type="email" id="email" name="email" class="input" value="{{ admin.Email }}" required>
+        </div>
+
+        <!-- Password field left empty to allow updating if needed -->
+        <div class="input-group-update">
+            <label class="label" for="password">New Password (Optional):</label>
+            <input type="password" id="password" name="password" class="input" placeholder="Enter new password if changing">
+        </div>
+
+        <button type="submit" class="btn" value="Update">UPDATE ADMIN</button>
+        <button type="button" class="btnCancel" id="cancelButtonUser">CANCEL</button>
+    </form>
+
+    <script>
+        document.getElementById("cancelButtonUser").onclick = function() {
+            window.location.href = "{{ url_for('views.adminUser') }}";
+        };
+    </script>
+
+{% endblock %}
+

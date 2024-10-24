@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}
+{{ class_details.ClassName }} - {{ class_details.SubjectName }}
+{% endblock %}
+
+<!-- =============== Sidebars ================ -->
+{% block sidebar %}
+<li class="active">
+    <a href="{{ url_for('views.professors') }}">
+        <span class="icon">
+            <ion-icon name="file-tray-full-outline"></ion-icon>
+        </span>
+        <span class="title">ADVISORY CLASS</span>
+    </a>
+</li>
+<li>
+    <a href="{{ url_for('views.professorAdditionalAcadReq') }}">
+      <span class="icon">
+        <ion-icon name="layers-outline"></ion-icon>
+      </span>
+      <span class="title">INTERVENTION</span>
+    </a>
+  </li>
+{% endblock %}
+
+{% block popupmessage %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div id="flash-message" class="info">
+    <div class="info__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
+            <path fill="#393a37"
+                d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
+            </path>
+        </svg>
+    </div>
+    <div class="info__title">{{ message }}</div>
+    <div class="info__close"><svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+                fill="#393a37"></path>
+        </svg></div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+<!-- =============== Main Content ================ -->
+{% block main %}
+
+<div class="content">
+    <!-- ====== Welcome Note ====== -->
+    <div class="partOne">
+        <h1>{{ class_details.ClassName }} - {{ class_details.SubjectName }}</h1>
+        <h3>{{ class_details.SemesterName }}</h3>
+    </div>
+
+    <div class="content-info-student">
+        <div class="details-student">
+            <div class="student-list">
+                <div class="cardheader">
+                    <h3>ENROLLED STUDENTS</h3>
+                </div>
+                <form method="post" action="{{ url_for('views.submit_grades') }}">
+                    <input type="hidden" name="class_id" value="{{ class_id }}">
+                    <input type="hidden" name="subject_id" value="{{ subject_id }}">
+                    <input type="hidden" name="school_year_id" value="{{ school_year_id }}">
+                    <input type="hidden" name="semester_id" value="{{ semester_id }}">
+                    <input type="hidden" name="professor_id" value="{{ professor_id }}">
+                
+                    <table>
+                        <thead>
+                            <tr class="bgTr">
+                                <th width="50px">STUDID</th>
+                                <th width="250px">LASTNAME</th>
+                                <th width="250px">FIRSTNAME</th>
+                                <th width="150px">MIDTERM GRADE</th>
+                                <th width="150px">FINAL GRADE</th>
+                                <th width="150px">AVERAGE GRADE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in enrolled_students %}
+                            <tr class="highlight-row">
+                                <td class="centerUpdate">
+                                    {{ student.StudentID }}
+                                    <input type="hidden" name="student_id_{{ student.StudentID }}" value="{{ student.StudentID }}">
+                                </td>
+                                <td>{{ student.LastName }}</td>
+                                <td>{{ student.FirstName }}</td>
+                                <td><input class="grade-input" type="number" name="midterm_grade_{{ student.StudentID }}" placeholder="Midterm Grade" step="0.01" value="{{ student.MidtermGrade }}" data-student-id="{{ student.StudentID }}"></td>
+                                <td><input class="grade-input" type="number" name="final_grade_{{ student.StudentID }}" placeholder="Final Grade" step="0.01" value="{{ student.FinalGrade }}" data-student-id="{{ student.StudentID }}"></td>
+                                <td class="centerUpdate">
+                                    <span class="average-grade" data-student-id="{{ student.StudentID }}">
+                                        {% if student.MidtermGrade and student.FinalGrade %}
+                                            {{ (student.MidtermGrade + student.FinalGrade) / 2 }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="rightButton">
+                        <button class="btn" type="submit">Submit Grades</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        function calculateAverage() {
+            document.querySelectorAll(".grade-input").forEach(input => {
+                input.addEventListener("input", () => {
+                    const studentId = input.dataset.studentId;
+                    const midtermInput = document.querySelector(`input[name="midterm_grade_${studentId}"]`);
+                    const finalInput = document.querySelector(`input[name="final_grade_${studentId}"]`);
+                    const averageSpan = document.querySelector(`.average-grade[data-student-id="${studentId}"]`);
+                    
+                    const midtermGrade = parseFloat(midtermInput.value) || 0;
+                    const finalGrade = parseFloat(finalInput.value) || 0;
+                    const averageGrade = (midtermGrade + finalGrade) / 2;
+                    
+                    averageSpan.textContent = isNaN(averageGrade) ? 'N/A' : averageGrade.toFixed(2);
+                });
+            });
+        }
+    
+        calculateAverage();
+    });
+    </script>
+    
+
+{% endblock %}

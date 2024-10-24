@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.css">
+    <script src="{{ url_for('static', filename='index.js') }}" defer></script>
+    <link rel="icon" href="{{ url_for('static', filename='images/plpLogo.svg') }}">
+
+    <title>{% block title %}BASE{% endblock %}</title>
+</head>
+
+<body>
+    <div class="updateContainer">
+        <div class="updateCard">
+            <div class="cardHeader">
+                {% block updateTitle %}
+                <h2>ADD NEW STUDENT</h2>
+                {% endblock%}
+            </div>
+            <div class="updateData">
+                {% block updateContent %}
+                <form>
+                    <div class="input-group-update">
+                        <label class="label">Username:</label>
+                        <input autocomplete="off" type="text" id="username" name="username"
+                            placeholder="Enter username" class="input" required>
+                    </div>
+
+                    <div class="input-group-update">
+                        <label class="label">Username:</label>
+                        <input autocomplete="off" type="text" id="username" name="username"
+                            placeholder="Enter username" class="input" required>
+                    </div>
+
+                    <div class="input-group-update">
+                        <label class="label">Username:</label>
+                        <input autocomplete="off" type="text" id="username" name="username"
+                            placeholder="Enter username" class="input" required>
+                    </div>
+                </form>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+<script>
+    document.getElementById("cancelButton").onclick = function() {
+        window.location.href = "{{ url_for('views.adminMaintenance') }}";
+    };
+</script>
+    
+
+</html>

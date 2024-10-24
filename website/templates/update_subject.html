@@ -1,0 +1,36 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Subject | Update {% endblock %}
+
+{% block updateTitle %}
+    <h1>Update Subject</h1>
+{% endblock %}
+
+{% block updateContent %}
+<form method="post" action="{{ url_for('views.update_subject', subject_id=data.SubjectID) }}">
+
+    <div class="input-group-update">
+        <label class="label" for="subject_name">Subject Name:</label>
+        <input type="text" name="subject_name" id="subject_name" value="{{ data.SubjectName }}" class="input" required>
+    </div>
+    <div class="input-group-update">
+        <label class="label" for="subject_units">Subject Units:</label>
+        <input type="number" name="subject_units" id="subject_units" value="{{ data.Units }}" class="input" required>
+    </div>
+    <div class="input-group-update">
+        <label class="label" for="program_id">College Program:</label>
+        <select name="program_id" id="programUpdate" class="input" required>
+            {% for program in programs %}
+            <option value="{{ program.ProgramID }}" {% if program.ProgramID == data.ProgramID %}selected{% endif %}>
+                {{ program.ProgramName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn">Update Subject</button>
+    <button type="button" class="btnCancel" id="cancelButton">CANCEL</button>
+</form>
+
+{% endblock %}
+    

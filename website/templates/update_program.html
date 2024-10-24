@@ -1,0 +1,24 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}College Program | Update {% endblock %}
+
+{% block updateTitle %}
+    <h1>Update College Program</h1>
+{% endblock %}
+
+{% block updateContent %}
+    <form method="post" action="{{ url_for('views.update_program', id=data.ProgramID) }}">
+
+        <div class="input-group-update">
+            <label class="label" for="year">Program:</label>
+            <input type="text" name="programName" id="programUpdate" value="{{ data.ProgramName }}" class="input" required>
+        </div>
+
+        <button type="submit" class="btn" value="Update">UPDATE PROGRAM</button>
+        <button type="button" class="btnCancel" id="cancelButton">CANCEL</button>
+    </form>
+
+{% endblock %}
+
+

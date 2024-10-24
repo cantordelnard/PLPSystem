@@ -1,0 +1,563 @@
+{% extends "base.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Admin | Users{% endblock %}
+
+<!-- =============== Sidebars ================ -->
+{% block sidebar %}
+<li>
+    <a href="admin">
+        <span class="icon">
+            <ion-icon name="grid-outline"></ion-icon>
+        </span>
+        <span class="title">DASHBOARD</span>
+    </a>
+</li>
+<li>
+    <a href="adminMaintenance">
+        <span class="icon">
+            <ion-icon name="cog-outline"></ion-icon>
+        </span>
+        <span class="title">MAINTENANCE</span>
+    </a>
+</li>
+<li class="active">
+    <a href="adminUser">
+        <span class="icon">
+            <ion-icon name="person-outline"></ion-icon>
+        </span>
+        <span class="title">USERS</span>
+    </a>
+</li>
+<li>
+    <a href="adminPrediction">
+        <span class="icon">
+            <ion-icon name="sparkles-outline"></ion-icon>
+        </span>
+        <span class="title">PREDICTIVE</span>
+    </a>
+  </li>
+<li>
+    <a href="adminUpload">
+      <span class="icon">
+        <ion-icon name="cloud-upload-outline"></ion-icon>
+      </span>
+      <span class="title">UPLOAD</span>
+    </a>
+</li>
+<li>
+    <a href="adminArchive">
+      <span class="icon">
+        <ion-icon name="archive-outline"></ion-icon>
+      </span>
+      <span class="title">ARCHIVE</span>
+    </a>
+  </li>
+{% endblock %}
+
+
+<!-- =============== Flash Message ================ -->
+{% block popupmessage %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div id="flash-message" class="info">
+    <div class="info__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
+            <path fill="#393a37"
+                d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
+            </path>
+        </svg>
+    </div>
+    <div class="info__title">{{ message }}</div>
+    <div class="info__close"><svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+                fill="#393a37"></path>
+        </svg></div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+
+<!-- =============== Main Content ================ -->
+{% block main %}
+<div class="content">
+    <!-- =============== Tab Bar ================ -->
+    <div class="tabBar">
+        <div class="radio-inputs">
+            <label class="radio">
+                <input type="radio" name="radio" checked="" />
+                <span class="name">ADMIN</span>
+            </label>
+            <label class="radio">
+                <input type="radio" name="radio" />
+                <span class="name">PROFESSOR</span>
+            </label>
+
+            <label class="radio">
+                <input type="radio" name="radio" />
+                <span class="name">STUDENT</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- =============== Tab Bar Content ================ -->
+    <div class="content-info">
+        <!-- ------ Admin Content ------ -->
+        <div class="admin">
+            <div class="details">
+                <!-- ------ LIST ------ -->
+                <div class="list">
+                    <div class="cardHeader">
+                        <h2>ADMIN LIST</h2>
+                        <input class="inputSeacrh" type="text" id="adminSearchInput" onkeyup="searchFunction('adminSearchInput', 'adminTable')" placeholder="Search Admins">
+                    </div>
+                    <div class="tbl-content">
+                        <table id="adminTable">
+                            <thead>
+                                <tr class="bgTr">
+                                    <th width="80px">AdminID</th>
+                                    <th width="300px">Name</th>
+                                    <th width="150px">Username</th>
+                                    <th width="250px">Email</th>
+                                    <th width="100px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for admin in admins %}
+                                <tr class="highlight-row">
+                                    <td class="centerUpdate">{{ admin.AdminID }}</td>
+                                    <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                    <td>{{ admin.Username }}</td>
+                                    <td>{{ admin.Email }}</td>
+                                    <td class="centerUpdate">
+                                        <a href="/update/{{ admin.AdminID }}">
+                                            <ion-icon name="create" class="updateIcon"></ion-icon>
+                                        </a>
+                                        <!-- Add delete button
+                                        <a href="javascript:void(0);" 
+                                            onclick="showPopup('admin', '{{ admin.AdminID }}', '{{ admin.FirstName }}', '{{ admin.LastName }}', 'archive');">
+                                            <ion-icon name="archive" class="archiveIcon"></ion-icon>
+                                        </a>-->
+                                    </td>      
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ------ ADD/UPDATE ------ -->
+                <div class="newData">
+                    <div class="cardHeader">
+                        <h2 id="form-title">ADD NEW ADMIN</h2>
+                    </div>
+                    <div class="inputData">
+                        <form method="POST" action="{{ url_for('views.adminUser') }}">
+                            <input type="hidden" name="role_id" value="1">
+                            <input type="hidden" name="user_id" id="user_id">
+                            <div class="input-group">
+                                <label class="label">Username:</label>
+                                <input autocomplete="off" type="text" id="username" name="username"
+                                    placeholder="Enter username" class="input">
+                            </div>
+                            <div class="input-group">
+                                <label class="label">First Name:</label>
+                                <input autocomplete="off" type="text" id="first_name" name="first_name"
+                                    placeholder="Enter first name" class="input">
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Last Name:</label>
+                                <input autocomplete="off" type="text" id="last_name" name="last_name"
+                                    placeholder="Enter last name" class="input">
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Email address:</label>
+                                <input autocomplete="off" name="email" id="email" class="input" type="email"
+                                    placeholder="Enter email">
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Password:</label>
+                                <input autocomplete="off" name="password" id="password" class="input" type="password"
+                                    placeholder="Enter password">
+                            </div>
+                            <button type="submit" class="btn">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------ Professor Content ------ -->
+        <div class="professor">
+            <div class="details">
+                <!-- ------ LIST ------ -->
+                <div class="list">
+                    <div class="cardHeader">
+                        <h2>PROFESSOR LIST</h2>
+                        <input class="inputSeacrh" type="text" id="professorSearchInput" onkeyup="searchFunction('professorSearchInput', 'professorTable')" placeholder="Search Professors">
+                    </div>
+                    <div class="tbl-content">
+                        <table id="professorTable">
+                            <thead>
+                                <tr class="bgTr">
+                                    <th width="70px">ProfID</th>
+                                    <th width="250px">Name</th>
+                                    <th width="300px">Department</th>
+                                    <th width="150px">Username</th>
+                                    <th width="200px">Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for professor in professors %}
+                                <tr class="highlight-row">
+                                    <td class="centerUpdate">{{ professor.ProfessorID }}</td>
+                                    <td>{{ professor.FirstName }} {{ professor.LastName }}</td>
+                                    <td>{{ professor.ProgramName }}</td>
+                                    <td>{{ professor.Username }}</td>
+                                    <td>{{ professor.Email }}</td>
+                                    <td class="centerUpdate">
+                                        <a href="{{ url_for('views.update_professor', professor_id=professor.ProfessorID) }}">
+                                            <ion-icon name="create" class="updateIcon"></ion-icon>
+                                        </a>
+                                        <!--
+                                        <a href="javascript:void(0);" 
+                                            onclick="showPopup('professor', '{{ professor.ProfessorID }}', '{{ professor.FirstName }}', '{{ professor.LastName }}');">
+                                            <ion-icon name="archive" class="archiveIcon"></ion-icon>
+                                        </a>-->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ------ ADD ------ -->
+                <div class="newData">
+                    <div class="cardHeader">
+                        <h2>ADD NEW PROFESSOR</h2>
+                    </div>
+                    <div class="inputData">
+                        <form method="POST" action="{{ url_for('views.adminUser') }}">
+                            <input type="hidden" name="role_id" value="2">
+                            <div class="input-group">
+                                <label class="label">Username:</label>
+                                <input autocomplete="off" type="text" id="username" name="username"
+                                    placeholder="Enter username" class="input" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="label">First Name:</label>
+                                <input autocomplete="off" type="text" id="first_name" name="first_name"
+                                    placeholder="Enter first name" class="input" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Last Name:</label>
+                                <input autocomplete="off" type="text" id="last_name" name="last_name"
+                                    placeholder="Enter last name" class="input" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Department:</label>
+                                <select name="program_id" id="program_id" class="input" required>
+                                    <option value="">Choose department</option>
+                                    {% for program in programs %}
+                                    <option value="{{ program.ProgramID }}">{{ program.ProgramName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Email address:</label>
+                                <input autocomplete="off" name="email" id="email" class="input" type="email"
+                                    placeholder="Enter email" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="label">Password:</label>
+                                <input autocomplete="off" name="password" id="password" class="input" type="password"
+                                    placeholder="Enter password" required>
+                            </div>
+                            <button type="submit" class="btn">Add Professor</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------ Student Content ------ -->
+        <div class="student">
+            <div class="details">
+                <!-- ------ LIST ------ -->
+                <div class="list">
+                    <div class="cardHeader">
+                        <h2>STUDENT LIST</h2>
+                        <input class="inputSeacrh" type="text" id="studentSearchInput" onkeyup="searchFunction('studentSearchInput', 'studentTable')" placeholder="Search Students">
+                    </div>
+                    <div class="tbl-content">
+                           <table id="studentTable">
+                            <thead>
+                                <tr class="bgTr">
+                                    <th width="80px">StudID</th>
+                                    <th width="350px">Name</th>
+                                    <th width="150px">Class</th>
+                                    <th width="300px">Specialization</th>
+                                    <th width="100px">Username</th>
+                                    <th width="150px">Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr class="highlight-row">
+                                    <td>{{ student.StudentID }}</td>
+                                    <td>{{ student.FirstName }} {{ student.LastName }}</td>
+                                    <td>{{ student.ClassName }}</td>
+                                    <td>{{ student.SpecializationName }}</td>
+                                    <td>{{ student.Username }}</td>
+                                    <td>{{ student.Email }}</td>
+                                    <td class="centerUpdate">
+                                        <a href="{{ url_for('views.update_student', student_id=student.StudentID) }}">
+                                            <ion-icon name="create" class="updateIcon"></ion-icon>
+                                        </a>
+                                        <!--
+                                        <a href="javascript:void(0);" 
+                                            onclick="showPopup('student', '{{ student.StudentID }}', '{{ student.FirstName }}', '{{ student.LastName }}');">
+                                            <ion-icon name="archive" class="archiveIcon"></ion-icon>
+                                        </a>-->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ------ ADD ------ -->
+                <div class="newData">
+                    <div class="cardHeader">
+                        <h2>ADD NEW STUDENT</h2>
+                    </div>
+                    <div class="inputData">
+                        <form method="POST" action="{{ url_for('views.adminUser') }}">
+                            <input type="hidden" name="role_id" value="3">
+                
+                            <div class="input-group">
+                                <label class="label">Username:</label>
+                                <input autocomplete="off" type="text" id="username" name="username"
+                                    placeholder="Enter username" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Student ID:</label>
+                                <input autocomplete="off" type="text" id="student_id" name="student_id"
+                                    placeholder="Enter student ID" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">First Name:</label>
+                                <input autocomplete="off" type="text" id="first_name" name="first_name"
+                                    placeholder="Enter first name" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Last Name:</label>
+                                <input autocomplete="off" type="text" id="last_name" name="last_name"
+                                    placeholder="Enter last name" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Department:</label>
+                                <select name="program_id" id="program_id" class="input" required>
+                                    <option value="">Choose department</option>
+                                    {% for program in programs %}
+                                    <option value="{{ program.ProgramID }}">{{ program.ProgramName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Specialization:</label>
+                                <select name="specialization_id" id="specialization_id" class="input">
+                                    <option value="">Choose specialization</option>
+                                    {% for specialization in specializations %}
+                                    <option value="{{ specialization.SpecializationID }}">{{
+                                        specialization.SpecializationName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Year Level:</label>
+                                <select name="year_level_id" id="year_level_id" class="input" required>
+                                    <option value="">Choose year level</option>
+                                    {% for year_level in year_levels %}
+                                    <option value="{{ year_level.YearLevelID }}">{{ year_level.YearLevelName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Class:</label>
+                                <select name="class_id" id="class_id" class="input" required>
+                                    <option value="">Choose class</option>
+                                    {% for class in classes %}
+                                    <option value="{{ class.ClassID }}">{{ class.ClassName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Email address:</label>
+                                <input autocomplete="off" name="email" id="email" class="input" type="email"
+                                    placeholder="Enter email" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Password:</label>
+                                <input autocomplete="off" name="password" id="password" class="input" type="password"
+                                    placeholder="Enter password" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Age:</label>
+                                <input autocomplete="off" type="number" id="age" name="age" placeholder="Enter age" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Gender:</label>
+                                <select name="gender" id="gender" class="input" required>
+                                    <option value="">Choose gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Mother's Occupation:</label>
+                                <input autocomplete="off" type="text" id="mother_occupation" name="mother_occupation"
+                                    placeholder="Enter mother's occupation" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Mother's Salary:</label>
+                                <input autocomplete="off" type="number" step="0.01" id="mother_salary" name="mother_salary"
+                                    placeholder="Enter mother's salary" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Father's Occupation:</label>
+                                <input autocomplete="off" type="text" id="father_occupation" name="father_occupation"
+                                    placeholder="Enter father's occupation" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Father's Salary:</label>
+                                <input autocomplete="off" type="number" step="0.01" id="father_salary" name="father_salary"
+                                    placeholder="Enter father's salary" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Number of Siblings:</label>
+                                <input autocomplete="off" type="number" id="number_of_siblings" name="number_of_siblings"
+                                    placeholder="Enter number of siblings" class="input" required>
+                            </div>
+                
+                            <div class="input-group">
+                                <label class="label">Senior High School Average:</label>
+                                <input autocomplete="off" type="number" step="0.01" id="senior_high_school_average"
+                                    name="senior_high_school_average" placeholder="Enter senior high school average" class="input"
+                                    required>
+                            </div>
+                
+                            <button type="submit" class="btn">Add Student</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal structure -->
+<div id="customPopup" class="popup-modal">
+    <div class="popup-content">
+        <p id="popupText">Are you sure you want to proceed?</p>
+        <div class="popup-buttons">
+            <button id="confirmButton" class="confirm-btn">Yes</button>
+            <button onclick="hidePopup()" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- ------ FILTERING OUT TABLES ------ -->
+<script>
+    function searchFunction(inputId, tableId) {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById(inputId);
+        filter = input.value.toUpperCase();
+        table = document.getElementById(tableId);
+        tr = table.getElementsByTagName("tr");
+    
+        for (i = 1; i < tr.length; i++) {
+            tr[i].style.display = "none"; 
+            td = tr[i].getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""; 
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    </script>
+    <script>
+        // Show the popup with dynamic content
+        function showPopup(entityType, entityID, firstName, lastName, action) {
+        let entityText;
+        let actionText;
+
+        switch (entityType) {
+            case 'admin':
+                entityText = 'Admin';
+                actionText = action === 'archive' ? 'Archive' : 'Delete';
+                break;
+            case 'professor':
+                entityText = 'Professor';
+                actionText = 'Archive';
+                break;
+            case 'student':
+                entityText = 'Student';
+                actionText = 'Archive';
+                break;
+            default:
+                entityText = 'Entity';
+                actionText = 'Archive';
+        }
+
+        document.getElementById("popupText").innerText = `Are you sure you want to ${actionText} \n${entityText} ${firstName} ${lastName}?`;
+
+        document.getElementById("customPopup").style.display = "flex";
+
+        document.getElementById("confirmButton").onclick = function() {
+            if (entityType === 'admin' && action === 'archive') {
+                window.location.href = `/delete/${entityType}/${entityID}`;
+            } else {
+                window.location.href = `/delete_${entityType}/${entityID}`;
+            }
+        };
+    }
+
+
+        // Hide the popup
+        function hidePopup() {
+            document.getElementById("customPopup").style.display = "none";
+        }
+
+    </script>
+{% endblock %}

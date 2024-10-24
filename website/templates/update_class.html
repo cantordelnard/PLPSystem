@@ -1,0 +1,30 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Class | Update {% endblock %}
+
+{% block updateTitle %}
+    <h1>Update Class</h1>
+{% endblock %}
+
+{% block updateContent %}
+<form method="post" action="{{ url_for('views.update_class', id=data.ClassID) }}">
+    <div class="input-group-update">
+        <label class="label" for="class_name">Class Name:</label>
+        <input type="text" id="classUpdate" name="class_name" class="input" value="{{ data.ClassName }}" required>
+    </div>
+    <div class="input-group-update">
+        <label class="label" for="year">School Year:</label>
+        <select id="yearUpdate" name="year" class="input" required>
+            {% for yr in school_years %}
+            <option value="{{ yr.SchoolYearID }}" {% if yr.SchoolYearID == data.SchoolYearID %} selected {% endif %}>
+                {{ yr.Year }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <button type="submit" class="btn">UPDATE CLASS</button>
+    <button type="button" class="btnCancel" id="cancelButton">CANCEL</button>
+</form>
+{% endblock %}

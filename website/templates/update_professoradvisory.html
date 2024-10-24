@@ -1,0 +1,59 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Professor Advisory | Update {% endblock %}
+
+{% block updateTitle %}
+    <h1>Update Professor Advisory</h1>
+{% endblock %}
+
+{% block updateContent %}
+<form method="post" action="{{ url_for('views.update_professoradvisory', id=data.AdvisoryID) }}">
+    <div class="input-group-update">
+        <label class="label" for="professor_id">Professor Name:</label>
+        <select id="professorUpdate" name="professor_id" class="input" required>
+            {% for professor in professors %}
+            <option value="{{ professor.ProfessorID }}" {% if professor.ProfessorID == data.ProfessorID %} selected {% endif %}>
+                {{ professor.FirstName }} {{ professor.LastName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group-update">
+        <label class="label" for="class_id">Class:</label>
+        <select id="classUpdate" name="class_id" class="input" required>
+            {% for cls in classes %}
+            <option value="{{ cls.ClassID }}" {% if cls.ClassID == data.ClassID %} selected {% endif %}>
+                {{ cls.ClassName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group-update">
+        <label class="label" for="subject_id">Subject:</label>
+        <select id="subjectUpdate" name="subject_id" class="input" required>
+            {% for subject in subjects %}
+            <option value="{{ subject.SubjectID }}" {% if subject.SubjectID == data.SubjectID %} selected {% endif %}>
+                {{ subject.SubjectName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="input-group-update">
+        <label class="label" for="semester_id">Semester:</label>
+        <select id="semesterUpdate" name="semester_id" class="input" required>
+            {% for semester in semesters %}
+            <option value="{{ semester.SemesterID }}" {% if semester.SemesterID == data.SemesterID %} selected {% endif %}>
+                {{ semester.SemesterName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <button type="submit" class="btn">UPDATE PROFESSOR ADVISORY</button>
+    <button type="button" class="btnCancel" id="cancelButton">CANCEL</button>
+</form>
+
+{% endblock %}
+
+

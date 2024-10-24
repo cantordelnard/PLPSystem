@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update Data</title>
+</head>
+
+<body>
+    <h1>Update {{ form_type | replace('_', ' ') | capitalize }}</h1>
+    <form method="post" action="{{ url_for('views.updateData') }}">
+        <input type="hidden" name="form_type" value="{{ form_type }}">
+        <input type="hidden" name="id" value="{{ data.id }}">
+
+        {% if form_type == 'school_year' %}
+        <label for="schoolyear_id">School Year ID:</label>
+        <input type="text" id="schoolyear_id" value="{{ data.SchoolYearID }}" disabled>
+        <br>
+        <label for="year">Year:</label>
+        <input type="text" name="year" id="year" value="{{ data.Year }}">
+        <!-- Other fields for school year update -->
+        {% elif form_type == 'program' %}
+        <label for="program_id">Program ID:</label>
+        <input type="text" id="program_id" value="{{ data.ProgramID }}" disabled>
+        <br>
+        <label for="program_name">Program Name:</label>
+        <input type="text" name="program_name" id="program_name" value="{{ data.ProgramName }}">
+        <!-- Other fields for program update -->
+        {% elif form_type == 'specialization' %}
+        <label for="specialization_id">Specialization ID:</label>
+        <input type="text" id="specialization_id" value="{{ data.SpecializationID }}" disabled>
+        <br>
+        <label for="specialization_name">Specialization Name:</label>
+        <input type="text" name="specialization_name" id="specialization_name" value="{{ data.SpecializationName }}">
+        <!-- Other fields for specialization update -->
+        {% elif form_type == 'subject' %}
+        <label for="subject_id">Subject ID:</label>
+        <input type="text" id="subject_id" value="{{ data.SubjectID }}" disabled>
+        <br>
+        <label for="subject_name">Subject Name:</label>
+        <input type="text" name="subject_name" id="subject_name" value="{{ data.SubjectName }}">
+        <!-- Other fields for subject update -->
+        {% elif form_type == 'class' %}
+        <label for="class_id">Class ID:</label>
+        <input type="text" id="class_id" value="{{ data.ClassID }}" disabled>
+        <br>
+        <label for="class_name">Class Name:</label>
+        <input type="text" name="class_name" id="class_name" value="{{ data.ClassName }}">
+        <!-- Other fields for class update -->
+        {% elif form_type == 'professor_advisory' %}
+        <label for="advisory_id">Advisory ID:</label>
+        <input type="text" id="advisory_id" value="{{ data.AdvisoryID }}" disabled>
+        <br>
+        <label for="professor_id">Professor ID:</label>
+        <input type="text" name="professor_id" id="professor_id" value="{{ data.ProfessorID }}">
+        <!-- Other fields for professor advisory update -->
+        {% endif %}
+
+        <button type="submit">Update</button>
+    </form>
+</body>
+
+</html>

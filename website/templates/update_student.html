@@ -1,0 +1,135 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Student | Update {% endblock %}
+
+{% block updateTitle %}
+<h1>Update Student</h1>
+{% endblock %}
+
+{% block updateContent %}
+<form method="POST" action="/update_student/{{ student.StudentID }}">
+
+    <div class="input-group-update">
+        <label class="label" for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ student.FirstName }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ student.LastName }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Department:</label>
+        <select name="program_id" class="input" id="updateProgram" required>
+            {% for program in programs %}
+            <option value="{{ program.ProgramID }}" {% if program.ProgramID == student.ProgramID %}selected{% endif %}>
+                {{ program.ProgramName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Specialization:</label>
+        <select name="specialization_id" class="input" id="updateSpecialization" required>
+            {% for specialization in specializations %}
+            <option value="{{ specialization.SpecializationID }}" {% if specialization.SpecializationID == student.SpecializationID %}selected{% endif %}>
+                {{ specialization.SpecializationName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Year Level:</label>
+        <select name="year_level_id" class="input" id="updateYear" required>
+            {% for year_level in year_levels %}
+            <option value="{{ year_level.YearLevelID }}" {% if year_level.YearLevelID == student.YearLevelID %}selected{% endif %}>
+                {{ year_level.YearLevelName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Class:</label>
+        <select name="class_id" class="input" id="updateClass" required>
+            {% for class in classes %}
+            <option value="{{ class.ClassID }}" {% if class.ClassID == student.ClassID %}selected{% endif %}>
+                {{ class.ClassName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ student.Username }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ student.Email }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="password">New Password (Optional):</label>
+        <input type="password" id="password" name="password" class="input" placeholder="Enter new password if changing">
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="age">Age:</label>
+        <input type="number" id="age" name="age" value="{{ student.Age }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Gender:</label>
+        <select name="gender" id="gender" class="input" required>
+            <option value="Male" {% if student.Gender == 'Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if student.Gender == 'Female' %}selected{% endif %}>Female</option>
+        </select>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="mother_occupation">Mother's Occupation:</label>
+        <input type="text" id="mother_occupation" name="mother_occupation" value="{{ student.MotherOccupation }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="mother_salary">Mother's Salary:</label>
+        <input type="number" step="0.01" id="mother_salary" name="mother_salary" value="{{ student.MotherSalary }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="father_occupation">Father's Occupation:</label>
+        <input type="text" id="father_occupation" name="father_occupation" value="{{ student.FatherOccupation }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="father_salary">Father's Salary:</label>
+        <input type="number" step="0.01" id="father_salary" name="father_salary" value="{{ student.FatherSalary }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="number_of_siblings">Number of Siblings:</label>
+        <input type="number" id="number_of_siblings" name="number_of_siblings" value="{{ student.NumberOfSiblings }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="senior_high_school_average">Senior High School Average:</label>
+        <input type="number" step="0.01" id="senior_high_school_average" name="senior_high_school_average" value="{{ student.SeniorHighSchoolAverage }}" class="input" required>
+    </div>
+
+    <button type="submit" class="btn">UPDATE STUDENT</button>
+    <button type="button" class="btnCancel" id="cancelButtonUser">CANCEL</button>
+</form>
+
+<script>
+    document.getElementById("cancelButtonUser").onclick = function() {
+        window.location.href = "{{ url_for('views.adminUser') }}";
+    };
+</script>
+
+{% endblock %}

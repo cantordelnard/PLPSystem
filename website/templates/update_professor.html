@@ -1,0 +1,59 @@
+{% extends "baseUpdate.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}Professor | Update {% endblock %}
+
+{% block updateTitle %}
+<h1>Update Professor</h1>
+{% endblock %}
+
+{% block updateContent %}
+<form method="POST" action="{{ url_for('views.update_professor', professor_id=professor.ProfessorID) }}">
+
+    <div class="input-group-update">
+        <label class="label">First Name:</label>
+        <input type="text" name="first_name" value="{{ professor.FirstName }}" class="input" required>
+    </div>
+    
+    <div class="input-group-update">
+        <label class="label">Last Name:</label>
+        <input type="text" name="last_name" value="{{ professor.LastName }}" class="input" required>
+    </div>
+    
+    <div class="input-group-update">
+        <label class="label">Department:</label>
+        <select name="program_id" id="updateProgram" class="input" required>
+            {% for program in programs %}
+            <option value="{{ program.ProgramID }}" {% if program.ProgramID==professor.ProgramID %}selected{% endif %}>
+                {{ program.ProgramName }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Username:</label>
+        <input type="text" name="username" value="{{ professor.Username }}" class="input">
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">Email address:</label>
+        <input type="email" name="email" value="{{ professor.Email }}" class="input" required>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label">New Password (Optional):</label>
+        <input type="password" name="password" placeholder="Enter new password if changing" class="input">
+    </div>
+
+    <button type="submit" class="btn">UPDATE PROFESSOR</button>
+    <button type="button" class="btnCancel" id="cancelButtonUser">CANCEL</button>
+</form>
+
+<script>
+    document.getElementById("cancelButtonUser").onclick = function() {
+        window.location.href = "{{ url_for('views.adminUser') }}";
+    };
+</script>
+
+{% endblock %}

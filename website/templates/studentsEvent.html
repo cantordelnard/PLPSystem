@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}PLP Grading System{% endblock %}
+
+<!-- =============== Sidebars ================ -->
+{% block sidebar %}
+<li>
+  <a href="studentsHome">
+    <span class="icon">
+      <ion-icon name="home-outline"></ion-icon>
+    </span>
+    <span class="title">HOME</span>
+  </a>
+</li>
+<li>
+  <a href="students">
+    <span class="icon">
+      <ion-icon name="newspaper-outline"></ion-icon>
+    </span>
+    <span class="title">GRADES</span>
+  </a>
+</li>
+<li>
+  <a href="studentsExplore">
+    <span class="icon">
+      <ion-icon name="sparkles-outline"></ion-icon>
+    </span>
+    <span class="title">EXPLORE</span>
+  </a>
+</li>
+<li>
+  <a href="studentsBehavioral">
+    <span class="icon">
+      <ion-icon name="bulb-outline"></ion-icon>
+    </span>
+    <span class="title">SURVEY</span>
+  </a>
+</li>
+<li class="active">
+  <a href="studentsEvent">
+    <span class="icon">
+      <ion-icon name="calendar-clear-outline"></ion-icon>
+    </span>
+    <span class="title">EVENTS</span>
+  </a>
+</li>
+{% endblock %}
+
+<!-- =============== Main Content ================ -->
+{% block main %}
+<div class="content">
+  <div class="exploreTitle">
+    <h1>EVENTS</h1>
+    <div class="containerEvent">
+      <div id="interventions-list" class="notifications-list">
+        <!-- Dynamic content will be populated here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('/get-interventions')
+      .then(response => response.json())
+      .then(data => {
+        const listContainer = document.getElementById('interventions-list');
+        listContainer.innerHTML = '';
+
+        data.forEach(intervention => {
+          // Only render the intervention if its ID is not 0 or 1
+          if (intervention.EventID !== 0 && intervention.EventID !== 1) {
+            const interventionContainer = document.createElement('div');
+            interventionContainer.classList.add('intervention-container');
+
+            const textContainer = document.createElement('div');
+            textContainer.classList.add('intervention-text-container');
+            textContainer.innerHTML = `
+              <h3>${intervention.Title}</h3>
+              <p class="notifP">${intervention.Description}</p>
+              <hr class="description-line"> <!-- Added line here -->
+              <p class="notifQ"><b>Location:</b> ${intervention.Location}</p>
+              <p><b>Date:</b> ${intervention.Date}</p>
+              <p><b>Time:</b> ${intervention.Time}</p>
+            `;
+
+            const imagesContainer = document.createElement('div');
+            imagesContainer.classList.add('intervention-images-container');
+            imagesContainer.innerHTML = `
+              <img src="${intervention.ImagePath}" alt="${intervention.Title}" class="intervention-image">
+            `;
+
+            // Create the Interested button as a link
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.classList.add('buttons-container');
+
+            const interestedLink = document.createElement('a');
+            interestedLink.classList.add('btn-interested');
+            interestedLink.href = intervention.Link; // Set the link URL
+            interestedLink.target = '_blank'; // Open in new tab
+            interestedLink.innerText = 'Interested'; // Button text
+
+            // Append the Interested link to the buttonsContainer
+            buttonsContainer.appendChild(interestedLink);
+
+            interventionContainer.appendChild(textContainer);
+            interventionContainer.appendChild(imagesContainer);
+            interventionContainer.appendChild(buttonsContainer); // Append buttonsContainer
+
+            listContainer.appendChild(interventionContainer);
+          }
+        });
+
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  });
+</script>
+
+
+{% endblock %}

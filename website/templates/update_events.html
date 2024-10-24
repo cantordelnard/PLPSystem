@@ -1,0 +1,71 @@
+{% extends "baseUpdate.html" %}
+
+{% block title %}Admin | Update {% endblock %}
+
+{% block updateTitle %}
+    <h1>Update Event</h1>
+{% endblock %}
+
+{% block updateContent %}
+<form method="post" action="{{ url_for('views.update_event', event_id=event.EventID) }}" enctype="multipart/form-data">
+    <!-- Title Field -->
+    <div class="input-group-update">
+        <label class="label" for="title">Title:</label>
+        <input type="text" id="title" name="title" class="input" value="{{ event.Title }}" required>
+    </div>
+
+    <!-- Description Field -->
+    <div class="input-group-update">
+        <label class="label" for="description">Description:</label>
+        <textarea id="description" name="description" class="input" required>{{ event.Description }}</textarea>
+    </div>
+
+    <div class="input-group-update">
+        <label class="label" for="link">Link:</label>
+        <textarea id="link" name="link" class="input" required>{{ event.Link }}</textarea>
+    </div>
+
+    <!-- Location Field -->
+    <div class="input-group-update">
+        <label class="label" for="location">Location:</label>
+        <input type="text" id="location" name="location" class="input" value="{{ event.Location }}" required>
+    </div>
+
+    <!-- Date Field -->
+    <div class="input-group-update">
+        <label class="label" for="date">Date:</label>
+        <input type="date" id="date" name="date" class="input" value="{{ event.Date }}" required>
+    </div>
+
+    <!-- Time Field -->
+    <div class="input-group-update">
+        <label class="label" for="time">Time:</label>
+        <input type="time" id="time" name="time" class="input" value="{{ event.Time }}" required>
+    </div>
+
+    <!-- FactorID Dropdown Field -->
+    <div class="input-group-update">
+        <label class="label" for="factor_id">Factor:</label>
+        <select id="factor_id" name="factor_id" class="input" required>
+            <option value="1" {% if event.FactorID == 1 %}selected{% endif %}>Socioeconomic</option>
+            <option value="3" {% if event.FactorID == 3 %}selected{% endif %}>Behavioral</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    <!-- Picture Upload Field -->
+    <div class="input-group-update">
+        <label class="label" for="picture">Upload New Picture (Optional):</label>
+        <input type="file" id="fileEvent" name="picture" class="input" accept="image/*">
+    </div>
+
+    <!-- Submit and Cancel Buttons -->
+    <button type="submit" class="btn">UPDATE EVENT</button>
+    <button type="button" class="btnCancel" id="cancelButton">CANCEL</button>
+</form>
+
+
+
+
+{% endblock %}
+

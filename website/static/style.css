@@ -1,0 +1,2844 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #2a2185;
+  --white: #fff;
+  --gray: #eef7ff;
+  --black1: #222;
+  --black2: #999;
+  --green: #137b35;
+  --yellow: #f9bc60;
+  --lightYellow: #E7D37F;
+  --whiteYellow: #FEFAF6;
+  --red: #e16162;
+  --lightGreen: #abd1c6;
+  --darkGreen: #004643;
+  --lightGreen2: #399918;
+
+  --marquee-width: 100%;
+  --marquee-height: 8vh;
+  /* --marquee-elements: 12; */
+  /* defined with JavaScript */
+  --marquee-elements-displayed: 7;
+  --marquee-element-width: calc(var(--marquee-width) / var(--marquee-elements-displayed));
+  --marquee-animation-duration: calc(var(--marquee-elements) * 3s);
+}
+
+.plpBldg {
+  height: 70vh;
+  background-image: url('/static/images/backgroundHome.svg');
+  background-position: bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.plpBldg .partThree h1 {
+  color: var(--black1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 40px;
+  margin-bottom: 100px;
+}
+
+.plpAbout {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 60px;
+}
+
+.aboutContext {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+  padding: 20px;
+  width: auto;
+}
+
+.aboutContext h1 {
+  font-size: 50px;
+  letter-spacing: 0.05em;
+}
+
+.aboutContext p {
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  padding-top: 20px;
+  font-weight: 300;
+}
+
+.aboutImages {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.aboutImages img {
+  width: auto;
+  height: 190px;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.studentHome {
+  height: auto;
+}
+
+.layout-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.content-card {
+  background-color: var(--white);
+  padding: 60px 50px;
+  margin: 10px;
+  border-radius: 20px;
+  width: calc(50% - 20px);
+  /* Adjust based on your preference */
+  height: auto;
+  text-align: center;
+  box-sizing: border-box;
+  /* Ensures padding and border are included in the width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.content-card.full-width {
+  width: calc(100% - 20px);
+  /* Spans across the entire container */
+}
+
+.content-card p {
+  line-height: 1.6;
+  /* Adjust this value to change line spacing */
+  letter-spacing: 0.03em;
+  font-size: medium;
+  padding-top: 20px;
+  font-weight: 300;
+}
+
+.marquee {
+  width: var(--marquee-width);
+  height: var(--marquee-height);
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee:before,
+.marquee:after {
+  position: absolute;
+  top: 0;
+  width: 10rem;
+  height: 100%;
+  content: "";
+  z-index: 1;
+}
+
+.marquee:before {
+  left: 0;
+  background: linear-gradient(to right, #eef7ff 0%, transparent 100%);
+}
+
+.marquee:after {
+  right: 0;
+  background: linear-gradient(to left, #eef7ff 0%, transparent 100%);
+}
+
+.marquee-content {
+  list-style: none;
+  height: 100%;
+  display: flex;
+  animation: scrolling var(--marquee-animation-duration) linear infinite;
+}
+
+@keyframes scrolling {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-1 * var(--marquee-element-width) * var(--marquee-elements)));
+  }
+}
+
+.marquee-content li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: var(--marquee-element-width);
+  max-height: 100%;
+}
+
+.marquee-content li img {
+  width: auto;
+  height: 100%;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --marquee-width: 100%;
+    --marquee-height: 10vh;
+    --marquee-elements-displayed: 4;
+  }
+
+  .marquee:before,
+  .marquee:after {
+    width: 5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --marquee-width: 100%;
+    --marquee-height: 10vh;
+    --marquee-elements-displayed: 3;
+  }
+
+  .marquee:before,
+  .marquee:after {
+    width: 5rem;
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card {
+  flex: 1 1 calc(33.333% - 1rem);
+  box-sizing: border-box;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.card h5 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.card a {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #007bff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.card a:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    flex: 1 1 100%;
+  }
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* =============== Navigation ================ */
+.navigation {
+  position: fixed;
+  width: 275px;
+  height: 100%;
+  background: var(--green);
+  border-left: 10px solid var(--green);
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+.navigation.active {
+  width: 80px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.navigation ul li.active {
+  background-color: var(--gray);
+}
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--gray);
+}
+
+/* Remove the hover effect */
+.navigation ul li:hover a {
+  color: var(--black2);
+}
+
+.navigation ul li.active a {
+  color: var(--green);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75rem;
+}
+
+.navigation ul li a .icon img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  margin-top: 10px;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+.titlePlp {
+  font-size: 16px;
+}
+
+/* --------- curve outside ---------- */
+
+.navigation ul li.active a::before,
+.navigation ul li.active a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.navigation ul li.active a::before {
+  top: -50px;
+  box-shadow: 35px 35px 0 10px var(--gray);
+}
+
+.navigation ul li.active a::after {
+  bottom: -50px;
+  box-shadow: 35px -35px 0 10px var(--gray);
+}
+
+/* ===================== Main ===================== */
+.main {
+  position: absolute;
+  width: calc(100% - 275px);
+  left: 275px;
+  min-height: 100vh;
+  background: var(--gray);
+  transition: 0.5s;
+}
+
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================= Contents ====================== */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* ======================= Cards ====================== */
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--green);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 2.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--green);
+  transition: 0.3s;
+}
+
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+  transition: 0.3s;
+}
+
+/* ======================= Login ====================== */
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('/static/images/login.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.loginCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 40px;
+  height: 60vh;
+  width: 45vh;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.loginHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.loginBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.loginCard img {
+  width: 70px;
+}
+
+.loginTextPLP {
+  font-size: small;
+}
+
+.loginText {
+  color: var(--black1);
+}
+
+.loginForm .form-control {
+  border-color: var(--darkGreen);
+}
+
+.loginButton {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 10px;
+  background-color: var(--green);
+  color: #ffffff;
+  font-weight: Bold;
+  font-size: small;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+}
+
+.loginButton:hover {
+  background-color: var(--lightGreen);
+  color: var(--black1);
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1);
+}
+
+.loginButton:active {
+  background-color: var(--green);
+  color: var(--white);
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(1.05);
+}
+
+/* ====================== Tab Bar Design ========================== */
+.tabBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+.radio-inputs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: #EEE;
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: 500px;
+  font-size: 14px;
+}
+
+.radio-inputs .radio {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.radio-inputs .radio input {
+  display: none;
+}
+
+.radio-inputs .radio .name {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: .5rem 0;
+  color: rgba(51, 65, 85, 1);
+  transition: all 0.1s ease-in-out;
+}
+
+.radio-inputs .radio input:checked+.name {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.radio-inputs-1 {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: #EEE;
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: 1100px;
+  font-size: 14px;
+}
+
+.radio-inputs-1 .radio {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.radio-inputs-1 .radio input {
+  display: none;
+}
+
+.radio-inputs-1 .radio .name {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: .5rem 0;
+  color: rgba(51, 65, 85, 1);
+  transition: all 0.1s ease-in-out;
+}
+
+.radio-inputs-1 .radio input:checked+.name {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* ====================== Content Section Styles for List ========================== */
+.content-info {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+}
+
+.slider {
+  width: 100%;
+  border: 1px solid red;
+  height: var(--height);
+  overflow: hidden;
+  background-image: linear-gradient(to right,
+      transparent,
+      #000,
+      transparent)
+}
+
+.slider .list {
+  display: flex;
+  width: 100%;
+  min-width: calc(var(--width) * var (--quantity));
+  position: relative;
+  gap: 20px;
+}
+
+.slider .list .item {
+  width: var(--width);
+  height: var(--height);
+  position: relative;
+  left: 100%;
+  animation: autoRun 10s linear infinite;
+  animation-delay: calc((10s / var(--quantity)) * (var(--position) -1));
+}
+
+.slider .list .item img {
+  width: 100%;
+  ;
+}
+
+@keyframes autoRun {
+  from {
+    left: 100%;
+  }
+
+  to {
+    left: calc(var(--width) * -1);
+  }
+}
+
+
+
+/* ================== Details List (User List and Add New User) ============== */
+.details {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 20px;
+  /* margin-top: 10px; */
+}
+
+.details .list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 500px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.detailsIntervention {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-gap: 20px;
+  /* margin-top: 10px; */
+}
+
+.detailsIntervention .list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 500px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.detailsIntervention .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardHeader h2 {
+  font-weight: 600;
+  font-size: larger;
+  color: var(--black1);
+}
+
+.cardHeader .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--blue);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.newData {
+  position: flex;
+  flex-direction: row;
+  min-height: 500px;
+  padding: 20px;
+  background: var(--white);
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.newData .inputData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.inputData .btn {
+  position: relative;
+  padding: 10px 15px;
+  background: var(--green);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+  border: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+/* ====================== Responsive Design ========================== */
+@media (max-width: 991px) {
+  .navigation {
+    left: -300px;
+  }
+
+  .navigation.active {
+    width: 300px;
+    left: 0;
+  }
+
+  .main {
+    width: 100%;
+    left: 0;
+  }
+
+  .main.active {
+    left: 300px;
+  }
+
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .partOne {
+    padding: 10px 20px;
+  }
+
+  .login {
+    background-position: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .list {
+    overflow-x: auto;
+  }
+
+  .status.inProgress {
+    white-space: nowrap;
+  }
+
+  .login {
+    background-position: left;
+  }
+}
+
+/* ====================== Responsive Design [PHONE] ========================== */
+@media (max-width: 480px) {
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .user {
+    min-width: 40px;
+  }
+
+  .main.active {
+    width: calc(100% - 80px);
+    left: 80px;
+    transition: 0.5s;
+  }
+
+  .navigation {
+    width: 100%;
+    height: 100%;
+    left: -100%;
+    z-index: 1000;
+  }
+
+  .navigation.active {
+    width: 100%;
+  }
+
+  .toggle {
+    z-index: 10001;
+  }
+
+  .main.active .toggle {
+    color: #fff;
+    position: fixed;
+    right: 0;
+    left: initial;
+    transition: 0.5s;
+  }
+
+  .navigation ul li a .title {
+    font-size: 18px;
+  }
+
+  .plpBldg {
+    height: 50vh;
+    background-position: center;
+    background-size: cover;
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .plpBldg .partThree {
+    padding: 10px;
+    /* Smaller padding for mobile screens */
+    text-align: center;
+  }
+
+  .plpBldg .partThree h1 {
+    font-size: 32px;
+    margin: 0;
+  }
+
+  .plpAbout {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 0;
+    /* Set padding to 20px */
+    gap: 20px;
+    /* Adjust gap between items */
+  }
+
+  .aboutContext {
+    padding: 20px;
+    /* Reduce padding inside the context */
+  }
+
+  .aboutContext h1 {
+    font-size: 30px;
+    /* Adjust font size for better readability on small screens */
+    letter-spacing: 0.03em;
+    /* Slightly adjust letter spacing */
+  }
+
+  .aboutContext p {
+    font-size: 14px;
+    /* Smaller font size for better fit */
+    padding-top: 10px;
+    /* Reduce padding */
+  }
+
+  .aboutImages {
+    flex-direction: column;
+    /* Stack images vertically */
+    gap: 10px;
+    /* Reduce gap between images */
+  }
+
+  .aboutImages img {
+    height: 100px;
+    /* Smaller image height */
+  }
+
+  .layout-container {
+    flex-direction: column;
+    /* Stack content cards vertically */
+    align-items: center;
+    /* Center align content cards */
+    padding: 0;
+    /* Remove padding to fit within the container */
+  }
+
+  .content-card {
+    width: 100%;
+    /* Full width cards */
+    padding: 0;
+    /* Set padding to 20px */
+    margin: 10px 0;
+    /* Adjust margin for vertical layout */
+    box-sizing: border-box;
+    /* Ensure padding is included in the width */
+  }
+
+  .content-card h1 {
+    font-size: 30px;
+    /* Adjust font size for better readability */
+  }
+
+  .content-card p {
+    font-size: 14px;
+    /* Smaller font size */
+    line-height: 1.4;
+    /* Adjust line spacing for readability */
+  }
+
+  .content-card.full-width {
+    width: 100%;
+    /* Ensure full-width card spans the entire container */
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  .partTwo {
+    padding: 10px;
+    gap: 5px;
+  }
+
+  .partTwo h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+
+  .partTwo p {
+    font-size: 14px;
+  }
+
+  .content-info-student {
+    padding: 20px 0;
+  }
+
+  .content-info-student-archive {
+    padding: 20px 0;
+  }
+
+  .details-student {
+    width: 100%;
+  }
+
+  .details-student .student-list {
+    padding: 15px;
+  }
+
+  .tbl-content table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Ensures borders are combined properly */
+    display: grid;
+    /* Enable CSS Grid */
+    grid-template-areas:
+      "thead"
+      "tfoot"
+      "tbody";
+    /* Rearrange the order on small screens */
+  }
+
+  .tbl-content table tr {
+    border-bottom: 2px solid var(--lightYellow);
+    padding: 10px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(153, 153, 153, 0.3);
+  }
+
+  .tbl-content table tr td {
+    padding: 15px 10px 15px 10px;
+    text-align: left;
+    border: 1px solid rgba(153, 153, 153, 0.3);
+  }
+
+  .tbl-content table tr td:first-child {
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .tbl-content table tr td:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .tbl-content table tfoot {
+    border-bottom: 2px solid var(--lightYellow);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .tbl-content table tfoot tr:first-child {
+    border: none;
+
+  }
+
+  .tbl-content table thead {
+    grid-area: thead;
+  }
+
+  .tbl-content table tbody {
+    grid-area: tbody;
+  }
+
+  .tbl-content table tfoot {
+    grid-area: tfoot;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Ensure table borders collapse for a cleaner look */
+  }
+
+  .table-header {
+    display: block;
+    /* Make sure table header is displayed */
+  }
+
+  .bgTrSem {
+    display: block;
+    /* Ensure semester rows are displayed */
+    background-color: var(--green);
+    color: var(--white);
+    padding: 0 !important;
+    margin-bottom: 15px;
+    text-align: center;
+    /* Center align text for semester row */
+    border-radius: 10px;
+  }
+
+  .bgTrSem th {
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .bgTr {
+    display: none;
+    /* Hide normal rows */
+  }
+
+  tbody tr {
+    display: block;
+    /* Ensure table rows are displayed */
+    margin-bottom: 20px;
+    /* Space between rows */
+    border-bottom: 2px solid var(--lightYellow);
+    /* Border between rows */
+    padding-bottom: 20px;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    text-align: left;
+    border: none;
+    /* Remove borders between cells */
+  }
+
+  td:before {
+    content: attr(data-label);
+    /* Fetch data-label attribute to use as a label */
+    flex: 1;
+    /* Label takes one part of the space */
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 10px;
+    padding-right: 10px;
+    color: var(--black1);
+    text-align: left;
+  }
+
+  .cardheader h2 {
+    font-size: 20px;
+  }
+
+  /* Adjust checkbox and label for smaller screens */
+  .cardheader input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cardheader label {
+    font-size: 14px;
+  }
+
+  .centerUpdate {
+    text-align: right;
+    font-size: 12px;
+    /* Align data to the right */
+  }
+
+  .sep{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .rightUpdate {
+    text-align: left;
+    font-size: 10px;
+  }
+
+  .lowerfont {
+    font-size: 10px;
+    text-align: left;
+    font-weight: 300;
+  }
+
+  .gwa-cell {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .content-info-explore {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 40px !important;
+  }
+
+  .details-explore {
+    position: relative;
+    width: 100% !important;
+  }
+
+  .details-explore .explore-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 300px;
+    background: var(--white);
+    padding: 20px 30px 30px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+  }
+
+  .details-explore .cardheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .tbl-content-exp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tbl-content-exp table {
+    width: 100%;
+  }
+
+  .tbl-content-exp table tr {
+    border-bottom: 2px solid var(--lightYellow);
+    padding: 10px;
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: var(--gray);
+  }
+
+  .tbl-content-exp table tr td:first-child {
+    font-weight: bold;
+    padding: 10px 10px 10px 5px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    border: none;
+  }
+
+  .tbl-content-exp table tr td.centerUpdate {
+    padding: 10px 10px 0 0;
+    border: none;
+    border-top: 1px solid var(--black2) !important;
+  }
+
+  .tbl-content-exp input[type="number"],
+  .tbl-content-exp input[type="text"] {
+    width: 100%;
+    font-size: 14px;
+    text-align: center !important;
+    border: none;
+    padding: 5px;
+    color: var(--black1) !important;
+  }
+
+  .cardheaderExp h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .submitBtnSpace {
+    padding: 10px 0 !important;
+  }
+
+  .submit-button {
+    width: 90% !important;
+  }
+
+  .exploreTitle {
+    text-align: center;
+    padding: 0 10px 40px 10px !important;
+  }
+
+  .exploreTitle h1 {
+    font-size: 26px !important;
+  }
+
+  .exploreContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px 100px;
+  }
+
+  .result-section {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+    margin: auto;
+    width: 100% !important;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  /*PHONE*/
+  .avatar-container {
+    flex-direction: column; /* Stack avatar and name vertically */
+    align-items: center; /* Center items horizontally */
+  }
+
+  .full-name {
+    font-size: 24px; /* Reduce font size for smaller screens */
+    text-align: center; /* Center the text */
+  }
+
+  .studentTitleTable {
+    display: none; /* Hide the student title table on small screens */
+  }
+  
+  .intervention-container {
+    margin: 10px 0; /* Space between intervention items */
+    padding: 20px !important; /* Padding inside each intervention */
+    width: 350px !important;
+  }
+  
+  .intervention-text-container h3 {
+    margin-bottom: 5px; /* Space below the title */
+    font-size: 20px !important; /* Optional: Adjust font size if needed */
+    text-align: left;
+  }
+  
+  .intervention-text-container .notifP {
+    margin-bottom: 10px; /* Space below the description */
+    line-height: 1.5; /* Optional: Adjust line height for readability */
+    text-align: left;
+  }
+  
+  .intervention-text-container p {
+     /* Small space at the top of each <p> */
+    font-size: 0.8em !important; /* Optional: Adjust font size if needed */
+    text-align: left;
+  }
+
+
+}
+
+/* Responsive Card Adjustments */
+@media (max-width: 991px) {
+  .content-card {
+    padding: 40px 30px;
+    /* Smaller padding for smaller screens */
+    width: calc(100% - 20px);
+    /* Full width for smaller screens */
+  }
+
+  .aboutImages {
+    flex-direction: column;
+    /* Stack images vertically on smaller screens */
+    align-items: center;
+  }
+
+  .aboutImages img {
+    height: auto;
+    /* Adjust height to maintain aspect ratio */
+    max-width: 90%;
+    /* Adjust width to fit smaller screens */
+  }
+
+  .aboutContext h1 {
+    font-size: 40px;
+    /* Adjust font size for smaller screens */
+  }
+}
+
+
+@media (max-width: 768px) {
+  .content-card {
+    padding: 30px 20px;
+    /* Even smaller padding for smaller screens */
+    width: calc(100% - 20px);
+    /* Full width for smaller screens */
+  }
+
+  .aboutImages img {
+    max-width: 80%;
+    /* Further adjust image width on smaller screens */
+  }
+
+  .aboutContext h1 {
+    font-size: 30px;
+    /* Further adjust font size */
+  }
+
+}
+
+/* =============== Table Design ================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.smallTable {
+  width: 60%;
+}
+
+.tbl-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+th {
+  padding: 12px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--white);
+  text-transform: uppercase;
+  border: 1px solid var(--black2);
+}
+
+td {
+  padding: 18px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--black1);
+  border: 1px solid var(--black2);
+}
+
+.highlight-row:hover {
+  background-color: rgb(208, 217, 225, 50%);
+}
+
+tr:nth-child(even) {
+  background-color: rgb(238, 247, 255, 60%);
+  /* Light gray */
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+  /* White */
+}
+
+.bgTr {
+  background-color: rgba(19, 123, 53, 1) !important;
+}
+
+.bgTrSem {
+  background-color: #137b35 !important;
+}
+
+.bgTrSemExp {
+  background-color: var(--lightGreen) !important;
+}
+
+.bgTrSemExp th {
+  color: var(--black1);
+  font-size: 14px;
+}
+
+.input {
+  max-width: auto;
+  height: 44px;
+  background-color: #05060f0a;
+  border-radius: .5rem;
+  padding: 0rem 1rem;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  transition: border-color .3s cubic-bezier(.25, .01, .25, 1) 0s, color .3s cubic-bezier(.25, .01, .25, 1) 0s, background .2s cubic-bezier(.25, .01, .25, 1) 0s;
+}
+
+#program_id,
+#specialization_id,
+#year_level_id,
+#class_id,
+#program_name,
+#subject_program_name,
+#class_year,
+#professor_id,
+#class_id,
+#subject_id,
+#semester_id,
+#gender {
+  width: 250px;
+  color: #05060f99;
+}
+
+
+.label {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: .9rem;
+  font-weight: bold;
+  color: #05060f99;
+  transition: color .3s cubic-bezier(.25, .01, .25, 1) 0s;
+}
+
+.input:hover,
+.input:focus,
+.input-group:hover .input {
+  outline: none;
+  border-color: var(--green);
+}
+
+.input-group:hover .label,
+.input:focus {
+  color: var(--darkGreen);
+}
+
+/* =============== Flash Message ================ */
+.info {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  background: #509AF8;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px -3px #111;
+}
+
+.info__icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.info__icon path {
+  fill: #fff;
+}
+
+.info__title {
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+  flex: 1; /* Allow title to take up remaining space */
+  word-wrap: break-word;
+}
+
+.info__close {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.info__close path {
+  fill: #fff;
+}
+
+.updateContainer {
+  min-height: 100vh;
+  background-image: url('/static/images/plpbackground.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px;
+}
+
+.updateCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 40px;
+  background-color: var(--white);
+  border-radius: 20px;
+  box-shadow: 0px 0px 5px -3px #111;
+}
+
+.updateData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.updateData .input,
+.updateData .input-group-update select {
+  width: 100%;
+  height: 44px;
+  background-color: #05060f0a;
+  border-radius: .5rem;
+  padding: 0rem 1rem;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  transition: border-color .3s cubic-bezier(.25, .01, .25, 1), color .3s cubic-bezier(.25, .01, .25, 1), background .2s cubic-bezier(.25, .01, .25, 1);
+}
+
+.updateData .btn {
+  padding: 10px 15px;
+  background: var(--green);
+  color: var(--white);
+  border-radius: 6px;
+  border: 0;
+  transition: all 0.3s;
+}
+
+.updateData .btn:hover {
+  background-color: var(--lightGreen2);
+  transition: all 0.3s;
+}
+
+.updateData .btnCancel {
+  padding: 10px 15px;
+  background: var(--black2);
+  color: var(--white);
+  border-radius: 6px;
+  border: 0;
+  margin-top: -10px;
+  transition: all 0.3s;
+}
+
+.updateData .btnCancel:hover {
+  background-color: grey;
+  transition: all 0.3s;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.updateData .input:hover,
+.updateData .input:focus,
+.updateData .input-group-update:hover .input {
+  outline: none;
+  border-color: var(--green);
+}
+
+.input-group-update:hover .label,
+.inputData .input:focus {
+  color: var(--darkGreen);
+}
+
+.updateIcon {
+  font-size: 24px;
+  color: rgba(198, 169, 105, 0.5);
+  padding: 0 5px 0 0;
+  transition: 0.2s;
+}
+
+.updateIcon:hover {
+  color: rgba(198, 169, 105, 1);
+  transition: 0.2s;
+}
+
+.archiveIcon {
+  font-size: 21px;
+  color: rgba(225, 97, 98, 0.5);
+  padding: 0 0 0 5px;
+  transition: 0.2s;
+}
+
+.updateIconEvent {
+  font-size: 24px;
+  color: rgba(198, 169, 105, 0.5);
+  padding: 0 1px 0 0;
+  transition: 0.2s;
+}
+
+.updateIconEvent:hover {
+  color: rgba(198, 169, 105, 1);
+  transition: 0.2s;
+}
+
+.archiveIcon:hover {
+  color: rgba(225, 97, 98, 1);
+  transition: 0.2s;
+}
+
+.archiveIconEvent {
+  font-size: 21px;
+  color: rgba(225, 97, 98, 0.5);
+  padding: 0 0 0 1px;
+  transition: 0.2s;
+}
+
+.archiveIconEvent:hover {
+  color: rgba(225, 97, 98, 1);
+  transition: 0.2s;
+}
+
+#updateProgram,
+#updateYear,
+#updateSpecialization,
+#updateClass,
+#programUpdate,
+#classUpdate,
+#yearUpdate,
+#professorUpdate,
+#subjectUpdate,
+#semesterUpdate {
+  width: 350px;
+  color: #05060f99;
+}
+
+.centerUpdate {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.centerUpdateEvent {
+  text-align: center;
+  vertical-align: middle;
+  width: 500px;
+}
+
+.rightUpdate {
+  text-align: right;
+  /* Center horizontally */
+  vertical-align: middle;
+  /* Center vertically */
+  font-size: 13px;
+}
+
+.lowerfont {
+  font-size: 10px;
+  padding-right: 5px;
+}
+
+.inputSeacrh {
+  border: 2px solid transparent;
+  width: 15em;
+  height: 2.3em;
+  padding-left: 0.8em;
+  outline: none;
+  overflow: hidden;
+  background-color: var(--gray);
+  border-radius: 10px;
+  transition: all 0.5s;
+}
+
+.inputSeacrh:hover {
+  border: 2px solid var(--green);
+  background-color: white;
+}
+
+.inputSeacrh:focus {
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+  background-color: white;
+  border: 2px solid var(--green);
+}
+
+
+
+
+
+
+
+
+
+
+.cardBoxProf {
+  position: relative;
+  width: 100%;
+  padding: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 15px;
+}
+
+.cardBoxProf .cardProf {
+  position: relative;
+  background: var(--white);
+  padding: 35px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  height: 200px;
+}
+
+.cardBoxProf .cardProf {
+  position: relative;
+  font-weight: 500;
+  font-size: 1.7rem;
+  color: var(--green);
+  transition: 0.3s;
+}
+
+.cardBoxProf .cardProf .section {
+  color: var(--black2);
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-top: 5px;
+}
+
+.cardBoxProf .cardProf .iconBx {
+  font-size: 1.3rem;
+  color: var(--lightYellow);
+}
+
+.cardBoxProf .cardProf:hover {
+  background: var(--green);
+  transform: translateY(-3px);
+  transition: 0.3s;
+}
+
+.cardBoxProf .cardProf:hover .subject,
+.cardBoxProf .cardProf:hover .section {
+  color: var(--white);
+  transition: 0.3s;
+}
+
+.cardBoxProf .cardProf:hover .iconBx {
+  color: var(--yellow);
+  transition: 0.3s;
+}
+
+.cardBoxProf a {
+  text-decoration: none;
+  /* Remove underline */
+  color: inherit;
+  /* Optional: inherit color from parent */
+}
+
+
+
+
+
+
+.loader {
+  width: 100vw;
+  /* Full width of viewport */
+  height: 100vh;
+  /* Full height of viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgb(0, 0, 0, .5);
+  /* Semi-transparent background */
+  z-index: 9999;
+  /* Ensure it's on top of other content */
+}
+
+.loader--hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.loader::after {
+  content: "";
+  width: 50px;
+  height: 50px;
+  border: 10px solid var(--lightGreen);
+  border-top-color: var(--darkGreen);
+  border-radius: 50%;
+  animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0turn)
+  }
+
+  to {
+    transform: rotate(1turn)
+  }
+}
+
+.partTwo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px;
+}
+
+.partTwo h1 {
+  margin-bottom: 20px;
+}
+
+.content-info-student {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+}
+
+.details-student {
+  position: relative;
+  width: 100%;
+}
+
+.details-student .student-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 300px;
+  background: var(--white);
+  padding: 20px 30px 30px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details-student .student-list-title {
+  min-height: auto;
+  background-image: url('/static/images/studentGrade.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  margin-bottom: -50px;
+  margin-top: -30px;
+}
+
+.details-student .cardheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.rightButton {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rightButton .btn {
+  padding: 10px 15px;
+  background: var(--green);
+  color: var(--white);
+  border-radius: 6px;
+  border: 0;
+}
+
+.content-info-explore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.details-explore {
+  width: 50%;
+}
+
+.details-explore .explore-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 300px;
+  background: var(--white);
+  padding: 30px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details-explore .cardheaderExp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grade-input {
+  border: none;
+  background: none;
+  width: 100%;
+  /* Make the input field take the full width of the cell */
+  height: 100%;
+  /* Make the input field take the full height of the cell */
+  font-size: 1em;
+  /* Match the font size to the table text */
+  text-align: center;
+  /* Center text for a cleaner look */
+  outline: none;
+  /* Remove the default focus outline */
+  padding: 5px;
+  /* Remove default padding */
+  box-sizing: border-box;
+  /* Include padding and border in the element's total width and height */
+}
+
+/* Remove the spinner (up/down arrows) in number input */
+.grade-input::-webkit-outer-spin-button,
+.grade-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide the checkbox */
+#checkboxInput {
+  display: none;
+}
+
+/* Styling for the toggle switch */
+.toggleSwitch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 53px;
+  /* Width of the toggle */
+  height: 30px;
+  /* Height of the toggle */
+  background-color: var(--black2);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Circle inside the toggle */
+.toggleSwitch::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  height: 20px;
+  /* Diameter of the circle */
+  width: 20px;
+  /* Diameter of the circle */
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Move the circle when the checkbox is checked */
+#checkboxInput:checked+.toggleSwitch::after {
+  transform: translate(24px, -50%);
+}
+
+/* Change background color when the checkbox is checked */
+#checkboxInput:checked+.toggleSwitch {
+  background-color: #C6A969;
+}
+
+.adminGraph {
+  background-color: var(--white);
+  min-height: 425px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 125px;
+}
+
+.adminGraph img {
+  width: auto;
+  height: 500px;
+}
+
+.exploreTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  padding: 0 40px 40px 40px;
+  
+}
+
+.exploreTitle h1 {
+  font-size: 2.25rem;
+}
+
+.exploreContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px 100px;
+}
+
+.submitBtnSpace {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.submit-button {
+  width: 50%;
+  background-color: var(--green);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+  /* Darker green on hover */
+}
+
+.submit-button:active {
+  background-color: #388e3c;
+  /* Even darker green on click */
+}
+
+.result-section {
+  background-image: url('/static/images/studentExplore2.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  margin: auto;
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.result-section:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.result-section h2 {
+  color: #333;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.result-section p {
+  color: #555;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.interventions {
+  border-top: 2px solid var(--green);
+  padding-top: 20px;
+  margin-top: 30px;
+  text-align: left;
+  /* Align the text to the left */
+}
+
+.interventions h3 {
+  color: var(--green);
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.interventions ul {
+  list-style-type: disc;
+  /* Ensure bullet points are displayed */
+  padding-left: 20px;
+  /* Add padding for indentation */
+  margin: 0;
+  /* Remove default margin */
+}
+
+.interventions li {
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.table-card {
+  background-color: var(--white);
+  border-radius: 15px;
+  padding: 40px;
+  margin: auto;
+  max-width: 800px;
+  width: 100%;
+  transition: box-shadow 0.3s ease;
+}
+
+.no-classes-message {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb; /* Light red border */
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.no-classes-message p {
+  margin: 0;
+}
+
+.cardBehavioral {
+  background-color: var(--white);
+  width: 70%;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h2 {
+  color: #444;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.question {
+  margin-bottom: 10px;
+}
+
+.question label {
+  font-size: 1.1em;
+  color: var(--black1);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.cardBehavioral input[type="radio"] {
+  margin-right: 10px;
+}
+
+.cardBehavioral button[type="submit"] {
+  display: block;
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.cardBehavioral button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.popup-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
+  justify-content: center;
+  align-items: center;
+}
+
+/* When the modal is shown */
+.popup-modal.show {
+  display: flex; /* Use flexbox to center content */
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  color: var(--black1);
+}
+
+.popup-content-explore {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  color: var(--black1);
+}
+
+.popup-content-notification {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  color: var(--black1);
+}
+
+.popup-body {
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; 
+}
+
+.intervention-container {
+  width: 600px;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  gap: 5px; /* Space between elements */
+  border-radius: 10px;
+  padding: 30px 40px 30px 40px; /* Adjust padding for a cleaner look */
+  background-color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.intervention-text-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Take up remaining space */
+}
+
+.intervention-images-container {
+  display: flex;
+  gap: 10px; /* Space between images */
+}
+
+.intervention-image {
+  max-width: 100%; /* Set a maximum width for each image */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 5px; /* Optional: round corners of images */
+}
+
+.intervention-text-container h3 {
+  margin-bottom: 5px; /* Space below the title */
+  font-size: 25px; /* Optional: Adjust font size if needed */
+}
+
+.intervention-text-container .notifP {
+  margin-bottom: 10px; /* Space below the description */
+  line-height: 1.5; /* Optional: Adjust line height for readability */
+}
+
+.intervention-text-container p {
+   /* Small space at the top of each <p> */
+  font-size: 0.95em; /* Optional: Adjust font size if needed */
+}
+
+.intervention-text-container p:last-child {
+  margin-bottom: 10px; /* Remove margin from the last <p> */
+}
+
+.intervention-text-container hr {
+  border: none; /* Remove default styling */
+  border-top: 1px solid #ccc; /* Light gray line */
+  margin: 15px 0; /* Adjust spacing above and below the line */
+}
+
+.description-line {
+  border: none; /* Remove default styling */
+  border-top: 1px solid #ccc; /* Light gray line */
+  margin: 15px 0; /* Adjust spacing above and below the line */
+}
+
+.buttons-container {
+  display: flex;
+  justify-content:flex-end; /* Space out buttons evenly */
+  gap: 10px;
+  margin-top: 10px; /* Space between content and buttons */
+}
+
+.btn-interested {
+  padding: 10px 20px; /* Add padding for button size */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Round corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  text-decoration: none;
+  background-color: var(--green); /* Green for interested */
+  color: white;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.btn-interested:hover {
+  background-color: var(--lightGreen2);
+  transition: 0.2s;
+}
+
+.popup-content-explore h3 {
+  margin-bottom: 20px;
+  color: var(--black1);
+}
+
+.popup-content-explore p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--black1);
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 25px;
+}
+
+.confirm-btn, .cancel-btn, .confirm-btn-explore {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 125px;
+}
+
+.confirm-btn {
+  background-color: var(--red);
+  color: var(--white);
+  transition: 0.2s;
+}
+
+.confirm-btn:hover {
+  background-color: #D9898A;
+  color: var(--black1);
+  transition: 0.2s;
+}
+
+.confirm-btn-explore {
+  background-color: var(--green);
+  color: var(--white);
+  transition: 0.2s;
+}
+
+.confirm-btn-explore:hover {
+  background-color: var(--lightGreen2);
+  color: var(--white);
+  transition: 0.2s;
+}
+.cancel-btn {
+  background-color: var(--black2);
+  color: var(--white);
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: #ccc;
+  color: var(--black1);
+  transition: 0.2s;
+}
+
+/* Popup Modal Styles */
+.new-popup-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
+}
+
+.new-popup-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 80%; /* Could be any width (30%, 50%, etc.) */
+  max-width: 400px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.new-popup-content h3 {
+  margin-bottom: 20px;
+  color: var(--black1);
+}
+
+.new-popup-content p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--black1);
+}
+
+.containerUpload {
+  display: flex;
+  gap: 30px; /* Space between cards */
+  justify-content: center;
+  align-items: center;
+}
+
+.containerArchive {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardArchive {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  width: 500px;
+  height: auto;
+  text-align: center; /* Align content to the left */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.cardArchive p {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+#cardArchiveText{
+  margin-bottom: 30px;
+}
+
+.cardUpload {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  width: 450px;
+  height: 40vh;
+  text-align: center; /* Align content to the left */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardUpload p {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.upload-btn {
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.partFour{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.partFour h1 {
+  font-size: 2.5rem;
+}
+
+.partFour p {
+  font-size: 14px;
+}
+
+.upload-btn-right {
+  margin-left: auto;
+  margin-top: 30px;
+  background-color: var(--green);
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+.upload-btn-right:hover {
+  background-color: var(--lightGreen2);
+}
+
+.upload-btn-right-archive {
+  margin-left: auto;
+  margin-top: 10px;
+  background-color: var(--green);
+  padding: 10px 50px;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+.upload-btn-right-archive:hover {
+  background-color: var(--lightGreen2);
+}
+
+#file {
+  max-width: 100%;
+  color: var(--black1);
+  padding: 5px;
+  background: #fff;
+  border-radius: 7px;
+  border: 1px solid rgba(8, 8, 8, 0.288);
+}
+
+#file::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: var(--green);
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+#file::file-selector-button:hover {
+  background: var(--lightGreen2);
+}
+
+.notification-container {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+
+.notification-icon {
+  position: relative;
+  font-size: 30px;
+  color: rgba(198, 169, 105, 0.8);
+  cursor: pointer;
+}
+
+/* General page layout */
+.contentEvent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f7fc;
+  padding: 20px;
+}
+
+/* Card design */
+.cardEvent {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.cardTitleEvent {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Styling the form container */
+.formContainerEvent .input-group {
+  width: 100%;
+  max-width: 500px;
+}
+
+/* General Input and Textarea Styling */
+.inputEvent,
+.textareaEvent,
+.inputFileEvent {
+  width: 100%;
+  max-width: 100%;
+  height: 44px;
+  background-color: #05060f0a;
+  border-radius: .5rem;
+  padding: 0rem 1rem;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  transition: border-color .3s cubic-bezier(.25, .01, .25, 1) 0s, color .3s cubic-bezier(.25, .01, .25, 1) 0s, background .2s cubic-bezier(.25, .01, .25, 1) 0s;
+}
+
+/* Adjusting for the larger textarea field */
+.textareaEvent {
+  height: 100px;
+  resize: none;
+}
+
+#fileEvent {
+  max-width: 100%;
+  color: var(--black1);
+  padding: 8px;
+  background: #fff;
+  border-radius: 7px;
+  border: 1px solid rgba(8, 8, 8, 0.288);
+}
+
+#fileEvent::file-selector-button {
+  border: none;
+  background: var(--green);
+  padding: 5px 5px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+#file::file-selector-button:hover {
+  background: var(--lightGreen2);
+}
+
+.partTwo {
+  padding: 20px; /* Adds padding around the content */
+}
+
+.avatar-container {
+  display: flex; /* Use Flexbox to align items */
+  align-items: center; /* Vertically center the items */
+  margin-bottom: 15px; /* Adds space below the avatar section */
+}
+
+.avatar {
+  border-radius: 20%; /* Makes the image round */
+  width: 50px; /* Set width of the avatar */
+  height: 50px; /* Set height of the avatar */
+  margin-right: 15px; /* Space between the image and the name */
+}
+
+.full-name {
+  margin: 15px 0px 0px 0px; /* 10px top, 15px right, 20px bottom, 25px left */ /* Remove default margin */
+  font-size: 35px; /* Adjust font size as needed */
+}
+
+
+.studentTitleTable {
+  width: 500px;
+}
+
+.student-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent; /* Ensures no background color on the table */
+}
+
+.student-info-table td {
+  padding: 0px 0px 10px 10px;
+  border: none;
+  background-color: transparent; /* Ensures no background color on table cells */
+  font-size: 14px;
+}
+
+.student-info-table tr {
+  background-color: transparent; /* Ensures no background color on rows */
+}
+
+.content-info-student-archive {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+  margin-top: -50px;
+}
+
+.details-student .student-list-archive {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  min-height: auto;
+  background: var(--lightYellow);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: -50px;
+  margin-top: -30px;
+  color: var(--black1);
+}
+
+.partOne h3 {
+  font-weight: 300;
+}

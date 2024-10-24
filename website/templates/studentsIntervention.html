@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+<!-- =============== Title ================ -->
+{% block title %}PLP Grading System{% endblock %}
+
+<!-- =============== Sidebars ================ -->
+{% block sidebar %}
+<li>
+    <a href="studentsHome">
+        <span class="icon">
+            <ion-icon name="home-outline"></ion-icon>
+        </span>
+        <span class="title">HOME</span>
+    </a>
+</li>
+<li>
+    <a href="students">
+        <span class="icon">
+            <ion-icon name="newspaper-outline"></ion-icon>
+        </span>
+        <span class="title">GRADES</span>
+    </a>
+</li>
+<li>
+    <a href="studentsExplore">
+        <span class="icon">
+            <ion-icon name="sparkles-outline"></ion-icon>
+        </span>
+        <span class="title">EXPLORE</span>
+    </a>
+</li>
+<li>
+    <a href="studentsBehavioral">
+        <span class="icon">
+            <ion-icon name="bulb-outline"></ion-icon>
+        </span>
+        <span class="title">SURVEY</span>
+    </a>
+</li>
+<li class="active">
+    <a href="studentsIntervention">
+        <span class="icon">
+            <ion-icon name="document-text-outline"></ion-icon>
+        </span>
+        <span class="title">INTERVENTIONS</span>
+    </a>
+</li>
+{% endblock %}
+
+<!-- =============== Flash Message ================ -->
+{% block popupmessage %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div id="flash-message" class="info">
+    <div class="info__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
+            <path fill="#393a37"
+                d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
+            </path>
+        </svg>
+    </div>
+    <div class="info__title">{{ message }}</div>
+    <div class="info__close">
+        <svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+                fill="#393a37"></path>
+        </svg>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+<!-- =============== Main Content ================ -->
+{% block main %}
+<div class="content">
+    <div class="exploreTitle">
+        <h1>INTERVENTIONS</h1>
+        <div class="containerEvent">
+            <!-- Academic Interventions -->
+            <div id="interventions-list" class="notifications-list">
+                <!-- Dynamic academic content will be populated here -->
+            </div>
+            <!-- Socioeconomic Interventions -->
+            <div id="socioeconomic-list" class="notifications-list">
+                <!-- Dynamic socioeconomic content will be populated here -->
+            </div>
+            <!-- Behavioral Interventions -->
+            <div id="behavioral-list" class="notifications-list">
+                <!-- Dynamic behavioral content will be populated here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script for handling academic interventions -->
+<script>
+    const academicInterventions = JSON.parse('{{ academic_interventions | tojson | safe }}');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const academicListContainer = document.getElementById('interventions-list');
+        academicListContainer.innerHTML = ''; // Clear existing content
+
+        if (!academicInterventions || academicInterventions.length === 0) {
+            academicListContainer.innerHTML = '<p</p>';
+        } else {
+            academicInterventions.forEach(intervention => {
+                const interventionContainer = document.createElement('div');
+                interventionContainer.classList.add('intervention-container');
+
+                const textContainer = document.createElement('div');
+                textContainer.classList.add('intervention-text-container');
+                textContainer.innerHTML = `
+                    <h3>${intervention.SubjectName.toUpperCase()}</h3>
+                    <p>PROF. ${intervention.ProfessorName.toUpperCase()}</p>
+                    <hr class="description-line">
+                    <p><strong>Comment:</strong> ${intervention.Comment}</p>
+                `;
+
+                const imagesContainer = document.createElement('div');
+                imagesContainer.classList.add('intervention-images-container');
+                imagesContainer.innerHTML = `
+                    <img src="/static/images/AAR.png" class="intervention-image">
+                `;
+
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.classList.add('buttons-container');
+                const interestedLink = document.createElement('a');
+                interestedLink.classList.add('btn-interested');
+                interestedLink.href = intervention.Link || '#'; // Use the fetched link
+                interestedLink.target = '_blank';
+                interestedLink.innerText = 'Interested';
+                buttonsContainer.appendChild(interestedLink);
+
+                interventionContainer.appendChild(textContainer);
+                interventionContainer.appendChild(imagesContainer);
+                interventionContainer.appendChild(buttonsContainer);
+
+                academicListContainer.appendChild(interventionContainer);
+            });
+        }
+    });
+</script>
+
+<!-- Script for handling socioeconomic interventions -->
+<script>
+    const socioeconomicInterventions = JSON.parse('{{ socioeconomic_interventions | tojson | safe }}');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const socioeconomicListContainer = document.getElementById('socioeconomic-list');
+        socioeconomicListContainer.innerHTML = ''; // Clear existing content
+
+        if (!socioeconomicInterventions || socioeconomicInterventions.length === 0) {
+            socioeconomicListContainer.innerHTML = '<p></p>';
+        } else {
+            socioeconomicInterventions.forEach(intervention => {
+                const interventionContainer = document.createElement('div');
+                interventionContainer.classList.add('intervention-container');
+
+                const textContainer = document.createElement('div');
+                textContainer.classList.add('intervention-text-container');
+                textContainer.innerHTML = `
+                    <h3>${intervention.Title.toUpperCase()}</h3>
+                    <p class="notifP">${intervention.Description}</p>
+                    <hr class="description-line">
+                    <p class="notifQ"><b>Location:</b> ${intervention.Location}</p>
+                    <p><b>Date:</b> ${intervention.Date}</p>
+                    <p><b>Time:</b> ${intervention.Time}</p>
+                `;
+
+                const imagesContainer = document.createElement('div');
+                imagesContainer.classList.add('intervention-images-container');
+                imagesContainer.innerHTML = `
+                    <img src="/static/upload/${intervention.Picture || 'default.jpg'}" class="intervention-image">
+                `;
+
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.classList.add('buttons-container');
+                const interestedLink = document.createElement('a');
+                interestedLink.classList.add('btn-interested');
+                interestedLink.href = intervention.Link || '#'; // Set the link URL
+                interestedLink.target = '_blank';  // Open in a new tab
+                interestedLink.innerText = 'Interested';
+                buttonsContainer.appendChild(interestedLink);
+
+                interventionContainer.appendChild(textContainer);
+                interventionContainer.appendChild(imagesContainer);
+                interventionContainer.appendChild(buttonsContainer);
+
+                socioeconomicListContainer.appendChild(interventionContainer);
+            });
+        }
+    });
+</script>
+
+<!-- Script for handling behavioral interventions -->
+<script>
+    const behavioralInterventions = JSON.parse('{{ behavioral_interventions | tojson | safe }}');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const behavioralListContainer = document.getElementById('behavioral-list');
+        behavioralListContainer.innerHTML = ''; // Clear existing content
+
+        if (!behavioralInterventions || behavioralInterventions.length === 0) {
+            behavioralListContainer.innerHTML = '<p></p>';
+        } else {
+            behavioralInterventions.forEach(intervention => {
+                const interventionContainer = document.createElement('div');
+                interventionContainer.classList.add('intervention-container');
+
+                const textContainer = document.createElement('div');
+                textContainer.classList.add('intervention-text-container');
+                
+                // Populate the title and description
+                textContainer.innerHTML = `
+                    <h3>${intervention.Title.toUpperCase()}</h3>
+                    <p class="notifP">${intervention.Description}</p>
+                    <hr class="description-line">
+                `;
+
+                // If EventID is not 1 (Seek Guidance Counseling), add location, date, and time
+                if (intervention.EventID !== 1) {
+                    textContainer.innerHTML += `
+                        <p class="notifQ"><b>Location:</b> ${intervention.Location}</p>
+                        <p><b>Date:</b> ${intervention.Date}</p>
+                        <p><b>Time:</b> ${intervention.Time}</p>
+                    `;
+                }
+
+                const imagesContainer = document.createElement('div');
+                imagesContainer.classList.add('intervention-images-container');
+                imagesContainer.innerHTML = `
+                    <img src="/static/upload/${intervention.Picture || 'default.jpg'}" class="intervention-image">
+                `;
+
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.classList.add('buttons-container');
+                const interestedLink = document.createElement('a');
+                interestedLink.classList.add('btn-interested');
+                interestedLink.href = intervention.Link || '#'; // Set the link URL
+                interestedLink.target = '_blank';  // Open in a new tab
+                interestedLink.innerText = 'Interested';
+                buttonsContainer.appendChild(interestedLink);
+
+                interventionContainer.appendChild(textContainer);
+                interventionContainer.appendChild(imagesContainer);
+                interventionContainer.appendChild(buttonsContainer);
+
+                behavioralListContainer.appendChild(interventionContainer);
+            });
+        }
+    });
+</script>
+{% endblock %}

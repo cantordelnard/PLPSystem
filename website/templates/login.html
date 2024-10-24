@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='loginStyle.css') }}"/>
+    <script src="{{ url_for('static', filename='index.js') }}" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <link rel="icon" href="{{ url_for('static', filename='images/plpLogo.svg') }}"/>
+    <title>Login | PLP Grading System</title>
+  </head>
+
+  <body>
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="error">
+        <div class="error__icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            viewBox="0 0 24 24"
+            height="24"
+            fill="none"
+          >
+            <path
+              fill="#393a37"
+              d="m13 13h-2v-6h2zm0 4h-2v-2h2zm-1-15c-1.3132 0-2.61358.25866-3.82683.7612-1.21326.50255-2.31565 1.23915-3.24424 2.16773-1.87536 1.87537-2.92893 4.41891-2.92893 7.07107 0 2.6522 1.05357 5.1957 2.92893 7.0711.92859.9286 2.03098 1.6651 3.24424 2.1677 1.21325.5025 2.51363.7612 3.82683.7612 2.6522 0 5.1957-1.0536 7.0711-2.9289 1.8753-1.8754 2.9289-4.4189 2.9289-7.0711 0-1.3132-.2587-2.61358-.7612-3.82683-.5026-1.21326-1.2391-2.31565-2.1677-3.24424-.9286-.92858-2.031-1.66518-3.2443-2.16773-1.2132-.50254-2.5136-.7612-3.8268-.7612z"
+            ></path>
+          </svg>
+        </div>
+        <div class="error__title">{{ message }}</div>
+        <div class="error__close">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            viewBox="0 0 20 20"
+            height="20"
+          >
+            <path
+              fill="#393a37"
+              d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+    </div>
+
+    <div
+      class="card text-center mb-3"
+      style="
+        width: 23rem;
+        height: 30rem;
+        border-radius: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <div class="card-body">
+        <img
+          src="{{ url_for('static', filename='images/plpLogo.svg') }}"
+          alt="PLP Logo"
+        />
+        <h6 class="card-title" style="font-size: 14px; margin-bottom: 20px">
+          PAMANTASAN NG LUNGSOD NG PASIG
+        </h6>
+        <br />
+        <h3 style="font-weight: 500">LOGIN</h3>
+
+        <!-- FORM -->
+        <form action="{{ url_for('auth.login') }}" method="post">
+          <div class="mb-3">
+            <!-- USERNAME -->
+            <div class="form-group">
+              <label for="username" class="form-label username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                autocomplete="on"
+                required
+                style="border-color: #137b35"
+              /><br />
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group position-relative">
+              <label for="password" class="form-label password">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                autocomplete="off"
+                required
+                style="border-color: #137b35"
+              />
+              <span id="togglePassword" class="password-toggle-icon">
+                <ion-icon name="eye-outline"></ion-icon> </span
+              ><br />
+            </div>
+          </div>
+          <input
+            type="submit"
+            value="LOGIN"
+            id="submitBtn"
+            class="btn btn-primary"
+            style="
+              background-color: #137b35;
+              border-color: #fff;
+              margin-bottom: 10px;
+            "
+          />
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Function to handle closing error messages
+        function handleCloseButton() {
+          document.querySelectorAll(".error__close").forEach((button) => {
+            button.addEventListener("click", () => {
+              const errorDiv = button.parentElement;
+              errorDiv.classList.add("hidden");
+              setTimeout(() => errorDiv.remove(), 300); // Remove the element after transition
+            });
+          });
+        }
+
+        // Function to automatically remove flash messages after 30 seconds
+        function autoRemoveMessages() {
+          setTimeout(() => {
+            document.querySelectorAll(".error").forEach((errorDiv) => {
+              errorDiv.classList.add("hidden");
+              setTimeout(() => errorDiv.remove(), 300); // Remove the element after transition
+            });
+          }, 3500); // 30 seconds
+        }
+
+        // Initialize both functions
+        handleCloseButton();
+        autoRemoveMessages();
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("togglePassword");
+        const eyeIcon = togglePassword.querySelector("ion-icon");
+
+        togglePassword.addEventListener("click", () => {
+          const isPasswordVisible = passwordInput.type === "password";
+          passwordInput.type = isPasswordVisible ? "text" : "password";
+          eyeIcon.name = isPasswordVisible ? "eye-off-outline" : "eye-outline";
+        });
+      });
+    </script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='index.js') }}"
+    ></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
