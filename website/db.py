@@ -5,10 +5,10 @@ import numpy as np
 
 #<!-- =============== DATABASE CONNECTION ================ -->
 db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "",
-    "database": "onlinegradingsystem1"
+    "host": "s0znzigqvfehvff5.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "user": "hkcekjqb50br9q52",
+    "password": "n9ymqr6wbfqvbrgr",
+    "database": "uw7ef945eu5qv52o"
 }
 
 def connect_to_database():
