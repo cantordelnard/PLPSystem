@@ -31,152 +31,137 @@
 </li>
 {% endblock %}
 
+<!-- =============== Flash Message ================ -->
+{% block popupmessage %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div id="flash-message" class="info">
+  <div class="info__icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
+      <path fill="#393a37"
+        d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
+      </path>
+    </svg>
+  </div>
+  <div class="info__title">{{ message }}</div>
+  <div class="info__close">
+    <svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+        fill="#393a37"></path>
+    </svg>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% endblock %}
+
 <!-- =============== Main Content ================ -->
 {% block main %}
 <div class="content">
-    <div class="studentHome">
-        <div class="studentHome">
-            <!-- Notification Icon Section -->
-            <div class="notification-container">
-              <div class="notification-icon" id="notification-icon">
-                    <ion-icon name="notifications-outline"></ion-icon>
-                </div>
-            </div>
-    
-            <!-- Modal for displaying interventions -->
-          <div id="interventions-modal" class="modal">
-             <div class="modal-content">
-             <span class="close-button" id="close-button">&times;</span>
-             <h2>Notifications</h2>
-             <div id="interventions-list"></div>
-           </div>
-          </div>
+  <div class="studentHome">
 
-        <div class="plpBldg">
-            
-        </div>
-        <div class="marquee">
-            <ul class="marquee-content">
-                <li><img src="static/images/PLP.svg" alt="Image 1"></li>
-                <li><img src="static/images/CAS.svg" alt="Image 2"></li>
-                <li><img src="static/images/CBA.svg" alt="Image 3"></li>
-                <li><img src="static/images/CIHM.svg" alt="Image 4"></li>
-                <li><img src="static/images/COE.svg" alt="Image 5"></li>
-                <li><img src="static/images/COEd.svg" alt="Image 6"></li>
-                <li><img src="static/images/CONursing.svg" alt="Image 7"></li>
-                <li><img src="static/images/CSS.svg" alt="Image 8"></li>
-                <li><img src="static/images/PASIG.svg" alt="Image 9"></li>
-            </ul>
-        </div>
+    <div class="plpBldg">
+      <div class="partThree">
+        <h1>WELCOME, YA'LL!</h1>
+      </div>
     </div>
+    <div class="marquee">
+      <ul class="marquee-content">
+        <li><img src="static/images/PLP.png" alt="Image 1"></li>
+        <li><img src="static/images/CAS.png" alt="Image 2"></li>
+        <li><img src="static/images/CBA.png" alt="Image 3"></li>
+        <li><img src="static/images/CIHM.png" alt="Image 4"></li>
+        <li><img src="static/images/COE.png" alt="Image 5"></li>
+        <li><img src="static/images/COEd.png" alt="Image 6"></li>
+        <li><img src="static/images/CONursing.png" alt="Image 7"></li>
+        <li><img src="static/images/CSS.png" alt="Image 8"></li>
+      </ul>
+    </div>
+    <div class="plpAbout">
+      <div class="aboutContext">
+        <h1>ABOUT PLP</h1>
+        <p>On March 15, 1999, The Sangguniang Panlungsod Ng Pasig Passed Ordinance No. 11, Series Of 1999, Establishing
+          The Pamantasan Ng Lungsod Ng Pasig, And Appropriated Funds For Its Operations. The Authority Of The
+          Sangguniang Panlungsod Ng Pasig To Establish The Pamantasan Is Article III, Sections 447, 458, 468 Of The
+          Local Government Code Of 1991 Which Allowed Institutions To Be Established And Operated By Local Government
+          Units.</p>
+      </div>
+
+      <div class="aboutImages">
+        <img src="static/images/dp1.jpg" alt="PLP Events" loading="lazy">
+        <img src="static/images/dp2.jpg" alt="PLP Events" loading="lazy">
+        <img src="static/images/dp3.jpg" alt="PLP Events" loading="lazy">
+      </div>
+
+      <div class="layout-container">
+        <div class="content-card">
+          <h1>MISSION</h1>
+          <p>We, a community of service-oriented individuals, supported by the City Government of Pasig, are committed
+            to lifelong learning and to produce graduates strong in their global outlook, cultural identity, and social
+            responsibility through teaching strategies, methodologies, relevant research and dedicated public service.
+          </p>
+        </div>
+        <div class="content-card">
+          <h1>VISION</h1>
+          <p>The Pamantasan ng Lungsod ng Pasig is a leading center for academic excellence among locally funded
+            colleges and universities that produces responsible and productive individuals who are responsive to the
+            changing demands of development locally and globally. </p>
+        </div>
+        <div class="content-card full-width">
+          <h1>CORE VALUES</h1>
+          <p>Academic Excellence, Cultural Identity, Peace Education, Sustainable Development, Social Equity and
+            Responsibility, and Global Competitiveness.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
+<!-- Updated Modal structure -->
+<div id="customPopup" class="popup-modal"> <!-- Changed class name -->
+  <div class="new-popup-content"> <!-- Changed class name -->
+    <h3>NOTIFICATION</h3>
+    <p id="popupText">Kindly proceed with your prediction to enhance your learning experience.</p>
+    <div class="popup-buttons"> <!-- Changed class name -->
+      <button id="confirmButton" class="confirm-btn-explore" onclick="handleConfirm()">Continue</button> <!-- Changed class name -->
+      <button onclick="hidePopup()" class="cancel-btn">Cancel</button> <!-- Changed class name -->
+    </div>
+  </div>
+</div>
 
-<!-- Add your CSS and JS -->
-<style>
-    .notification-container {
-        position: absolute;
-        top: 10px;
-        right: 20px;
+<!-- Script to show the modal with 30-second delay -->
+<script>
+  window.onload = function() {
+    // Check if alerts_info is present
+    const alertsInfo = JSON.parse('{{ alerts_info | tojson | safe }}');
+    if (alertsInfo.length > 0) {
+      const alertMessages = alertsInfo.map(alert => alert.Alert).join('<br>');
+
+      // Delay the modal for 30 seconds
+      setTimeout(function() {
+        document.getElementById('customPopup').style.display = 'block'; // Show the modal after 30 seconds
+      }, 1250); // 30 seconds in milliseconds
     }
-    
-    .notification-icon {
-        position: relative;
-        font-size: 30px;
-        color: #333;
-    }
-  
-    .notification-icon .badge {
-        position: absolute;
-        top: -5px;
-        right: -10px;
-        background-color: red;
-        color: white;
-        border-radius: 50%;
-        padding: 5px 8px;
-        font-size: 14px;
-    }
-  
-  .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 1; /* Sit on top */
-      left: 0;
-      top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgb(0,0,0); /* Fallback color */
-      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  };
+
+  // Function to handle survey button click
+  function handleConfirm() {
+    // Redirect or perform action to take the survey
+    window.location.href = "/studentsExplore"; // Update with your survey URL
   }
-  
-  .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto; /* 15% from the top and centered */
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%; /* Could be more or less, depending on screen size */
+
+  // Function to hide the modal
+  function hidePopup() {
+    document.getElementById('customPopup').style.display = 'none'; // Hide the modal
   }
-  
-  .close-button {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-  }
-  
-  .close-button:hover,
-  .close-button:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-  }
-  
-    
-  </style>
-  
-  <script>
-  document.getElementById('notification-icon').addEventListener('click', function() {
-      // Display the modal
-      document.getElementById('interventions-modal').style.display = 'block';
-  
-      // Fetch data from the server
-      fetch('/get-interventions')
-          .then(response => response.json())
-          .then(data => {
-              // Process and display the data in the modal
-              const listContainer = document.getElementById('interventions-list');
-              listContainer.innerHTML = ''; // Clear existing content
-  
-              data.forEach(intervention => {
-                  const item = document.createElement('div');
-                  item.classList.add('intervention-item');
-                  item.innerHTML = `
-                      <h3>${intervention.Title}</h3>
-                      <p>${intervention.Description}</p>
-                      <img src="${intervention.Picture}" alt="${intervention.Title}" />
-                      <p>Location: ${intervention.Location}</p>
-                      <p>Date: ${intervention.Date}</p>
-                      <p>Time: ${intervention.Time}</p>
-                  `;
-                  listContainer.appendChild(item);
-              });
-          })
-          .catch(error => console.error('Error fetching data:', error));
-  });
-  
-  // Close the modal when the user clicks on the close button
-  document.getElementById('close-button').addEventListener('click', function() {
-      document.getElementById('interventions-modal').style.display = 'none';
-  });
-  
-  // Close the modal when the user clicks outside of the modal content
-  window.addEventListener('click', function(event) {
-      if (event.target === document.getElementById('interventions-modal')) {
-          document.getElementById('interventions-modal').style.display = 'none';
-      }
-  });
-  
-  </script>
-  
+
+  // Close button functionality (if you have a close button)
+  document.getElementById('closeButton').onclick = hidePopup;
+</script>
+
+
 {% endblock %}
