@@ -72,41 +72,43 @@
                     <input type="hidden" name="semester_id" value="{{ semester_id }}">
                     <input type="hidden" name="professor_id" value="{{ professor_id }}">
                 
-                    <table>
-                        <thead>
-                            <tr class="bgTr">
-                                <th width="50px">STUDID</th>
-                                <th width="250px">LASTNAME</th>
-                                <th width="250px">FIRSTNAME</th>
-                                <th width="150px">MIDTERM GRADE</th>
-                                <th width="150px">FINAL GRADE</th>
-                                <th width="150px">AVERAGE GRADE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for student in enrolled_students %}
-                            <tr class="highlight-row">
-                                <td class="centerUpdate">
-                                    {{ student.StudentID }}
-                                    <input type="hidden" name="student_id_{{ student.StudentID }}" value="{{ student.StudentID }}">
-                                </td>
-                                <td>{{ student.LastName }}</td>
-                                <td>{{ student.FirstName }}</td>
-                                <td><input class="grade-input" type="number" name="midterm_grade_{{ student.StudentID }}" placeholder="Midterm Grade" step="0.01" value="{{ student.MidtermGrade }}" data-student-id="{{ student.StudentID }}"></td>
-                                <td><input class="grade-input" type="number" name="final_grade_{{ student.StudentID }}" placeholder="Final Grade" step="0.01" value="{{ student.FinalGrade }}" data-student-id="{{ student.StudentID }}"></td>
-                                <td class="centerUpdate">
-                                    <span class="average-grade" data-student-id="{{ student.StudentID }}">
-                                        {% if student.MidtermGrade and student.FinalGrade %}
-                                            {{ (student.MidtermGrade + student.FinalGrade) / 2 }}
-                                        {% else %}
-                                            N/A
-                                        {% endif %}
-                                    </span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="tbl-content">
+                        <table>
+                            <thead>
+                                <tr class="bgTr">
+                                    <th width="50px">STUDID</th>
+                                    <th width="250px">LASTNAME</th>
+                                    <th width="250px">FIRSTNAME</th>
+                                    <th width="150px">MIDTERM GRADE</th>
+                                    <th width="150px">FINAL GRADE</th>
+                                    <th width="150px">AVERAGE GRADE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in enrolled_students %}
+                                <tr class="highlight-row">
+                                    <td class="centerUpdate" data-label="STUDID">
+                                        {{ student.StudentID }}
+                                        <input type="hidden" name="student_id_{{ student.StudentID }}" value="{{ student.StudentID }}">
+                                    </td>
+                                    <td data-label="LASTNAME">{{ student.LastName }}</td>
+                                    <td data-label="FIRSTNAME">{{ student.FirstName }}</td>
+                                    <td data-label="MIDTERM GRADE"><input class="grade-input" type="number" name="midterm_grade_{{ student.StudentID }}" placeholder="Midterm Grade" step="0.01" value="{{ student.MidtermGrade }}" data-student-id="{{ student.StudentID }}"></td>
+                                    <td data-label="FINAL GRADE"><input class="grade-input" type="number" name="final_grade_{{ student.StudentID }}" placeholder="Final Grade" step="0.01" value="{{ student.FinalGrade }}" data-student-id="{{ student.StudentID }}"></td>
+                                    <td class="centerUpdate" data-label="AVERAGE GRADE">
+                                        <span class="average-grade" data-student-id="{{ student.StudentID }}">
+                                            {% if student.MidtermGrade and student.FinalGrade %}
+                                                {{ (student.MidtermGrade + student.FinalGrade) / 2 }}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="rightButton">
                         <button class="btn" type="submit">Submit Grades</button>
                     </div>

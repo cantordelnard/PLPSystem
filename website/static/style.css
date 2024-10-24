@@ -221,7 +221,7 @@
 @media (max-width: 480px) {
   :root {
     --marquee-width: 100%;
-    --marquee-height: 10vh;
+    --marquee-height: 8vh;
     --marquee-elements-displayed: 3;
   }
 
@@ -1203,6 +1203,11 @@ form {
     text-align: left;
   }
 
+  input.grade-input {
+    width: 50% !important; /* Inputs take the full width on mobile */
+    text-align: right !important;
+  }
+
   .cardheader h2 {
     font-size: 20px;
   }
@@ -1399,6 +1404,52 @@ form {
      /* Small space at the top of each <p> */
     font-size: 0.8em !important; /* Optional: Adjust font size if needed */
     text-align: left;
+  }
+
+  .survey-section {
+    padding: 20px !important;
+  }
+
+  .questions label {
+    margin-left: 20px !important;
+  }
+
+  .sectioning {
+    font-size: 20px !important;
+  }
+
+  .new-popup-content {
+    margin: 100% auto !important;
+  }
+
+  .cardBoxProf {
+    grid-template-columns: 1fr !important; /* Stack cards in a single column */
+    grid-gap: 10px !important; /* Adjust gap between cards */
+  }
+
+  .cardBoxProf .cardProf {
+    padding: 30px !important;
+  }
+
+  .cardBoxProf .cardProf .iconBx {
+    font-size: 1.2rem !important; /* Adjust icon size */
+  }
+
+  /* Make the layout stack vertically on mobile */
+  .detailsIntervention {
+    grid-template-columns: 1fr; /* Single-column layout */
+    grid-gap: 10px; /* Reduced gap for mobile */
+  }
+
+  /* Adjust the student list container */
+  .detailsIntervention .list {
+    min-height: auto; /* Remove fixed min-height */
+    padding: 15px; /* Adjust padding for mobile */
+    gap: 10px; /* Reduced gap between elements */
+  }
+
+  .inputDataProf {
+    padding: 30px 10px 10px 10px !important;
   }
 
 
@@ -1814,15 +1865,6 @@ form {
   background-color: white;
   border: 2px solid var(--green);
 }
-
-
-
-
-
-
-
-
-
 
 .cardBoxProf {
   position: relative;
@@ -2270,53 +2312,73 @@ form {
   margin: 0;
 }
 
-.cardBehavioral {
+.survey-section {
   background-color: var(--white);
-  width: 70%;
-  padding: 50px;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  margin: auto;
+  max-width: 800px;
+  width: 100%;
+  text-align: left;
 }
 
 .section {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
-.section h2 {
+.sectioning {
+  background-color: var(--gray);
   color: #444;
   font-size: 1.4em;
+  padding: 10px;
+  border-radius: 5px;
   margin-bottom: 10px;
 }
 
-.question {
+.questions {
   margin-bottom: 10px;
+  margin-left: 0px !important;
+  padding: 20px 20px 10px 20px;
 }
 
-.question label {
-  font-size: 1.1em;
+.questions label {
+  font-size: 1em;
   color: var(--black1);
   display: block;
-  margin-bottom: 5px;
+  margin-left: 30px;
+}
+
+.thequestion h4 {
+  color: var(--black1);
+  font-weight: 500;
+  font-size: 1.1em;
+}
+
+.choices {
+  margin-bottom: 0px;
 }
 
 .cardBehavioral input[type="radio"] {
   margin-right: 10px;
 }
 
-.cardBehavioral button[type="submit"] {
+.survey-section button[type="submit"] {
   display: block;
   width: 100%;
-  background-color: #4CAF50;
+  background-color: var(--green);
   color: white;
   padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: 0.3s;
 }
 
-.cardBehavioral button[type="submit"]:hover {
-  background-color: #45a049;
+.survey-section button[type="submit"]:hover {
+  background-color: var(--lightGreen2);
+  transition: 0.3s;
 }
 
 .popup-modal {
@@ -2841,4 +2903,29 @@ form {
 
 .partOne h3 {
   font-weight: 300;
+}
+
+.inputDataProf {
+  padding: 20px;
+}
+
+.submit {
+  width: 100%;
+  background-color: var(--green);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.submit:hover {
+  background-color: var(--lightGreen2);
+  /* Darker green on hover */
 }

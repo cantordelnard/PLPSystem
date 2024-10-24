@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 <!-- =============== Title ================ -->
-{% block title %}PLP Grading System{% endblock %}
+{% block title %}PLP System | Events{% endblock %}
 
 <!-- =============== Sidebars ================ -->
 {% block sidebar %}
@@ -77,7 +77,7 @@
             const textContainer = document.createElement('div');
             textContainer.classList.add('intervention-text-container');
             textContainer.innerHTML = `
-              <h3>${intervention.Title}</h3>
+              <h3>${intervention.Title.toUpperCase()}</h3>
               <p class="notifP">${intervention.Description}</p>
               <hr class="description-line"> <!-- Added line here -->
               <p class="notifQ"><b>Location:</b> ${intervention.Location}</p>

@@ -77,9 +77,9 @@
                             <tbody>
                                 {% for student in students %}
                                 <tr>
-                                    <td class="centerUpdate">{{ student.StudentID }}</td>
-                                    <td>{{ student.FullName }}</td>
-                                    <td class="centerUpdate">{{ student.Percentage }}</td>
+                                    <td class="centerUpdate" data-label="STUDID">{{ student.StudentID }}</td>
+                                    <td data-label="NAME">{{ student.FullName }}</td>
+                                    <td class="centerUpdate" data-label="PERCENTAGE">{{ student.Percentage }}</td>
                                 </tr>
                                 {% else %}
                                 <tr>
@@ -96,27 +96,30 @@
                     <div class="cardHeader">
                         <h2 id="form-title">ADD ADDITIONAL ACADEMIC REQUIREMENTS</h2>
                     </div>
-                    <form action="{{ url_for('views.add_academic_requirement') }}" method="POST">
-                        <!-- Description Field -->
-                        <div class="input-group">
-                            <textarea name="comment" rows="1" placeholder="Enter Additional Academic Requirement" class="textareaEvent" required>{{ existing_comment }}</textarea>
-                        </div>
-                
-                        <!-- Link Field -->
-                        <div class="input-group">
-                            <textarea name="link" rows="1" placeholder="Enter Links" class="textareaEvent">{{ existing_link }}</textarea>
-                        </div>
-                
-                        <!-- Hidden inputs to pass professor ID and subject ID -->
-                        <input type="hidden" name="prof_id" value="{{ professor_id }}">
-                        <input type="hidden" name="subj_id" value="{{ subject_id }}">
-                
-                        <button type="submit">Submit</button>
-                    </form>
+                    <div class="inputDataProf">
+                        <form action="{{ url_for('views.add_academic_requirement') }}" method="POST">
+                            <!-- Description Field -->
+                            <div class="input-group">
+                                <label for="comment" class="label">COMMENT:</label>
+                                <textarea name="comment" placeholder="Enter Comment or Instructions." class="textareaEvent" required>{{ existing_comment }}</textarea>
+                            </div>
+                    
+                            <!-- Link Field -->
+                            <div class="input-group">
+                                <label for="link" class="label">LINK:</label>
+                                <textarea name="link" rows="1" placeholder="Enter Additional Academic Link." class="textareaEvent">{{ existing_link }}</textarea>
+                            </div>
+                    
+                            <!-- Hidden inputs to pass professor ID and subject ID -->
+                            <input type="hidden" name="prof_id" value="{{ professor_id }}">
+                            <input type="hidden" name="subj_id" value="{{ subject_id }}">
+                            
+                            <button class="submit" type="submit">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 {% endblock %}

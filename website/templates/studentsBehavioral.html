@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 <!-- =============== Title ================ -->
-{% block title %}Behavioral Survey{% endblock %}
+{% block title %}PLP System | Behavioral Survey{% endblock %}
 
 <!-- =============== Sidebars ================ -->
 {% block sidebar %}
@@ -79,125 +79,147 @@
 <div class="content">
   <div class="exploreTitle">
     <h1>STUDENT BEHAVIORAL SURVEY</h1>
-    <div class="cardBehavioral">
+    <div class="survey-section">
       <form method="POST" action="{{ url_for('views.studentBehavioral') }}" onsubmit="return validateForm()">
-    
-        <!-- Section 1: Study Habits -->
-        <div class="section">
-            <h2>Section 1: Study Habits</h2>
-            <div class="question">
-              <label>How many hours do you spend studying per week?</label>
-              <input type="radio" name="study_hours" value="Less than 5 hours" {% if form_data.StudyHours == "Less than 5 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Less than 5 hours<br>
-              <input type="radio" name="study_hours" value="5-10 hours" {% if form_data.StudyHours == "5-10 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 5-10 hours<br>
-              <input type="radio" name="study_hours" value="11-15 hours" {% if form_data.StudyHours == "11-15 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 11-15 hours<br>
-              <input type="radio" name="study_hours" value="16-20 hours" {% if form_data.StudyHours == "16-20 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 16-20 hours<br>
-              <input type="radio" name="study_hours" value="More than 20 hours" {% if form_data.StudyHours == "More than 20 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> More than 20 hours
-          </div>
-            <div class="question">
-                <label>How often do you use effective study strategies (e.g., summarizing notes, practicing past papers)?</label>
-                <input type="radio" name="study_strategies" value="Never" {% if form_data.StudyStrategies == "Never" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Never<br>
-                <input type="radio" name="study_strategies" value="Rarely" {% if form_data.StudyStrategies == "Rarely" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Rarely<br>
-                <input type="radio" name="study_strategies" value="Sometimes" {% if form_data.StudyStrategies == "Sometimes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Sometimes<br>
-                <input type="radio" name="study_strategies" value="Often" {% if form_data.StudyStrategies == "Often" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Often<br>
-                <input type="radio" name="study_strategies" value="Always" {% if form_data.StudyStrategies == "Always" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Always
-            </div>
-            <div class="question">
-                <label>Do you have a regular study schedule?</label>
-                <input type="radio" name="study_schedule" value="Yes" {% if form_data.RegularStudySchedule == "Yes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Yes<br>
-                <input type="radio" name="study_schedule" value="No" {% if form_data.RegularStudySchedule == "No" %}checked{% endif %} {% if form_data %}disabled{% endif %}> No
-            </div>
-        </div>
-    
-        <!-- Section 2: Attendance and Participation -->
-        <div class="section">
-            <h2>Section 2: Attendance and Participation</h2>
-            <div class="question">
-                <label>What is your average class attendance rate?</label>
-                <input type="radio" name="attendance_rate" value="Less than 50%" {% if form_data.AttendanceRate == "Less than 50%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Less than 50%<br>
-                <input type="radio" name="attendance_rate" value="50-70%" {% if form_data.AttendanceRate == "50-70%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 50-70%<br>
-                <input type="radio" name="attendance_rate" value="71-90%" {% if form_data.AttendanceRate == "71-90%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 71-90%<br>
-                <input type="radio" name="attendance_rate" value="More than 90%" {% if form_data.AttendanceRate == "More than 90%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> More than 90%
-            </div>
-            <div class="question">
-                <label>How actively do you participate in class discussions and activities?</label>
-                <input type="radio" name="participation" value="Not at all" {% if form_data.ClassParticipation == "Not at all" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not at all<br>
-                <input type="radio" name="participation" value="Slightly" {% if form_data.ClassParticipation == "Slightly" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly<br>
-                <input type="radio" name="participation" value="Moderately" {% if form_data.ClassParticipation == "Moderately" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately<br>
-                <input type="radio" name="participation" value="Very actively" {% if form_data.ClassParticipation == "Very actively" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very actively<br>
-                <input type="radio" name="participation" value="Extremely actively" {% if form_data.ClassParticipation == "Extremely actively" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely actively
-            </div>
-        </div>
-    
-        <!-- Section 3: Time Management -->
-        <div class="section">
-            <h2>Section 3: Time Management</h2>
-            <div class="question">
-                <label>How would you rate your ability to manage your time between studies and other activities?</label>
-                <input type="radio" name="time_management" value="Poor" {% if form_data.TimeManagementRating == "Poor" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Poor<br>
-                <input type="radio" name="time_management" value="Fair" {% if form_data.TimeManagementRating == "Fair" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Fair<br>
-                <input type="radio" name="time_management" value="Good" {% if form_data.TimeManagementRating == "Good" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Good<br>
-                <input type="radio" name="time_management" value="Very Good" {% if form_data.TimeManagementRating == "Very Good" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very Good<br>
-                <input type="radio" name="time_management" value="Excellent" {% if form_data.TimeManagementRating == "Excellent" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Excellent
-            </div>
-            <div class="question">
-                <label>How often do you meet your study deadlines?</label>
-                <input type="radio" name="study_deadlines" value="Never" {% if form_data.StudyDeadlinesFrequency == "Never" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Never<br>
-                <input type="radio" name="study_deadlines" value="Rarely" {% if form_data.StudyDeadlinesFrequency == "Rarely" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Rarely<br>
-                <input type="radio" name="study_deadlines" value="Sometimes" {% if form_data.StudyDeadlinesFrequency == "Sometimes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Sometimes<br>
-                <input type="radio" name="study_deadlines" value="Often" {% if form_data.StudyDeadlinesFrequency == "Often" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Often<br>
-                <input type="radio" name="study_deadlines" value="Always" {% if form_data.StudyDeadlinesFrequency == "Always" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Always
-            </div>
-        </div>
-    
-        <!-- Section 4: Motivation and Engagement -->
-        <div class="section">
-            <h2>Section 4: Motivation and Engagement</h2>
-            <div class="question">
-                <label>How motivated are you to complete your coursework and assignments?</label>
-                <input type="radio" name="motivation" value="Not motivated" {% if form_data.MotivationLevel == "Not motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not motivated<br>
-                <input type="radio" name="motivation" value="Slightly motivated" {% if form_data.MotivationLevel == "Slightly motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly motivated<br>
-                <input type="radio" name="motivation" value="Moderately motivated" {% if form_data.MotivationLevel == "Moderately motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately motivated<br>
-                <input type="radio" name="motivation" value="Very motivated" {% if form_data.MotivationLevel == "Very motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very motivated<br>
-                <input type="radio" name="motivation" value="Extremely motivated" {% if form_data.MotivationLevel == "Extremely motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely motivated
-            </div>
-            <div class="question">
-                <label>How engaged are you with your coursework (e.g., actively seeking to understand the material beyond assignments)?</label>
-                <input type="radio" name="engagement" value="Not engaged" {% if form_data.EngagementLevel == "Not engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not engaged<br>
-                <input type="radio" name="engagement" value="Slightly engaged" {% if form_data.EngagementLevel == "Slightly engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly engaged<br>
-                <input type="radio" name="engagement" value="Moderately engaged" {% if form_data.EngagementLevel == "Moderately engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately engaged<br>
-                <input type="radio" name="engagement" value="Very engaged" {% if form_data.EngagementLevel == "Very engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very engaged<br>
-                <input type="radio" name="engagement" value="Extremely engaged" {% if form_data.EngagementLevel == "Extremely engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely engaged
-            </div>
-        </div>
-    
-        <!-- Section 5: Stress and Coping Mechanisms -->
-        <div class="section">
-            <h2>Section 5: Stress and Coping Mechanisms</h2>
-            <div class="question">
-                <label>How often do you feel stressed about your academic workload?</label>
-                <input type="radio" name="stress_level" value="Never" {% if form_data.StressFrequency == "Never" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Never<br>
-                <input type="radio" name="stress_level" value="Rarely" {% if form_data.StressFrequency == "Rarely" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Rarely<br>
-                <input type="radio" name="stress_level" value="Sometimes" {% if form_data.StressFrequency == "Sometimes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Sometimes<br>
-                <input type="radio" name="stress_level" value="Often" {% if form_data.StressFrequency == "Often" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Often<br>
-                <input type="radio" name="stress_level" value="Always" {% if form_data.StressFrequency == "Always" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Always
-            </div>
-            <div class="question">
-                <label>How effective are your current coping strategies for managing academic stress?</label>
-                <input type="radio" name="coping_effectiveness" value="Not effective" {% if form_data.CopingEffectiveness == "Not effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not effective<br>
-                <input type="radio" name="coping_effectiveness" value="Slightly effective" {% if form_data.CopingEffectiveness == "Slightly effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly effective<br>
-                <input type="radio" name="coping_effectiveness" value="Moderately effective" {% if form_data.CopingEffectiveness == "Moderately effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately effective<br>
-                <input type="radio" name="coping_effectiveness" value="Very effective" {% if form_data.CopingEffectiveness == "Very effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very effective<br>
-                <input type="radio" name="coping_effectiveness" value="Extremely effective" {% if form_data.CopingEffectiveness == "Extremely effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely effective
-            </div>
-        </div>
-    
-        <!-- Add more sections as needed -->
-    
-        {% if not form_data %}
-        <button type="submit">Submit</button>
-    {% endif %}
-    </form>
+    <!-- Section 1: Study Habits -->
+<div class="section">
+  <h2 class="sectioning">SECTION 01: STUDY HABITS</h2>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How many hours do you spend studying per week?</h4><br>
     </div>
+    <label><input type="radio" name="study_hours" value="Less than 5 hours" {% if form_data.StudyHours == "Less than 5 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Less than 5 hours</label><br>
+    <label><input type="radio" name="study_hours" value="5-10 hours" {% if form_data.StudyHours == "5-10 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 5-10 hours</label><br>
+    <label><input type="radio" name="study_hours" value="11-15 hours" {% if form_data.StudyHours == "11-15 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 11-15 hours</label><br>
+    <label><input type="radio" name="study_hours" value="16-20 hours" {% if form_data.StudyHours == "16-20 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 16-20 hours</label><br>
+    <label><input type="radio" name="study_hours" value="More than 20 hours" {% if form_data.StudyHours == "More than 20 hours" %}checked{% endif %} {% if form_data %}disabled{% endif %}> More than 20 hours</label>
+  </div>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How often do you use effective study strategies? (e.g., Summarizing notes, Practicing past papers)</h4><br>
+    </div>
+    <label><input type="radio" name="study_strategies" value="Never" {% if form_data.StudyStrategies == "Never" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Never</label><br>
+    <label><input type="radio" name="study_strategies" value="Rarely" {% if form_data.StudyStrategies == "Rarely" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Rarely</label><br>
+    <label><input type="radio" name="study_strategies" value="Sometimes" {% if form_data.StudyStrategies == "Sometimes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Sometimes</label><br>
+    <label><input type="radio" name="study_strategies" value="Often" {% if form_data.StudyStrategies == "Often" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Often</label><br>
+    <label><input type="radio" name="study_strategies" value="Always" {% if form_data.StudyStrategies == "Always" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Always</label>
+  </div>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>Do you have a regular study schedule?</h4><br>
+    </div>
+    <label><input type="radio" name="study_schedule" value="Yes" {% if form_data.RegularStudySchedule == 1 %}checked{% endif %} {% if form_data %}disabled{% endif %}> Yes</label><br>
+    <label><input type="radio" name="study_schedule" value="No" {% if form_data.RegularStudySchedule == 0 %}checked{% endif %} {% if form_data %}disabled{% endif %}> No</label>
+  </div>
+</div>
+
+<!-- Section 2: Attendance and Participation -->
+<div class="section">
+  <h2 class="sectioning">SECTION 02: ATTENDANCE AND PARTICIPATION</h2>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>What is your average class attendance rate?</h4><br>
+    </div>
+    <label><input type="radio" name="attendance_rate" value="Less than 50%" {% if form_data.AttendanceRate == "Less than 50%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Less than 50%</label><br>
+    <label><input type="radio" name="attendance_rate" value="50-70%" {% if form_data.AttendanceRate == "50-70%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 50-70%</label><br>
+    <label><input type="radio" name="attendance_rate" value="71-90%" {% if form_data.AttendanceRate == "71-90%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> 71-90%</label><br>
+    <label><input type="radio" name="attendance_rate" value="More than 90%" {% if form_data.AttendanceRate == "More than 90%" %}checked{% endif %} {% if form_data %}disabled{% endif %}> More than 90%</label>
+  </div>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How actively do you participate in class discussions and activities?</h4><br>
+    </div>
+    <label><input type="radio" name="participation" value="Not at all" {% if form_data.ClassParticipation == "Not at all" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not at all</label><br>
+    <label><input type="radio" name="participation" value="Slightly" {% if form_data.ClassParticipation == "Slightly" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly</label><br>
+    <label><input type="radio" name="participation" value="Moderately" {% if form_data.ClassParticipation == "Moderately" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately</label><br>
+    <label><input type="radio" name="participation" value="Very actively" {% if form_data.ClassParticipation == "Very actively" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very actively</label><br>
+    <label><input type="radio" name="participation" value="Extremely actively" {% if form_data.ClassParticipation == "Extremely actively" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely actively</label>
+  </div>
+</div>
+
+<!-- Section 3: Time Management -->
+<div class="section">
+  <h2 class="sectioning">SECTION 03: TIME MANAGEMENT</h2>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How would you rate your ability to manage your time between studies and other activities?</h4><br>
+    </div>
+    <label><input type="radio" name="time_management" value="Poor" {% if form_data.TimeManagementRating == "Poor" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Poor</label><br>
+    <label><input type="radio" name="time_management" value="Fair" {% if form_data.TimeManagementRating == "Fair" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Fair</label><br>
+    <label><input type="radio" name="time_management" value="Good" {% if form_data.TimeManagementRating == "Good" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Good</label><br>
+    <label><input type="radio" name="time_management" value="Very Good" {% if form_data.TimeManagementRating == "Very Good" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very Good</label><br>
+    <label><input type="radio" name="time_management" value="Excellent" {% if form_data.TimeManagementRating == "Excellent" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Excellent</label>
+  </div>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How often do you meet your study deadlines?</h4><br>
+    </div>
+    <label><input type="radio" name="study_deadlines" value="Never" {% if form_data.StudyDeadlinesFrequency == "Never" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Never</label><br>
+    <label><input type="radio" name="study_deadlines" value="Rarely" {% if form_data.StudyDeadlinesFrequency == "Rarely" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Rarely</label><br>
+    <label><input type="radio" name="study_deadlines" value="Sometimes" {% if form_data.StudyDeadlinesFrequency == "Sometimes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Sometimes</label><br>
+    <label><input type="radio" name="study_deadlines" value="Often" {% if form_data.StudyDeadlinesFrequency == "Often" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Often</label><br>
+    <label><input type="radio" name="study_deadlines" value="Always" {% if form_data.StudyDeadlinesFrequency == "Always" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Always</label>
+  </div>
+</div>
+
+<!-- Section 4: Motivation and Engagement -->
+<div class="section">
+  <h2 class="sectioning">SECTION 04: MOTIVATION AND ENGAGEMENT</h2>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How motivated are you to complete your coursework and assignments?</h4><br>
+    </div>
+    <label><input type="radio" name="motivation" value="Not motivated" {% if form_data.MotivationLevel == "Not motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not motivated</label><br>
+    <label><input type="radio" name="motivation" value="Slightly motivated" {% if form_data.MotivationLevel == "Slightly motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly motivated</label><br>
+    <label><input type="radio" name="motivation" value="Moderately motivated" {% if form_data.MotivationLevel == "Moderately motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately motivated</label><br>
+    <label><input type="radio" name="motivation" value="Very motivated" {% if form_data.MotivationLevel == "Very motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very motivated</label><br>
+    <label><input type="radio" name="motivation" value="Extremely motivated" {% if form_data.MotivationLevel == "Extremely motivated" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely motivated</label>
+  </div>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How engaged are you with your coursework (e.g., actively seeking to understand the material beyond assignments)?</h4><br>
+    </div>
+    <label><input type="radio" name="engagement" value="Not engaged" {% if form_data.EngagementLevel == "Not engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not engaged</label><br>
+    <label><input type="radio" name="engagement" value="Slightly engaged" {% if form_data.EngagementLevel == "Slightly engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly engaged</label><br>
+    <label><input type="radio" name="engagement" value="Moderately engaged" {% if form_data.EngagementLevel == "Moderately engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately engaged</label><br>
+    <label><input type="radio" name="engagement" value="Very engaged" {% if form_data.EngagementLevel == "Very engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very engaged</label><br>
+    <label><input type="radio" name="engagement" value="Extremely engaged" {% if form_data.EngagementLevel == "Extremely engaged" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely engaged</label>
+  </div>
+</div>
+
+<!-- Section 5: Stress and Coping Mechanisms -->
+<div class="section">
+  <h2 class="sectioning">SECTION 05: STRESS AND COPING MECHANISMS</h2>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How often do you feel stressed about your academic workload?</h4><br>
+    </div>
+    <label><input type="radio" name="stress_level" value="Never" {% if form_data.StressFrequency == "Never" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Never</label><br>
+    <label><input type="radio" name="stress_level" value="Rarely" {% if form_data.StressFrequency == "Rarely" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Rarely</label><br>
+    <label><input type="radio" name="stress_level" value="Sometimes" {% if form_data.StressFrequency == "Sometimes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Sometimes</label><br>
+    <label><input type="radio" name="stress_level" value="Often" {% if form_data.StressFrequency == "Often" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Often</label><br>
+    <label><input type="radio" name="stress_level" value="Always" {% if form_data.StressFrequency == "Always" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Always</label>
+  </div>
+  <div class="questions">
+    <div class="thequestion">
+      <h4>How effective are your current coping strategies for managing academic stress?</h4><br>
+    </div>
+    <label><input type="radio" name="coping_effectiveness" value="Not effective" {% if form_data.CopingEffectiveness == "Not effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Not effective</label><br>
+    <label><input type="radio" name="coping_effectiveness" value="Slightly effective" {% if form_data.CopingEffectiveness == "Slightly effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Slightly effective</label><br>
+    <label><input type="radio" name="coping_effectiveness" value="Moderately effective" {% if form_data.CopingEffectiveness == "Moderately effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Moderately effective</label><br>
+    <label><input type="radio" name="coping_effectiveness" value="Very effective" {% if form_data.CopingEffectiveness == "Very effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Very effective</label><br>
+    <label><input type="radio" name="coping_effectiveness" value="Extremely effective" {% if form_data.CopingEffectiveness == "Extremely effective" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Extremely effective</label>
+  </div>
+</div>
+
+<!-- Add more sections as needed -->
+
+{% if not form_data %}
+<button type="submit">SUBMIT</button>
+{% endif %}
+</form>
+</div>
+
   </div>
 </div>
 

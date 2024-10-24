@@ -367,10 +367,10 @@ def studentBehavioral():
         if total_questions > 0:
             average_percentage = (total_score / (total_questions * 5)) * 100
             # Print average percentage to the terminal
-            print(f'Your Average Score: {average_percentage:.2f}%')  # Display average percentage
+            #print(f'Your Average Score: {average_percentage:.2f}%')  # Display average percentage
         else:
             average_percentage = 0
-            print('No questions answered. Average Score: 0.00%')  # Display message if no questions answered
+            #print('No questions answered. Average Score: 0.00%')  # Display message if no questions answered
 
         # Connect to the database
         connection = connect_to_database()
@@ -395,7 +395,7 @@ def studentBehavioral():
                 return redirect(url_for('views.studentBehavioral'))
 
             except Exception as e:
-                flash(f'Error submitting data: {str(e)}')
+                flash('Incomplete Field Entries!')
                 return redirect(url_for('views.studentBehavioral'))
 
             finally:
@@ -510,21 +510,21 @@ def generate_comment(input_features, prediction, average_percentage):
         combined_monthly_income = input_features['mother_monthly_income'] + input_features['father_monthly_income']
         if combined_monthly_income <= 10000:
             comments.append(
-                f"SOCIOECONOMIC FACTOR: Your combined monthly income from parents is {combined_monthly_income}, which is below 10,000. Seeking financial aid or scholarships could help support your education."
+                f"Socioeconomic Factor"
             )
             socioeconomic = True
 
         # Academic factors
         if input_features['average_grade_first_year'] <= 85.49:
             comments.append(
-                "ACADEMIC FACTOR: Your average grade for the first year is below the recommended threshold of 85.49."
+                "Academic Factor"
             )
             academic = True
 
         # Behavioral comparison
         if average_percentage <= 49.49:
             comments.append(
-                f"BEHAVIORAL FACTOR: The average percentage is below the threshold of 49.49%."
+                f"Behavioral Factor"
             )
             behavioral = True
 
