@@ -2056,7 +2056,7 @@ def fetch_academic_interventions(student_id):
                 ai.Comment,
                 ai.Link  -- Fetch the Link from academic intervention
             FROM 
-                ACADEMICINTERVENTION ai
+                academicintervention ai
             JOIN 
                 PROFESSORS p ON ai.ProfID = p.ProfessorID
             JOIN 
