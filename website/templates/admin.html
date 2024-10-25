@@ -155,20 +155,25 @@
   fetch('/get_graduation_data')
     .then(response => response.json())
     .then(data => {
+      // Update labels to use WGOT and WNGOT
+      const labels = data.labels.map(label => {
+        return label === 'Will Graduate On Time' ? 'WGOT' : 'WNGOT';
+      });
+
       // Create bar chart
       const ctx = document.getElementById('barChart').getContext('2d');
       new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: data.labels,
+          labels: labels,
           datasets: [{
             label: 'Graduation Rates',
             data: data.values,
-            backgroundColor: data.labels.map(label => {
-              return label === 'Will Graduate On Time' ? 'rgba(19, 123, 53, 0.8)' : 'rgba(0, 0, 0, 0.8)';
+            backgroundColor: labels.map(label => {
+              return label === 'WGOT' ? 'rgba(19, 123, 53, 0.8)' : 'rgba(0, 0, 0, 0.8)';
             }),
-            borderColor: data.labels.map(label => {
-              return label === 'Will Graduate On Time' ? 'rgba(19, 123, 53, 1)' : 'rgba(0, 0, 0, 1)';
+            borderColor: labels.map(label => {
+              return label === 'WGOT' ? 'rgba(19, 123, 53, 1)' : 'rgba(0, 0, 0, 1)';
             }),
             borderWidth: 1
           }]
@@ -178,25 +183,25 @@
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: true, // Enable the legend
-              position: 'bottom', // Position legend below the chart
+              display: true,
+              position: 'top',
               labels: {
                 generateLabels: function(chart) {
                   return [
                     {
-                      text: 'Will Graduate On Time',
-                      fillStyle: 'rgba(19, 123, 53, 0.8)', // Green box
-                      fontColor: 'black' // Black text
+                      text: 'Will Graduate On Time\n(WGOT)', // New line for WGOT
+                      fillStyle: 'rgba(19, 123, 53, 0.8)',
+                      fontColor: 'black'
                     },
                     {
-                      text: 'Will Not Graduate On Time',
-                      fillStyle: 'rgba(0, 0, 0, 0.8)', // Black box
-                      fontColor: 'black' // Black text
+                      text: 'Will Not Graduate On Time\n(WNGOT)', // New line for WNGOT
+                      fillStyle: 'rgba(0, 0, 0, 0.8)',
+                      fontColor: 'black'
                     }
                   ];
                 },
                 font: {
-                  size: 14
+                  size: window.innerWidth < 768 ? 10 : 14
                 }
               }
             }
@@ -205,13 +210,26 @@
             display: true,
             text: 'Graduation Rates',
             font: {
-              size: 18
+              size: window.innerWidth < 768 ? 16 : 18
             }
           },
           scales: {
             y: {
               beginAtZero: true,
-              max: 100
+              max: 100,
+              ticks: {
+                font: {
+                  size: window.innerWidth < 768 ? 10 : 12
+                }
+              }
+            },
+            x: {
+              ticks: {
+                maxRotation: 0,
+                font: {
+                  size: window.innerWidth < 768 ? 10 : 12
+                }
+              }
             }
           },
           animation: {
@@ -228,8 +246,8 @@
 <style>
   .adminGraph {
     position: relative;
-    height: 900px; /* Set a height for the chart */
-    width: 100%; /* Make it full width */
+    height: 700px;
+    width: 100%;
   }
 </style>
 

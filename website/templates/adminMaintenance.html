@@ -148,9 +148,9 @@
                                 {% for year in schoolyear %}
                                 {% if year.SchoolYearID != 0 %}  <!-- Condition to check if SchoolYearID is not 0 -->
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ year.SchoolYearID }}</td>
-                                    <td class="centerUpdate">{{ year.Year }}</td>
-                                    <td class="small-width centerUpdate">
+                                    <td class="centerUpdate" data-label="SCHOOL YEAR ID">{{ year.SchoolYearID }}</td>
+                                    <td class="centerUpdate" data-label="YEAR">{{ year.Year }}</td>
+                                    <td class="small-width centerUpdate" data-label="ACTION">
                                         <a
                                             href="{{ url_for('views.update_school_year', form_type='school_year', id=year.SchoolYearID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
@@ -212,9 +212,9 @@
                             <tbody>
                                 {% for program in program %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ program.ProgramID }}</td>
-                                    <td>{{ program.ProgramName }}</td>
-                                    <td class="small-width centerUpdate">
+                                    <td class="centerUpdate" data-label="PROGRAM ID">{{ program.ProgramID }}</td>
+                                    <td data-label="PROGRAM NAME">{{ program.ProgramName }}</td>
+                                    <td class="small-width centerUpdate" data-label="ACTION">
                                         <a
                                             href="{{ url_for('views.update_program', form_type='program', id=program.ProgramID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
@@ -277,10 +277,10 @@
                             <tbody>
                                 {% for specialization in specialization %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ specialization.SpecializationID }}</td>
-                                    <td>{{ specialization.SpecializationName }}</td>
-                                    <td>{{ specialization.ProgramName }}</td>
-                                    <td class="small-width centerUpdate">
+                                    <td class="centerUpdate" data-label="SPECIALIZATION ID">{{ specialization.SpecializationID }}</td>
+                                    <td data-label="SPECIALIZATION NAME">{{ specialization.SpecializationName }}</td>
+                                    <td data-label="PROGRAM NAME">{{ specialization.ProgramName }}</td>
+                                    <td class="small-width centerUpdate" data-label="ACTION">
                                         <a
                                             href="{{ url_for('views.update_specialization', form_type='specialization', id=specialization.SpecializationID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
@@ -353,11 +353,11 @@
                             <tbody>
                                 {% for subject in subject %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ subject.SubjectID }}</td>
-                                    <td>{{ subject.SubjectName }}</td>
-                                    <td class="centerUpdate">{{ subject.Units }}</td>
-                                    <td>{{ subject.ProgramName }}</td>
-                                    <td class="small-width centerUpdate">
+                                    <td class="centerUpdate" data-label="SUBJECT ID">{{ subject.SubjectID }}</td>
+                                    <td data-label="SUBJECT NAME">{{ subject.SubjectName }}</td>
+                                    <td class="centerUpdate" data-label="UNITS">{{ subject.Units }}</td>
+                                    <td data-label="PROGRAM NAME">{{ subject.ProgramName }}</td>
+                                    <td class="small-width centerUpdate" data-label="ACTION">
                                         <a href="{{ url_for('views.update_subject', subject_id=subject.SubjectID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
                                         </a>
@@ -433,10 +433,10 @@
                                 {% for class in classes %}
                                 {% if class.ClassID != 0 %}  <!-- Condition to check if ClassID is not 0 -->
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ class.ClassID }}</td>
-                                    <td class="centerUpdate">{{ class.ClassName }}</td>
-                                    <td class="centerUpdate">{{ class.Year }}</td>
-                                    <td class="small-width centerUpdate">
+                                    <td class="centerUpdate" data-label="CLASS ID">{{ class.ClassID }}</td>
+                                    <td class="centerUpdate" data-label="CLASS NAME">{{ class.ClassName }}</td>
+                                    <td class="centerUpdate" data-label="YEAR">{{ class.Year }}</td>
+                                    <td class="small-width centerUpdate" data-label="ACTION">
                                         <a
                                             href="{{ url_for('views.update_class', form_type='class', id=class.ClassID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
@@ -512,12 +512,12 @@
                             <tbody>
                                 {% for professoradvisory in professoradvisory %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ professoradvisory.AdvisoryID }}</td>
-                                    <td>{{ professoradvisory.FirstName }} {{ professoradvisory.LastName }}</td>
-                                    <td class="centerUpdate">{{ professoradvisory.ClassName }}</td>
-                                    <td class="centerUpdate">{{ professoradvisory.SubjectName }}</td>
-                                    <td class="centerUpdate">{{ professoradvisory.SemesterName }}</td>
-                                    <td class="small-width centerUpdate">
+                                    <td class="centerUpdate" data-label="ADVISORY ID">{{ professoradvisory.AdvisoryID }}</td>
+                                    <td data-label="PROFESSOR NAME">{{ professoradvisory.FirstName }} {{ professoradvisory.LastName }}</td>
+                                    <td class="centerUpdate" data-label="CLASS NAME">{{ professoradvisory.ClassName }}</td>
+                                    <td class="centerUpdate" data-label="SUBJECT NAME">{{ professoradvisory.SubjectName }}</td>
+                                    <td class="centerUpdate" data-label="SEMESTER">{{ professoradvisory.SemesterName }}</td>
+                                    <td class="small-width centerUpdate" data-label="ACTION">
                                         <a
                                             href="{{ url_for('views.update_professoradvisory', id=professoradvisory.AdvisoryID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
@@ -598,7 +598,7 @@
                             onkeyup="searchFunction('events', 'interventionsTable')" placeholder="Search Events">
                     </div>
                     <div class="tbl-content">
-                        <table id="interventionsTable" class="interventionsTable">
+                        <table id="interventionsTable">
                             <thead>
                                 <tr class="bgTr">
                                     <th width="125px">TITLE</th>
@@ -738,13 +738,13 @@
                     if (event.EventID !== 0 && event.EventID !== 1) { // Check if EventID is not 0
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                        <td class="centerUpdate">${event.Title}</td>
-                        <td class="centerUpdate">${event.Description}</td>
-                        <td class="centerUpdate">${event.Location}</td>
-                        <td class="centerUpdate">${event.Date}</td>
-                        <td class="centerUpdate">${event.Time}</td>
-                        <td class="centerUpdate"><img src="${event.ImagePath}" alt="Event Picture" style="width: 100px; height: auto"></td>
-                        <td class="small-width centerUpdateEvent">
+                        <td class="centerUpdate" data-label="TITLE">${event.Title}</td>
+                        <td class="centerUpdate" data-label="DESCRIPTION">${event.Description}</td>
+                        <td class="centerUpdate" data-label="LOCATION">${event.Location}</td>
+                        <td class="centerUpdate" data-label="DATE">${event.Date}</td>
+                        <td class="centerUpdate" data-label="TIME">${event.Time}</td>
+                        <td class="centerUpdate" data-label="PICTURE"><img src="${event.ImagePath}" alt="Event Picture" style="width: 100px; height: auto"></td>
+                        <td class="small-width centerUpdateEvent" data-label="ACTIONS">
                             <ion-icon name="create" class="updateIconEvent" onclick="updateEvent(${event.EventID})"></ion-icon>
                             <ion-icon name="archive" class="archiveIconEvent" onclick="deleteEvent(${event.EventID})"></ion-icon>
                         </td>

@@ -129,11 +129,11 @@
                             <tbody>
                                 {% for admin in admins %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ admin.AdminID }}</td>
-                                    <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
-                                    <td>{{ admin.Username }}</td>
-                                    <td>{{ admin.Email }}</td>
-                                    <td class="centerUpdate">
+                                    <td class="centerUpdate" data-label="AdminID">{{ admin.AdminID }}</td>
+                                    <td data-label="Name">{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                    <td data-label="Username">{{ admin.Username }}</td>
+                                    <td data-label="Email">{{ admin.Email }}</td>
+                                    <td class="centerUpdate" data-label="Action">
                                         <a href="/update/{{ admin.AdminID }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
                                         </a>
@@ -215,12 +215,12 @@
                             <tbody>
                                 {% for professor in professors %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ professor.ProfessorID }}</td>
-                                    <td>{{ professor.FirstName }} {{ professor.LastName }}</td>
-                                    <td>{{ professor.ProgramName }}</td>
-                                    <td>{{ professor.Username }}</td>
-                                    <td>{{ professor.Email }}</td>
-                                    <td class="centerUpdate">
+                                    <td class="centerUpdate" data-label="ProfID">{{ professor.ProfessorID }}</td>
+                                    <td data-label="Name">{{ professor.FirstName }} {{ professor.LastName }}</td>
+                                    <td data-label="Department">{{ professor.ProgramName }}</td>
+                                    <td data-label="Username">{{ professor.Username }}</td>
+                                    <td data-label="Email">{{ professor.Email }}</td>
+                                    <td class="centerUpdate" data-label="Action">
                                         <a href="{{ url_for('views.update_professor', professor_id=professor.ProfessorID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
                                         </a>
@@ -311,13 +311,13 @@
                             <tbody>
                                 {% for student in students %}
                                 <tr class="highlight-row">
-                                    <td>{{ student.StudentID }}</td>
-                                    <td>{{ student.FirstName }} {{ student.LastName }}</td>
-                                    <td>{{ student.ClassName }}</td>
-                                    <td>{{ student.SpecializationName }}</td>
-                                    <td>{{ student.Username }}</td>
-                                    <td>{{ student.Email }}</td>
-                                    <td class="centerUpdate">
+                                    <td data-label="StudID">{{ student.StudentID }}</td>
+                                    <td data-label="Name">{{ student.FirstName }} {{ student.LastName }}</td>
+                                    <td data-label="Class">{{ student.ClassName }}</td>
+                                    <td data-label="Specialization">{{ student.SpecializationName }}</td>
+                                    <td data-label="Username">{{ student.Username }}</td>
+                                    <td data-label="Email">{{ student.Email }}</td>
+                                    <td class="centerUpdate" data-label="Action">
                                         <a href="{{ url_for('views.update_student', student_id=student.StudentID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
                                         </a>

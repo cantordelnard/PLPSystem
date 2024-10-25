@@ -2,7 +2,7 @@ import bcrypt
 import mysql.connector
 import numpy as np
 
-'''
+
 #<!-- =============== DATABASE CONNECTION LOCAL ================ -->
 db_config = {
     "host": "localhost",
@@ -19,7 +19,7 @@ db_config = {
     "password": "n9ymqr6wbfqvbrgr",
     "database": "uw7ef945eu5qv52o"
 }
-
+'''
 
 def connect_to_database():
     try:

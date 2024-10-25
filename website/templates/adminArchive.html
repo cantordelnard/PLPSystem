@@ -110,26 +110,28 @@
             </div>
             <div class="cardArchive" id="archivedListCard">
                 <h2 id="cardArchiveText">ARCHIVED LIST</h2>
-                <table class="archive-table">
-                    <thead>
-                        <tr class="bgTr">
-                            <th>Year</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if archived_schoolyears %}
-                            {% for year in archived_schoolyears %}
-                                <tr class="highlight-row">
-                                    <td class="centerUpdate">{{ year.Year_archive }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td>No archived school years available.</td>
+                <div class="tbl-content">
+                    <table class="archive-table">
+                        <thead>
+                            <tr class="bgTr">
+                                <th>Year</th>
                             </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% if archived_schoolyears %}
+                                {% for year in archived_schoolyears %}
+                                    <tr class="highlight-row">
+                                        <td class="centerUpdate" data-label="Year">{{ year.Year_archive }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td>No archived school years available.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -828,13 +828,14 @@ body {
 }
 
 .inputData .btn {
-  position: relative;
+
   padding: 10px 15px;
   background: var(--green);
   text-decoration: none;
   color: var(--white);
   border-radius: 6px;
   border: 0;
+  width: 100%;
 }
 
 form {
@@ -1072,6 +1073,10 @@ form {
     padding: 15px;
   }
 
+  .tbl-content {
+    overflow-x: auto; /* Allow horizontal scrolling */
+  }
+
   .tbl-content table {
     width: 100%;
     border-collapse: collapse;
@@ -1187,6 +1192,7 @@ form {
     padding: 8px;
     text-align: left;
     border: none;
+    width: 100% !important;
     /* Remove borders between cells */
   }
 
@@ -1419,7 +1425,7 @@ form {
   }
 
   .new-popup-content {
-    margin: 100% auto !important;
+    margin: 50% auto !important;
   }
 
   .cardBoxProf {
@@ -1456,6 +1462,56 @@ form {
     padding: 40px !important;
   }
 
+  .tabBar {
+    gap: 10px; /* Reduce gap for small screens */
+  }
+
+  .radio-inputs-1 {
+    flex-direction: column; /* Stack items vertically */
+    width: 100%; /* Ensure full width */
+    font-size: 12px; /* Reduce font size for readability */
+  }
+
+  .radio-inputs-1 .radio {
+    width: 100%; /* Each label takes full width */
+  }
+
+  .radio-inputs-1 .radio .name {
+    padding: 0.5rem 0; /* Adjust padding */
+  }
+
+  .containerUpload {
+    flex-direction: column; /* Stack the cards vertically */
+    gap: 20px; /* Reduce gap for smaller screens */
+    padding: 10px; /* Add padding around the container */
+  }
+
+  .cardUpload {
+    padding: 30px;
+    width: 350px !important;
+    height: 33vh !important;
+    text-align: center; /* Align content to the left */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cardUpload h2 {
+    font-size: 1.5rem; /* Adjust title font size */
+  }
+
+  .cardUpload p {
+    font-size: 0.9rem; /* Adjust paragraph font size */
+  }
+
+  .cardArchive {
+    padding: 30px;
+    width: 350px !important;
+  }
+
+  .no-data {
+    display: none;
+  }
 
 }
 
@@ -1597,7 +1653,8 @@ tr:nth-child(odd) {
 #class_id,
 #subject_id,
 #semester_id,
-#gender {
+#gender,
+#filterDropdown {
   width: 250px;
   color: #05060f99;
 }

@@ -98,9 +98,9 @@
                 <div class="list">
                     <div class="cardHeader">
                         <h2>PREDICTIVE LIST</h2>
-                        <input class="inputSearch" type="text" id="searchInput" placeholder="Search" onkeyup="searchTable()">
+                        <input class="inputSeacrh" type="text" id="searchInput" placeholder="Search" onkeyup="searchTable()">
                     </div>
-                    
+                
                     <div class="tbl-content">
                         {% if student_predictions and student_predictions | length > 0 %}
                         <table id="adminTable">
@@ -113,22 +113,22 @@
                                     <th width="100px">INTERVENTION</th>
                                 </tr>
                             </thead>
-                            
+                
                             <!-- Section: Students with Prediction Data -->
-                            <tbody>
+                            <tbody class="has-data">
                                 {% for student in student_predictions if student.Percentage is not none %}
                                 <tr>
-                                    <td class="centerUpdate">{{ student.StudentID }}</td>
-                                    <td>{{ student.FullName }}</td>
-                                    <td class="centerUpdate">{{ student.Percentage }}</td>
-                                    <td class="centerUpdate">{{ student.Remarks }}</td>
-                                    <td class="centerUpdate">{{ student.interventionTag if student.interventionTag is not none else '-' }}</td>
+                                    <td class="centerUpdate" data-label="STUDID">{{ student.StudentID }}</td>
+                                    <td data-label="NAME">{{ student.FullName }}</td>
+                                    <td class="centerUpdate" data-label="PERCENTAGE">{{ student.Percentage }}</td>
+                                    <td class="centerUpdate" data-label="REMARKS">{{ student.Remarks }}</td>
+                                    <td class="centerUpdate" data-label="INTERVENTION">{{ student.interventionTag if student.interventionTag is not none else '-' }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         
                             <!-- Section: Students Without Prediction Data -->
-                            <tbody>
+                            <tbody class="no-data">
                                 <tr>
                                     <td colspan="5" class="centerUpdate">NO PREDICTIVE DATA</td>
                                 </tr>
@@ -166,11 +166,14 @@
                             <button type="submit" class="btn">ALERT STUDENTS</button>
                         </form>
                     </div>
-                    <select id="filterDropdown" onchange="filterTable()">
-                        <option value="all">ALL</option>
-                        <option value="GRADUATE ON TIME">GRADUATE ON TIME</option>
-                        <option value="WILL NOT GRADUATE ON TIME">WILL NOT GRADUATE ON TIME</option>
-                    </select>
+                    <div class="input-group">
+                        <label for="factor_id" class="label">SORT:</label>
+                        <select id="filterDropdown" onchange="filterTable()" class="inputEvent">
+                            <option value="all">ALL</option>
+                            <option value="GRADUATE ON TIME">GRADUATE ON TIME</option>
+                            <option value="WILL NOT GRADUATE ON TIME">WILL NOT GRADUATE ON TIME</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

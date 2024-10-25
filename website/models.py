@@ -11,7 +11,7 @@ from flask import jsonify, request
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the file path
-file_path = os.path.join(current_dir, '..', 'TESTING.csv')  # Go one directory up to access TEST.csv
+file_path = os.path.join(current_dir, '..', 'DATASET.csv')  # Go one directory up to access TEST.csv
 
 # Load the CSV file
 data = pd.read_csv(file_path)
@@ -149,7 +149,11 @@ for index, input_features in enumerate(students_data):
     # Print the results
     #print(f"Student {index + 1}: {remark} - Main Factors: {main_factor_str}")
 
-# Debugging: Print feature importances
+# Set display options to show all rows
+pd.set_option('display.max_rows', None)
+pd.set_option('display.width', None)
+
+# Display feature importances
 print("Feature Importances:\n", feature_importance)
 
 # Check for missing values after preprocessing
