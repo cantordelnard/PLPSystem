@@ -104,7 +104,7 @@
     const academicInterventions = JSON.parse('{{ academic_interventions | tojson | safe }}');
 
     document.addEventListener('DOMContentLoaded', function () {
-        const academicListContainer = document.getElementById('interventions-list');
+        const academicListContainer = document.getElementById('academic-list');
         academicListContainer.innerHTML = ''; // Clear existing content
 
         if (!academicInterventions || academicInterventions.length === 0) {
