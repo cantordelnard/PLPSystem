@@ -1964,7 +1964,7 @@ def add_intervention():
 
             # SQL query to insert data into theEvents table
             sql = """
-            INSERT INTO theEvents (Title, Description, Link, Picture, Location, Date, Time, FactorID)
+            INSERT INTO theevents (Title, Description, Link, Picture, Location, Date, Time, FactorID)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
 
