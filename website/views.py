@@ -2127,7 +2127,7 @@ def update_event(event_id):
 
     # Handle GET request to fetch existing event data
     if request.method == 'GET':
-        cursor.execute('SELECT * FROM theEvents WHERE EventID = %s', (event_id,))
+        cursor.execute('SELECT * FROM theevents WHERE EventID = %s', (event_id,))
         event = cursor.fetchone()  # Fetch the event data
 
         # Check if event was found
@@ -2143,7 +2143,7 @@ def update_event(event_id):
     # Handle POST request to update event data
     elif request.method == 'POST':
         # Check if the event exists
-        cursor.execute('SELECT * FROM theEvents WHERE EventID = %s', (event_id,))
+        cursor.execute('SELECT * FROM theevents WHERE EventID = %s', (event_id,))
         event = cursor.fetchone()  # Fetch again to ensure it's still valid
 
         if event is None:
@@ -2171,7 +2171,7 @@ def update_event(event_id):
         # Update the database
         try:
             cursor.execute(''' 
-                UPDATE theEvents 
+                UPDATE theevents 
                 SET Title = %s, Description = %s, Link = %s, Location = %s, Date = %s, Time = %s, Picture = %s, FactorID = %s
                 WHERE EventID = %s
             ''', (
