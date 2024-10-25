@@ -2000,26 +2000,6 @@ def studentsEvent():
         connection = connect_to_database()  # or replace with appropriate connection method
         cursor = connection.cursor(dictionary=True)
 
-        if request.method == 'POST':
-            event_id = request.form.get('eventID')  # Changed from interventionID to eventID
-            status = request.form.get('status')
-
-            # Validate inputs
-            if not event_id or status is None:
-                return jsonify({'message': 'Missing data'}), 400
-
-            try:
-                # Insert interest data into the theevents table (change from 'events' to 'theevents')
-                sql = "INSERT INTO theevents (StudentID, EventID, Status) VALUES (%s, %s, %s)"
-                cursor.execute(sql, (user_id, event_id, status))
-                connection.commit()
-
-                return jsonify({'message': 'Success'}), 200
-
-            except Exception as e:
-                print(f"Error inserting into the database: {e}")
-                return jsonify({'message': 'Failed to record interest'}), 500
-
         # Fetch events for GET request to render the page
         cursor.execute("SELECT * FROM theevents")  # Change to fetch from 'theevents' table
         events = cursor.fetchall()

@@ -105,7 +105,7 @@
         academicListContainer.innerHTML = ''; // Clear existing content
 
         if (!academicInterventions || academicInterventions.length === 0) {
-            academicListContainer.innerHTML = '<p</p>';
+            academicListContainer.innerHTML = '<p>ERROR | NONE</p>';
         } else {
             academicInterventions.forEach(intervention => {
                 const interventionContainer = document.createElement('div');

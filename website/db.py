@@ -2,8 +2,17 @@ import bcrypt
 import mysql.connector
 import numpy as np
 
+'''
+#<!-- =============== DATABASE CONNECTION LOCAL ================ -->
+db_config = {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "onlinegradingsystem1"
+}
 
-#<!-- =============== DATABASE CONNECTION ================ -->
+#<!-- =============== DATABASE CONNECTION HEROKU ================ -->
+'''
 db_config = {
     "host": "s0znzigqvfehvff5.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "user": "hkcekjqb50br9q52",
