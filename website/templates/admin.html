@@ -134,9 +134,16 @@
       </div>
     </div>
   </div>
+
 <!-- ====== Bar Chart ====== -->
-<div class="adminGraph">
-  <canvas id="barChart"></canvas>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="adminGraph">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Add Chart.js library -->
@@ -145,73 +152,86 @@
 <!-- Add JavaScript code to fetch data and create chart -->
 <script>
   // Fetch data from database using AJAX
-fetch('/get_graduation_data')
-  .then(response => response.json())
-  .then(data => {
-    // Create bar chart
-    const ctx = document.getElementById('barChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: data.labels,
-        datasets: [{
-          label: 'Graduation Rates',
-          data: data.values,
-          backgroundColor: data.labels.map(label => {
-            if (label === 'Will Graduate On Time') {
-              return 'rgba(19, 123, 53, 0.8)'; // Green
-            } else {
-              return 'rgba(0, 0, 0, 0.8)'; // Black
-            }
-          }),
-          borderColor: data.labels.map(label => {
-            if (label === 'Will Graduate On Time') {
-              return 'rgba(19, 123, 53, 1)'; // Green
-            } else {
-              return 'rgba(0, 0, 0, 1)'; // Black
-            }
-          }),
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Graduation Rates'
+  fetch('/get_graduation_data')
+    .then(response => response.json())
+    .then(data => {
+      // Create bar chart
+      const ctx = document.getElementById('barChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Graduation Rates',
+            data: data.values,
+            backgroundColor: data.labels.map(label => {
+              return label === 'Will Graduate On Time' ? 'rgba(19, 123, 53, 0.8)' : 'rgba(0, 0, 0, 0.8)';
+            }),
+            borderColor: data.labels.map(label => {
+              return label === 'Will Graduate On Time' ? 'rgba(19, 123, 53, 1)' : 'rgba(0, 0, 0, 1)';
+            }),
+            borderWidth: 1
+          }]
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100
-          }
-        },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'right',
-            fontSize: 14,
-            fontColor: 'black',
-            labels: {
-              generateLabels: function(chart) {
-                return chart.data.labels.map(function(label, index) {
-                  return {
-                    text: label,
-                    fillStyle: chart.data.datasets[0].backgroundColor[index],
-                    strokeStyle: chart.data.datasets[0].borderColor[index]
-                  };
-                });
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true, // Enable the legend
+              position: 'bottom', // Position legend below the chart
+              labels: {
+                generateLabels: function(chart) {
+                  return [
+                    {
+                      text: 'Will Graduate On Time',
+                      fillStyle: 'rgba(19, 123, 53, 0.8)', // Green box
+                      fontColor: 'black' // Black text
+                    },
+                    {
+                      text: 'Will Not Graduate On Time',
+                      fillStyle: 'rgba(0, 0, 0, 0.8)', // Black box
+                      fontColor: 'black' // Black text
+                    }
+                  ];
+                },
+                font: {
+                  size: 14
+                }
               }
             }
+          },
+          title: {
+            display: true,
+            text: 'Graduation Rates',
+            font: {
+              size: 18
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true
           }
-        },
-        animation: {
-          animateScale: true,
-          animateRotate: true
         }
-      }
-    });
-  })
-  .catch(error => console.error('Error:', error));
+      });
+    })
+    .catch(error => console.error('Error:', error));
 </script>
+
+<!-- Add some custom CSS for responsive canvas -->
+<style>
+  .adminGraph {
+    position: relative;
+    height: 900px; /* Set a height for the chart */
+    width: 100%; /* Make it full width */
+  }
+</style>
+
 
 {% endblock %}

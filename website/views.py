@@ -1910,7 +1910,7 @@ def get_interventions():
     cursor = connection.cursor(dictionary=True)
 
     # Fetch all events
-    cursor.execute('SELECT * FROM theEvents')
+    cursor.execute('SELECT * FROM theevents')
     events = cursor.fetchall()
 
     # Close the connection

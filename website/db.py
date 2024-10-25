@@ -20,6 +20,7 @@ db_config = {
     "database": "uw7ef945eu5qv52o"
 }
 
+
 def connect_to_database():
     try:
         connection = mysql.connector.connect(**db_config)
