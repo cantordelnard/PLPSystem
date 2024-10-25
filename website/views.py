@@ -2334,12 +2334,17 @@ def studentsIntervention():
         student_id = fetch_student_id(user_id)  # Fetch the StudentID
         
         if student_id is not None:
-            academic_interventions = fetch_academic_interventions(student_id)  # Fetch academic interventions
-            socioeconomic_interventions = fetch_socioeconomic_interventions(student_id)  # Fetch socioeconomic interventions
-            behavioral_interventions = fetch_behavioral_interventions(student_id)  # Fetch behavioral interventions
+            # Fetching academic, socioeconomic, and behavioral interventions
+            academic_interventions = fetch_academic_interventions(student_id)
+            socioeconomic_interventions = fetch_socioeconomic_interventions(student_id)
+            behavioral_interventions = fetch_behavioral_interventions(student_id)
 
-            print(academic_interventions, socioeconomic_interventions, behavioral_interventions)  # Debugging output
-            
+            # Debugging output for Heroku logs
+            print("Academic Interventions:", academic_interventions)
+            print("Socioeconomic Interventions:", socioeconomic_interventions)
+            print("Behavioral Interventions:", behavioral_interventions)
+
+            # Render the template with the fetched interventions
             return render_template("studentsIntervention.html", 
                                    student_id=student_id, 
                                    academic_interventions=academic_interventions,

@@ -81,7 +81,7 @@
         <h1>INTERVENTIONS</h1>
         <div class="containerEvent">
             <!-- Academic Interventions -->
-            <div id="interventions-list" class="notifications-list">
+            <div id="academic-list" class="notifications-list">
                 <!-- Dynamic academic content will be populated here -->
             </div>
             <!-- Socioeconomic Interventions -->
@@ -98,6 +98,9 @@
 
 <!-- Script for handling academic interventions -->
 <script>
+    // Log academic interventions to the console for debugging
+    console.log("Academic Interventions Data:", JSON.parse('{{ academic_interventions | tojson | safe }}'));
+
     const academicInterventions = JSON.parse('{{ academic_interventions | tojson | safe }}');
 
     document.addEventListener('DOMContentLoaded', function () {

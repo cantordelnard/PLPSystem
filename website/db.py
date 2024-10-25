@@ -2043,6 +2043,7 @@ def fetch_student_id(user_id):
 def fetch_academic_interventions(student_id):
     connection = connect_to_database()
     if connection is None:
+        print("Database connection failed")  # Added error log for connection issues
         return None
 
     try:
@@ -2065,10 +2066,11 @@ def fetch_academic_interventions(student_id):
         """, (student_id,))
         
         interventions = cursor.fetchall()  # Fetch all results
+        print("Fetched Academic Interventions:", interventions)  # Debug output
         return interventions  # Return the list of interventions
 
     except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        print(f"Error: {err}")  # Print the error if any issues occur
         return None
 
     finally:
