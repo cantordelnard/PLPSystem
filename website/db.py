@@ -2058,7 +2058,7 @@ def fetch_academic_interventions(student_id):
             FROM 
                 academicintervention ai
             JOIN 
-                PROFESSORS p ON ai.ProfID = p.ProfessorID
+                professors p ON ai.ProfID = p.ProfessorID
             JOIN 
                 SUBJECTS s ON ai.SubjID = s.SubjectID
             WHERE 
