@@ -1489,7 +1489,7 @@ form {
   .cardUpload {
     padding: 30px;
     width: 350px !important;
-    height: 33vh !important;
+    height: auto !important;
     text-align: center; /* Align content to the left */
     display: flex;
     flex-direction: column;
