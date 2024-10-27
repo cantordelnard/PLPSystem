@@ -88,7 +88,7 @@
   <!-- ====== Welcome Note ====== -->
   <div class="partOne">
     {% if admin_info %}
-    <h1>Welcome, Admin {{ admin_info['FirstName'] }} {{ admin_info['LastName'] }}!</h1>
+    <h1 style="text-transform: uppercase;">Welcome, Admin {{ admin_info['FirstName'] }} {{ admin_info['LastName'] }}!</h1>
     {% else %}
     <h1>ERROR FETCHING USERNAME</h1>
     {% endif %}
@@ -146,29 +146,65 @@
   </div> -->
 
   <div class="dashboardOne">
-    <!-- ------ LIST ------ -->
     <div class="graph">
       <div class="cardHeader">
-          <h2>PREDICTION OVERVIEW</h2>
+        <h2>PREDICTION OVERVIEW</h2>
       </div>
       <div class="polarGraph">
-        <canvas id="polarAreaChart"></canvas> <!-- Canvas for the chart -->
+        <canvas id="polarAreaChart"></canvas>
       </div>
-  </div>
+    </div>
 
-    <!-- ------ ADD/UPDATE ------ -->
     <div class="dashboardTwo newData-two">
       <div class="cardHeader">
         <h2>[ DASHBOARD TITLE ONE ]</h2>
       </div>
+      <!-- Removed carousel content from DIV2 -->
     </div>
 
     <div class="dashboardThree newData-three">
       <div class="cardHeader">
-        <h2>[ DASHBOARD TITLE TWO ]</h2>
+        <h2 id="carouselTitle">[ DASHBOARD TITLE TWO ]</h2>
+        <div class="carousel-controls">
+          <button onclick="prevSlide()">&#10094;</button>
+          <button onclick="nextSlide()">&#10095;</button>
+        </div>
+      </div>
+      <div id="carouselContent" class="carousel-content">
+        <p>Hello World</p>
       </div>
     </div>
-</div>
+  </div>
+
+  <div class="cardBox2">
+    <div class="card">
+      <div>
+        <div class="numbers">###</div>
+        <div class="cardName">[ DASHBOARD TITLE THREE ]</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="pulse-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">###</div>
+        <div class="cardName">[ DASHBOARD TITLE FOUR ]</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="pulse-outline"></ion-icon>
+      </div>
+    </div>
+    <div class="card">
+      <div>
+        <div class="numbers">###</div>
+        <div class="cardName">[ DASHBOARD TITLE FIVE ]</div>
+      </div>
+      <div class="iconBx">
+        <ion-icon name="pulse-outline"></ion-icon>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -178,7 +214,7 @@
 
 <script>
   const graduationStatusCounts = JSON.parse('{{ graduation_status_counts | tojson | safe }}');
-  
+
   const onTimeCount = graduationStatusCounts.on_time;         // Get count of students graduating on time
   const notOnTimeCount = graduationStatusCounts.not_on_time;  // Get count of students not graduating on time
   const notPredictedCount = graduationStatusCounts.not_predicted; // Get count of students with no prediction
@@ -191,50 +227,96 @@
   const ctx = document.getElementById('polarAreaChart').getContext('2d');
 
   const polarAreaChart = new Chart(ctx, {
-      type: 'polarArea',
-      data: {
-          labels: ['Graduating On Time', 'Will Not Graduate On Time', 'Status Not Predicted'],
-          datasets: [{
-              label: 'Student Graduation Status',
-              data: [onTimeCount, notOnTimeCount, notPredictedCount],
-              backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 206, 86, 0.5)'],
-              borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-              legend: {
-                  position: 'bottom',
-                  labels: {
-                      font: {
-                          size: 10,
-                      }
-                  }
-              },
-              tooltip: {
-                  callbacks: {
-                      label: function(tooltipItem) {
-                          return tooltipItem.label + ': ' + tooltipItem.raw + ' Students';
-                      }
-                  }
-              }
-          },
-          scales: {
-              r: {
-                  ticks: {
-                      display: true,
-                      color: '#999',
-                      font: {
-                          size: 10, // Font size for radial ticks
-                      }
-                  }
-              }
+    type: 'polarArea',
+    data: {
+      labels: ['Graduating On Time', 'Will Not Graduate On Time', 'Status Not Predicted'],
+      datasets: [{
+        label: 'Student Graduation Status',
+        data: [onTimeCount, notOnTimeCount, notPredictedCount],
+        backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 206, 86, 0.5)'],
+        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: {
+              size: 10,
+            }
           }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw + ' Students';
+            }
+          }
+        }
+      },
+      scales: {
+        r: {
+          ticks: {
+            display: true,
+            color: '#999',
+            font: {
+              size: 10, // Font size for radial ticks
+            }
+          }
+        }
       }
+    }
   });
+</script>
+
+<script>
+  const carouselData = [
+    {
+      title: "STUDENTS AT RISK",
+      content: `
+              <table class="uk-table uk-table-divider">
+                  <thead>
+                      <tr>
+                          <th>STUDID</th>
+                          <th>STUDENT NAME</th>
+                          <th>PERCENTAGE</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr><td>1</td><td>LOREM IPSUM</td><td>40%</td></tr>
+                      <tr><td>2</td><td>LOREM IPSUM</td><td>20%</td></tr>
+                      <!-- Add more rows as needed -->
+                  </tbody>
+              </table>
+          `
+    },
+    { title: "STUDENTS WITHOUT PREDICTION", content: "<p>This is the second page.</p>" },
+    { title: "STUDENTS GRADUATING ON TIME", content: "<p>This is the third page.</p>" }
+  ];
+
+  let currentSlide = 0;
+
+  function updateCarousel() {
+    document.getElementById("carouselTitle").innerText = carouselData[currentSlide].title; // Update the title for DIV3
+    document.getElementById("carouselContent").innerHTML = carouselData[currentSlide].content; // Update content for DIV3
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
+    updateCarousel();
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % carouselData.length;
+    updateCarousel();
+  }
+
+  // Initial content display
+  updateCarousel();
 </script>
 
 <!-- Add JavaScript code to fetch data and create chart -->
@@ -329,15 +411,6 @@
     })
     .catch(error => console.error('Error:', error));
 </script>
-
-<!-- Add some custom CSS for responsive canvas -->
-<style>
-  .adminGraph {
-    position: relative;
-    height: 700px;
-    width: 100%;
-  }
-</style>
 
 
 {% endblock %}
