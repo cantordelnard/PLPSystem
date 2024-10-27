@@ -471,7 +471,7 @@ body {
   padding: 20px 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 30px;
+  grid-gap: 20px;
 }
 
 .cardBox .card {
@@ -481,7 +481,7 @@ body {
   border-radius: 20px;
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
+  border: none;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
 
@@ -501,18 +501,6 @@ body {
 .cardBox .card .iconBx {
   font-size: 2.5rem;
   color: var(--black2);
-}
-
-.cardBox .card:hover {
-  background: var(--green);
-  transition: 0.3s;
-}
-
-.cardBox .card:hover .numbers,
-.cardBox .card:hover .cardName,
-.cardBox .card:hover .iconBx {
-  color: var(--white);
-  transition: 0.3s;
 }
 
 /* ======================= Login ====================== */
@@ -2220,11 +2208,6 @@ form {
   padding: 125px;
 }
 
-.adminGraph img {
-  width: auto;
-  height: 500px;
-}
-
 .exploreTitle {
   display: flex;
   flex-direction: column;
@@ -2989,4 +2972,74 @@ form {
 .submit:hover {
   background-color: var(--lightGreen2);
   /* Darker green on hover */
+}
+
+
+
+
+
+
+
+.dashboardOne {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  grid-gap: 20px;
+}
+
+.dashboardOne .cardHeader h2 {
+  color: var(--black2);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.dashboardOne .graph {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 335px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.dashboardOne .dashboardTwo {
+  display: flex; 
+  flex-direction: column; /* Ensure content inside stretches vertically */
+  gap: 20px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  min-height: 335px;
+}
+
+.dashboardOne .dashboardThree {
+  display: flex; 
+  flex-direction: column; /* Ensure content inside stretches vertically */
+  gap: 20px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  min-height: 335px;
+}
+
+/* Make the second div (DASHBOARD TITLE ONE) stretch down to cover the space */
+.dashboardOne .newData-two {
+  grid-column: 2; /* Position it in the second column */
+  grid-row: 1 / span 2; /* Make it span both rows */
+}
+
+.dashboardOne .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.polarGraph {
+  padding: 0px;
 }

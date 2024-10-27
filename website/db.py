@@ -2,7 +2,7 @@ import bcrypt
 import mysql.connector
 import numpy as np
 
-'''
+
 #<!-- =============== DATABASE CONNECTION LOCAL ================ -->
 db_config = {
     "host": "localhost",
@@ -19,7 +19,7 @@ db_config = {
     "password": "n9ymqr6wbfqvbrgr",
     "database": "uw7ef945eu5qv52o"
 }
-
+'''
 def connect_to_database():
     try:
         connection = mysql.connector.connect(**db_config)
@@ -2225,3 +2225,26 @@ def fetch_alerts(student_id):
             connection.close()
     else:
         return []
+
+def get_graduation_status_counts():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT
+                    SUM(CASE WHEN p.Remarks = 'GRADUATE ON TIME' THEN 1 ELSE 0 END) AS on_time,
+                    SUM(CASE WHEN p.Remarks = 'WILL NOT GRADUATE ON TIME' THEN 1 ELSE 0 END) AS not_on_time,
+                    SUM(CASE WHEN p.Remarks IS NULL THEN 1 ELSE 0 END) AS not_predicted
+                FROM students s
+                LEFT JOIN prediction p ON s.StudentID = p.StudentID
+            """)
+            counts = cursor.fetchone()
+            connection.close()
+            return counts
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        return None
