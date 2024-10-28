@@ -2248,3 +2248,34 @@ def get_graduation_status_counts():
             return None
     else:
         return None
+    
+
+def get_factor_influence_counts():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT
+                    SUM(CASE WHEN FactorID IN (1, 4, 5, 7) THEN 1 ELSE 0 END) AS Socioeconomic_Count,
+                    SUM(CASE WHEN FactorID IN (2, 4, 6, 7) THEN 1 ELSE 0 END) AS Academic_Count,
+                    SUM(CASE WHEN FactorID IN (3, 5, 6, 7) THEN 1 ELSE 0 END) AS Behavioral_Count
+                FROM prediction
+                WHERE Remarks = 'WILL NOT GRADUATE ON TIME'
+            """)
+            counts = cursor.fetchone()
+            connection.close()
+            # Convert to a list of dictionaries for the frontend
+            return [
+                {"FactorName": "Socioeconomic", "FactorCount": counts['Socioeconomic_Count']},
+                {"FactorName": "Academic", "FactorCount": counts['Academic_Count']},
+                {"FactorName": "Behavioral", "FactorCount": counts['Behavioral_Count']}
+            ]
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        return None
+
+

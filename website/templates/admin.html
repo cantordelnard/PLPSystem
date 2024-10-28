@@ -88,7 +88,8 @@
   <!-- ====== Welcome Note ====== -->
   <div class="partOne">
     {% if admin_info %}
-    <h1 style="text-transform: uppercase;">Welcome, Admin {{ admin_info['FirstName'] }} {{ admin_info['LastName'] }}!</h1>
+    <h1 style="text-transform: uppercase;">Welcome, Admin {{ admin_info['FirstName'] }} {{ admin_info['LastName'] }}!
+    </h1>
     {% else %}
     <h1>ERROR FETCHING USERNAME</h1>
     {% endif %}
@@ -134,17 +135,6 @@
     </div>
   </div>
 
-  <!-- ====== Bar Chart ======
-  <div class="container mt-4">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10 col-sm-12">
-        <div class="adminGraph">
-          <canvas id="barChart"></canvas>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   <div class="dashboardOne">
     <div class="graph">
       <div class="cardHeader">
@@ -157,9 +147,11 @@
 
     <div class="dashboardTwo newData-two">
       <div class="cardHeader">
-        <h2>[ DASHBOARD TITLE ONE ]</h2>
+        <h2>FACTORS INFLUENCING GRADUATION PREDICTIONS</h2>
       </div>
-      <!-- Removed carousel content from DIV2 -->
+      <div class="barGraph">
+        <canvas id="factorInfluenceChart"></canvas>
+      </div>
     </div>
 
     <div class="dashboardThree newData-three">
@@ -170,10 +162,16 @@
           <button onclick="nextSlide()">&#10095;</button>
         </div>
       </div>
-      <div id="carouselContent" class="carousel-content">
-        <p>Hello World</p>
+      <div class="dashboardCenter">
+        <div id="carouselContent" class="carousel-content">
+          <p>Hello World</p>
+        </div>
+      </div>
+      <div class="cardFooter">
+        <p>BUTTONS WILL BE HERE</p>
       </div>
     </div>
+  
   </div>
 
   <div class="cardBox2">
@@ -274,50 +272,175 @@
 </script>
 
 <script>
+  const itemsPerPage = 8; // Set to 2 for demonstration, change as needed
+
   const carouselData = [
     {
       title: "STUDENTS AT RISK",
-      content: `
-              <table class="uk-table uk-table-divider">
-                  <thead>
-                      <tr>
-                          <th>STUDID</th>
-                          <th>STUDENT NAME</th>
-                          <th>PERCENTAGE</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr><td>1</td><td>LOREM IPSUM</td><td>40%</td></tr>
-                      <tr><td>2</td><td>LOREM IPSUM</td><td>20%</td></tr>
-                      <!-- Add more rows as needed -->
-                  </tbody>
-              </table>
-          `
+      data: [
+        { id: 1, name: "LOREM IPSUM", percentage: "40%" },
+        { id: 2, name: "LOREM IPSUM", percentage: "20%" },
+        { id: 3, name: "LOREM IPSUM", percentage: "30%" },
+        { id: 4, name: "LOREM IPSUM", percentage: "25%" },
+        { id: 5, name: "LOREM IPSUM", percentage: "35%" },
+        { id: 6, name: "LOREM IPSUM", percentage: "45%" },
+        { id: 7, name: "LOREM IPSUM", percentage: "50%" },
+        { id: 8, name: "LOREM IPSUM", percentage: "55%" },
+        { id: 9, name: "LOREM IPSUM", percentage: "60%" },
+        { id: 10, name: "LOREM IPSUM", percentage: "65%" },
+        { id: 11, name: "LOREM IPSUM", percentage: "70%" },
+        { id: 12, name: "LOREM IPSUM", percentage: "75%" }
+      ]
     },
-    { title: "STUDENTS WITHOUT PREDICTION", content: "<p>This is the second page.</p>" },
-    { title: "STUDENTS GRADUATING ON TIME", content: "<p>This is the third page.</p>" }
+    { 
+      title: "STUDENTS WITHOUT PREDICTION", 
+      data: [
+        { id: 13, name: "EXAMPLE STUDENT", percentage: "60%" },
+        { id: 14, name: "ANOTHER STUDENT", percentage: "80%" }
+      ]
+    },
+    { 
+      title: "STUDENTS GRADUATING ON TIME", 
+      data: [
+        { id: 15, name: "GRADUATE ONE", percentage: "100%" },
+        { id: 16, name: "GRADUATE TWO", percentage: "90%" }
+      ]
+    }
   ];
 
   let currentSlide = 0;
+  let currentPage = 1;
+
+  function generateTable(data) {
+    const start = (currentPage - 1) * itemsPerPage;
+    const paginatedData = data.slice(start, start + itemsPerPage);
+
+    let tableContent = `
+      <div class="classifiers">
+        <table>
+          <thead>
+            <tr class="bgTr">
+              <th>STUDID</th>
+              <th>STUDENT NAME</th>
+              <th>PERCENTAGE</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    paginatedData.forEach(item => {
+      tableContent += `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.name}</td>
+          <td>${item.percentage}</td>
+        </tr>
+      `;
+    });
+
+    tableContent += `
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <button ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1)">Previous</button>
+        <span>Page ${currentPage}</span>
+        <button ${currentPage === Math.ceil(data.length / itemsPerPage) ? 'disabled' : ''} onclick="changePage(1)">Next</button>
+      </div>
+    `;
+
+    return tableContent;
+  }
+
+  function changePage(direction) {
+    const totalPages = Math.ceil(carouselData[currentSlide].data.length / itemsPerPage);
+    currentPage += direction;
+
+    // Ensure the page number is within bounds
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    updateCarousel();
+  }
 
   function updateCarousel() {
     document.getElementById("carouselTitle").innerText = carouselData[currentSlide].title; // Update the title for DIV3
-    document.getElementById("carouselContent").innerHTML = carouselData[currentSlide].content; // Update content for DIV3
+    document.getElementById("carouselContent").innerHTML = generateTable(carouselData[currentSlide].data); // Update content for DIV3
   }
 
   function prevSlide() {
     currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
+    currentPage = 1; // Reset to the first page on slide change
     updateCarousel();
   }
 
   function nextSlide() {
     currentSlide = (currentSlide + 1) % carouselData.length;
+    currentPage = 1; // Reset to the first page on slide change
     updateCarousel();
   }
 
   // Initial content display
   updateCarousel();
 </script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const factorData = JSON.parse('{{ factor_counts | tojson | safe }}');
+    const labels = factorData.map(factor => factor.FactorName);
+    const data = factorData.map(factor => factor.FactorCount);
+
+    // Define your colors for the bars
+    const backgroundColors = [
+      'rgba(54, 162, 235, 0.5)',  // Color for the first bar
+      'rgba(255, 99, 132, 0.5)',   // Color for the second bar
+      'rgba(255, 206, 86, 0.5)'    // Color for the third bar
+    ];
+
+    const ctx = document.getElementById("factorInfluenceChart").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "",  // Remove dataset label
+          data: data,
+          backgroundColor: backgroundColors,  // Use the colors array
+          borderColor: [
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: false,  // Remove legend
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                const index = tooltipItem.dataIndex; // Get the index of the bar
+                const numberOfStudents = data[index]; // Get the number of students for that bar
+                return `${labels[index]}: ${numberOfStudents} Students`; // Customize tooltip text
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+
 
 <!-- Add JavaScript code to fetch data and create chart -->
 <script>

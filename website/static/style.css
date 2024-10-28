@@ -3022,8 +3022,73 @@ form {
   align-items: center;
 }
 
+.dashboardThree {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: space-between; /* Space between header, content, and footer */
+  grid-column: 1 / span 2; /* Make DIV3 span across both columns */
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  min-height: 500px; /* Ensures a minimum height for the card */
+}
+
+.dashboardThree .cardFooter {
+  margin-top: 20px; /* Space above the footer */
+  padding: 10px;    /* Space inside the footer */
+  background: var(--light-gray); /* Background color for the footer */
+  border-top: 1px solid var(--gray); /* Top border for separation */
+  text-align: center; /* Center align the footer text */
+  font-size: 14px;    /* Adjust font size */
+  color: var(--dark-gray); /* Text color for the footer */
+}
+
+.dashboardCenter {
+  flex-grow: 1; /* Allow this div to take available space */
+  display: flex; /* Enable flexbox for child alignment */
+  align-items: flex-start; /* Align items to the top */
+  justify-content: flex-start; /* Align items to the left (change from center) */
+  padding-top: 20px; /* Space above the content */
+  width: 100%; /* Ensure the dashboard center takes the full width of the parent */
+}
+
+.dashboardCenter .carousel-content {
+  width: 100%; /* Ensure the carousel content takes the full width */
+}
+
+.classifiers {
+  width: 100%; /* Ensure classifiers also take the full width */
+}
+
+/* Ensure the table fills the width of the container */
+.classifiers table {
+  width: 100%; /* Makes the table fill the width of the card */
+  border-collapse: collapse; /* Remove space between table cells */
+}
+
+.classifiers th, .classifiers td {
+  padding: 10px; /* Add padding to cells */
+  text-align: left; /* Align text to the left */
+  border: 1px solid var(--light-gray); /* Add border for better visibility */
+}
+
+.classifiers th {
+  background-color: var(--light-gray); /* Background for header cells */
+}
+
+/* Optional styling for classifiers */
+.classifiers {
+  margin-bottom: 20px; /* Space between classifiers */
+}
+
 .polarGraph {
   padding: 0px;
+}
+
+.barGraph {
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .carousel-controls {
@@ -3077,4 +3142,54 @@ form {
 .cardBox2 .card .iconBx {
   font-size: 2.5rem;
   color: var(--black2);
+}
+
+.classifiers table {
+  border-radius: 10px; /* Adjust the radius as needed */
+  overflow: hidden;    /* Ensures the corners are rounded for child elements */
+  border-collapse: separate; /* Ensures border-radius applies correctly */
+}
+
+.bgTr {
+  background-color: rgba(19, 123, 53, 0.7) !important;
+}
+
+/* Styles for the pagination container */
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  align-items: center;
+  margin-top: 10px; /* Adjust margin as needed */
+  padding: 5px; /* Padding around the pagination */
+}
+
+/* Styles for the pagination buttons */
+.pagination button {
+  background-color: rgba(19, 123, 53, 0.7); /* Primary button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px; /* Padding for buttons */
+  margin: 0 5px; /* Margin between buttons */
+  cursor: pointer;
+  font-size: 12px; /* Font size for buttons */
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Change background on hover */
+.pagination button:hover:not(:disabled) {
+  background-color: rgba(19, 123, 53, 1); /* Darker shade on hover */
+}
+
+/* Disable styles */
+.pagination button:disabled {
+  background-color: #c0c0c0; /* Light grey for disabled */
+  cursor: not-allowed;
+}
+
+/* Styles for the page text */
+.pagination span {
+  margin: 0 5px; /* Margin around page text */
+  font-size: 12px; /* Font size for page text */
+  color: #333; /* Darker text color */
 }

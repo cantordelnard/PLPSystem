@@ -11,7 +11,7 @@ from flask import jsonify, request
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the file path
-file_path = os.path.join(current_dir, '..', 'TESTING.csv')  # Go one directory up to access TEST.csv
+file_path = os.path.join(current_dir, '..', 'DATASET_ONE.csv')  # Go one directory up to access TEST.csv
 
 # Load the CSV file
 data = pd.read_csv(file_path)
