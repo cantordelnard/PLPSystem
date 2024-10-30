@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, current_app, render_template, session, redirect, url_for, flash, request, jsonify
 import mysql.connector
-from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_specialization_by_id, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions, get_student_predictions_by_professor_and_subject, get_students_by_class, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
+from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
 import logging
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -508,7 +508,7 @@ def generate_comment(input_features, prediction, average_percentage):
     if prediction != 1:  # If the prediction is NOT graduating on time
         # Socioeconomic factors
         combined_monthly_income = input_features['mother_monthly_income'] + input_features['father_monthly_income']
-        if combined_monthly_income <= 10000:
+        if combined_monthly_income <= 15000:
             comments.append(
                 f"Socioeconomic Factor"
             )
@@ -737,6 +737,9 @@ def admin():
             subject_count = get_subject_count()
             graduation_status_counts = get_graduation_status_counts()
             factor_counts = get_factor_influence_counts()
+            student_risk = get_student_at_risk()
+            students_graduating_on_time = get_students_graduating_on_time()
+            students_without_prediction = get_students_without_prediction()
             
             if graduation_status_counts:
                 return render_template("admin.html", 
@@ -746,7 +749,10 @@ def admin():
                                        admin_count=admin_count,
                                        subject_count=subject_count,
                                        graduation_status_counts=graduation_status_counts,
-                                       factor_counts=factor_counts)
+                                       factor_counts=factor_counts,
+                                       student_risk=student_risk,
+                                       students_graduating_on_time=students_graduating_on_time,
+                                       students_without_prediction=students_without_prediction)
             else:
                 flash("Error retrieving graduation status counts.")
                 return redirect(url_for("auth.login"))
@@ -2413,6 +2419,33 @@ def add_alerts():
             connection.close()
 
     return redirect(url_for("views.adminPrediction"))
+
+@views.route('/gender-count', methods=['GET'])
+def get_gender_count():
+    connection = connect_to_database()
+    cursor = connection.cursor()
+
+    # Query to count the number of male and female students
+    cursor.execute("""
+        SELECT Gender, COUNT(*) AS Count
+        FROM students
+        GROUP BY Gender;
+    """)
+
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    result = {
+        "labels": [],
+        "counts": []
+    }
+
+    for row in data:
+        result["labels"].append(row[0])  # Gender
+        result["counts"].append(row[1])   # Count
+
+    return jsonify(result)
 
 
 

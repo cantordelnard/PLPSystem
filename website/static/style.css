@@ -887,7 +887,13 @@ form {
 /* ====================== Responsive Design [PHONE] ========================== */
 @media (max-width: 480px) {
   .cardBox {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+
+  .cardBox .card {
+    padding: 20px;
+    border-radius: 10px;
   }
 
   .user {
@@ -1499,6 +1505,76 @@ form {
 
   .no-data {
     display: none;
+  }
+
+  .updateCard {
+    width: 400px !important;
+  }
+
+  .updateContainer .updateCard .cardHeader h1 {
+    font-size: 20px !important;
+  }
+
+  .dashboardOne {
+    display: flex !important;
+    flex-direction: column !important; /* Stack elements vertically */
+    gap: 15px !important; /* Add space between cards */
+    padding: 10px !important; /* Adjust padding for mobile */
+  }
+
+  /* Card Header adjustments */
+  .dashboardOne .cardHeader h2 {
+    font-size: 0.9rem !important; /* Smaller font for headers */
+    font-weight: 500 !important;
+  }
+
+  /* Adjust card styling for smaller screens */
+  .dashboardOne .graph,
+  .dashboardOne .dashboardTwo,
+  .dashboardOne .dashboardThree {
+    min-height: auto !important; /* Remove fixed height for responsiveness */
+    padding: 15px !important;
+    border-radius: 10px !important; /* Smaller border radius */
+  }
+
+  /* Dashboard Three adjustments for mobile */
+  .dashboardOne .dashboardThree {
+    flex-direction: column !important;
+    min-height: auto !important; /* Remove fixed height */
+  }
+
+  /* Graph container adjustments */
+  .polarGraph, .barGraph, .miniGraph {
+    padding: 10px !important; /* Adjust padding */
+    margin-top: 10px !important;
+  }
+
+  /* Carousel control adjustments */
+  .carousel-controls {
+    gap: 5px !important; /* Reduce gap */
+  }
+  .carousel-controls button {
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+  }
+
+  /* Table adjustments */
+  .classifiers table {
+    font-size: 12px !important; /* Smaller font for readability */
+    border-spacing: 0 !important; /* Reduce spacing between cells */
+  }
+  .classifiers th, .classifiers td {
+    padding: 5px !important; /* Smaller padding in table cells */
+  }
+
+  /* Pagination buttons for mobile */
+  .pagination {
+    justify-content: center !important; /* Center-align on mobile */
+    margin-top: 5px !important;
+  }
+  .pagination button, .pagination span {
+    font-size: 10px !important;
+    padding: 5px 8px !important;
   }
 
 }
@@ -3091,6 +3167,10 @@ form {
   margin-top: 20px;
 }
 
+.miniGraph {
+  padding: 20px;
+}
+
 .carousel-controls {
   display: flex;
   justify-content: center;
@@ -3109,7 +3189,7 @@ form {
 .cardBox2 {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
@@ -3118,19 +3198,9 @@ form {
 .cardBox2 .card {
   position: relative;
   background: var(--white);
-  padding: 25px;
   border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
   border: none;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-}
-
-.cardBox2 .card .numbers {
-  position: relative;
-  font-weight: 500;
-  font-size: 2.5rem;
-  color: var(--green);
 }
 
 .cardBox2 .card .cardName {
@@ -3150,7 +3220,7 @@ form {
   border-collapse: separate; /* Ensures border-radius applies correctly */
 }
 
-.bgTr {
+.bgTrDashboard {
   background-color: rgba(19, 123, 53, 0.7) !important;
 }
 
@@ -3161,6 +3231,7 @@ form {
   align-items: center;
   margin-top: 10px; /* Adjust margin as needed */
   padding: 5px; /* Padding around the pagination */
+  width: 100%;
 }
 
 /* Styles for the pagination buttons */
@@ -3192,4 +3263,14 @@ form {
   margin: 0 5px; /* Margin around page text */
   font-size: 12px; /* Font size for page text */
   color: #333; /* Darker text color */
+}
+
+.footer-flex {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space out children to the edges */
+  align-items: center; /* Center vertically */
+}
+
+.pagination-right {
+  justify-content: flex-end;
 }

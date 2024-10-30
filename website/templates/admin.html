@@ -137,69 +137,78 @@
 
   <div class="dashboardOne">
     <div class="graph">
-      <div class="cardHeader">
-        <h2>PREDICTION OVERVIEW</h2>
-      </div>
-      <div class="polarGraph">
-        <canvas id="polarAreaChart"></canvas>
-      </div>
+        <div class="cardHeader">
+            <h2>PREDICTION OVERVIEW</h2>
+        </div>
+        <div class="polarGraph">
+            <canvas id="polarAreaChart"></canvas>
+        </div>
     </div>
 
     <div class="dashboardTwo newData-two">
-      <div class="cardHeader">
-        <h2>FACTORS INFLUENCING GRADUATION PREDICTIONS</h2>
-      </div>
-      <div class="barGraph">
-        <canvas id="factorInfluenceChart"></canvas>
-      </div>
+        <div class="cardHeader">
+            <h2>FACTORS INFLUENCING GRADUATION PREDICTIONS</h2>
+        </div>
+        <div class="barGraph">
+            <canvas id="factorInfluenceChart"></canvas>
+        </div>
     </div>
 
     <div class="dashboardThree newData-three">
-      <div class="cardHeader">
-        <h2 id="carouselTitle">[ DASHBOARD TITLE TWO ]</h2>
-        <div class="carousel-controls">
-          <button onclick="prevSlide()">&#10094;</button>
-          <button onclick="nextSlide()">&#10095;</button>
+        <div class="cardHeader">
+            <h2 id="carouselTitle">[ DASHBOARD TITLE TWO ]</h2>
+            <div class="carousel-controls">
+                <button onclick="prevSlide()">&#10094;</button>
+                <button onclick="nextSlide()">&#10095;</button>
+            </div>
         </div>
-      </div>
-      <div class="dashboardCenter">
-        <div id="carouselContent" class="carousel-content">
-          <p>Hello World</p>
+        <div class="dashboardCenter">
+            <div id="carouselContent" class="carousel-content">
+                <p>Hello World</p>
+            </div>
         </div>
-      </div>
-      <div class="cardFooter">
-        <p>BUTTONS WILL BE HERE</p>
+        <div class="cardFooter">
+          <div class="footer-flex">
+              <!-- CREATE INTERVENTIONS button (Only for 'Students at Risk') -->
+              <form action="{{ url_for('views.perform_academic_intervention') }}" method="POST" id="interventionForm">
+                  <button type="submit" class="btn">CREATE INTERVENTIONS</button>
+              </form>
+              
+              <!-- ALERT STUDENTS button (Only for 'Students without Prediction') -->
+              <form action="{{ url_for('views.add_alerts') }}" method="POST" id="alertForm" style="display: none;">
+                  <button type="submit" class="btn">ALERT STUDENTS</button>
+              </form>
+              
+              <!-- Pagination controls -->
+              <div class="pagination">
+                  <button id="prevPageButton" onclick="changePage(-1)">Previous</button>
+                  <span id="pageNumber">Page 1</span>
+                  <button id="nextPageButton" onclick="changePage(1)">Next</button>
+              </div>
+          </div>
       </div>
     </div>
-  
-  </div>
+</div>
 
   <div class="cardBox2">
     <div class="card">
-      <div>
-        <div class="numbers">###</div>
-        <div class="cardName">[ DASHBOARD TITLE THREE ]</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="pulse-outline"></ion-icon>
+      <div class="cardName">GENDER DISTRIBUTION</div>
+      <div class="miniGraph">
+          <canvas id="donutChartGenderCount"></canvas>
       </div>
     </div>
+
     <div class="card">
-      <div>
-        <div class="numbers">###</div>
-        <div class="cardName">[ DASHBOARD TITLE FOUR ]</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="pulse-outline"></ion-icon>
+      <div class="cardName">[ DASHBOARD TITLE FOUR ]</div>
+      <div class="miniGraph">
+          
       </div>
     </div>
+
     <div class="card">
-      <div>
-        <div class="numbers">###</div>
-        <div class="cardName">[ DASHBOARD TITLE FIVE ]</div>
-      </div>
-      <div class="iconBx">
-        <ion-icon name="pulse-outline"></ion-icon>
+      <div class="cardName">[ DASHBOARD TITLE FIVE ]</div>
+      <div class="miniGraph">
+          
       </div>
     </div>
   </div>
@@ -272,112 +281,117 @@
 </script>
 
 <script>
-  const itemsPerPage = 8; // Set to 2 for demonstration, change as needed
+  const itemsPerPage = 7;
 
   const carouselData = [
-    {
-      title: "STUDENTS AT RISK",
-      data: [
-        { id: 1, name: "LOREM IPSUM", percentage: "40%" },
-        { id: 2, name: "LOREM IPSUM", percentage: "20%" },
-        { id: 3, name: "LOREM IPSUM", percentage: "30%" },
-        { id: 4, name: "LOREM IPSUM", percentage: "25%" },
-        { id: 5, name: "LOREM IPSUM", percentage: "35%" },
-        { id: 6, name: "LOREM IPSUM", percentage: "45%" },
-        { id: 7, name: "LOREM IPSUM", percentage: "50%" },
-        { id: 8, name: "LOREM IPSUM", percentage: "55%" },
-        { id: 9, name: "LOREM IPSUM", percentage: "60%" },
-        { id: 10, name: "LOREM IPSUM", percentage: "65%" },
-        { id: 11, name: "LOREM IPSUM", percentage: "70%" },
-        { id: 12, name: "LOREM IPSUM", percentage: "75%" }
-      ]
-    },
-    { 
-      title: "STUDENTS WITHOUT PREDICTION", 
-      data: [
-        { id: 13, name: "EXAMPLE STUDENT", percentage: "60%" },
-        { id: 14, name: "ANOTHER STUDENT", percentage: "80%" }
-      ]
-    },
-    { 
-      title: "STUDENTS GRADUATING ON TIME", 
-      data: [
-        { id: 15, name: "GRADUATE ONE", percentage: "100%" },
-        { id: 16, name: "GRADUATE TWO", percentage: "90%" }
-      ]
-    }
+      {
+          title: "STUDENTS AT RISK",
+          data: JSON.parse('{{ student_risk | tojson | safe }}')
+      },
+      {
+          title: "STUDENTS WITHOUT PREDICTION",
+          data: JSON.parse('{{ students_without_prediction | tojson | safe }}')
+      },
+      {
+          title: "STUDENTS GRADUATING ON TIME",
+          data: JSON.parse('{{ students_graduating_on_time | tojson | safe }}')
+      }
   ];
 
   let currentSlide = 0;
   let currentPage = 1;
 
   function generateTable(data) {
-    const start = (currentPage - 1) * itemsPerPage;
-    const paginatedData = data.slice(start, start + itemsPerPage);
+      const start = (currentPage - 1) * itemsPerPage;
+      const paginatedData = data.slice(start, start + itemsPerPage);
+      const isGraduatingOnTimeSlide = carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME";
+      const isWithoutPredictionSlide = carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION";
 
-    let tableContent = `
-      <div class="classifiers">
-        <table>
-          <thead>
-            <tr class="bgTr">
-              <th>STUDID</th>
-              <th>STUDENT NAME</th>
-              <th>PERCENTAGE</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-
-    paginatedData.forEach(item => {
-      tableContent += `
-        <tr>
-          <td>${item.id}</td>
-          <td>${item.name}</td>
-          <td>${item.percentage}</td>
-        </tr>
+      let tableContent = `
+          <div class="classifiers">
+              <div class="tbl-content">
+                  <table>
+                      <thead>
+                          <tr class="bgTr">
+                              <th>STUDID</th>
+                              <th>STUDENT NAME</th>
+                              ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : "<th>PERCENTAGE</th><th>FACTOR</th><th>INTERVENTION</th>"}
+                          </tr>
+                      </thead>
+                      <tbody>
       `;
-    });
 
-    tableContent += `
-          </tbody>
-        </table>
-      </div>
-      <div class="pagination">
-        <button ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(-1)">Previous</button>
-        <span>Page ${currentPage}</span>
-        <button ${currentPage === Math.ceil(data.length / itemsPerPage) ? 'disabled' : ''} onclick="changePage(1)">Next</button>
-      </div>
-    `;
+      paginatedData.forEach(item => {
+          tableContent += `
+              <tr>
+                  <td data-label="STUDID">${item.id}</td>
+                  <td data-label="STUDENT NAME">${item.name}</td>
+                  ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `<td data-label="PERCENTAGE">${item.percentage}</td><td data-label="FACTOR">${item.factor || ""}</td><td data-label="INTERVENTION">${item.intervention || ""}</td>`}
+              </tr>
+          `;
+      });
 
-    return tableContent;
+      tableContent += `
+              </tbody>
+          </table>
+          </div>
+      </div>
+      `;
+
+      return tableContent;
   }
 
   function changePage(direction) {
-    const totalPages = Math.ceil(carouselData[currentSlide].data.length / itemsPerPage);
-    currentPage += direction;
+      const totalPages = Math.ceil(carouselData[currentSlide].data.length / itemsPerPage);
+      currentPage += direction;
 
-    // Ensure the page number is within bounds
-    if (currentPage < 1) currentPage = 1;
-    if (currentPage > totalPages) currentPage = totalPages;
+      // Ensure the page number is within bounds
+      if (currentPage < 1) currentPage = 1;
+      if (currentPage > totalPages) currentPage = totalPages;
 
-    updateCarousel();
+      updateCarousel();
+      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
+      document.getElementById("prevPageButton").disabled = currentPage === 1;
+      document.getElementById("nextPageButton").disabled = currentPage === totalPages;
   }
 
   function updateCarousel() {
-    document.getElementById("carouselTitle").innerText = carouselData[currentSlide].title; // Update the title for DIV3
-    document.getElementById("carouselContent").innerHTML = generateTable(carouselData[currentSlide].data); // Update content for DIV3
-  }
+    document.getElementById("carouselTitle").innerText = carouselData[currentSlide].title;
+    document.getElementById("carouselContent").innerHTML = generateTable(carouselData[currentSlide].data);
+    
+    // Show/hide the CREATE INTERVENTIONS button
+    document.getElementById("interventionForm").style.display = 
+        carouselData[currentSlide].title === "STUDENTS AT RISK" ? "block" : "none";
+
+    // Show/hide the ALERT STUDENTS button
+    document.getElementById("alertForm").style.display = 
+        carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION" ? "block" : "none";
+
+    // Toggle pagination alignment for "STUDENTS GRADUATING ON TIME" slide
+    const pagination = document.querySelector(".pagination");
+    if (carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME") {
+        pagination.classList.add("pagination-right");
+    } else {
+        pagination.classList.remove("pagination-right");
+    }
+}
 
   function prevSlide() {
-    currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
-    currentPage = 1; // Reset to the first page on slide change
-    updateCarousel();
+      currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
+      currentPage = 1;
+      updateCarousel();
+      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
+      document.getElementById("prevPageButton").disabled = true;
+      document.getElementById("nextPageButton").disabled = false;
   }
 
   function nextSlide() {
-    currentSlide = (currentSlide + 1) % carouselData.length;
-    currentPage = 1; // Reset to the first page on slide change
-    updateCarousel();
+      currentSlide = (currentSlide + 1) % carouselData.length;
+      currentPage = 1;
+      updateCarousel();
+      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
+      document.getElementById("prevPageButton").disabled = true;
+      document.getElementById("nextPageButton").disabled = false;
   }
 
   // Initial content display
@@ -441,98 +455,50 @@
   });
 </script>
 
-
-<!-- Add JavaScript code to fetch data and create chart -->
 <script>
-  // Fetch data from database using AJAX
-  fetch('/get_graduation_data')
+  fetch('/gender-count')
     .then(response => response.json())
     .then(data => {
-      // Update labels to use WGOT and WNGOT
-      const labels = data.labels.map(label => {
-        return label === 'Will Graduate On Time' ? 'WGOT' : 'WNGOT';
-      });
+      const ctx = document.getElementById('donutChartGenderCount').getContext('2d');
 
-      // Create bar chart
-      const ctx = document.getElementById('barChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
+      const donutChart = new Chart(ctx, {
+        type: 'doughnut',
         data: {
-          labels: labels,
+          labels: data.labels, // Original labels (Male, Female)
           datasets: [{
-            label: 'Graduation Rates',
-            data: data.values,
-            backgroundColor: labels.map(label => {
-              return label === 'WGOT' ? 'rgba(19, 123, 53, 0.8)' : 'rgba(0, 0, 0, 0.8)';
-            }),
-            borderColor: labels.map(label => {
-              return label === 'WGOT' ? 'rgba(19, 123, 53, 1)' : 'rgba(0, 0, 0, 1)';
-            }),
-            borderWidth: 1
+            label: 'Gender Count',
+            data: data.counts,
+            backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+            borderWidth: 1, 
+            hoverOffset: 5
           }]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
           plugins: {
             legend: {
               display: true,
-              position: 'top',
+              position: 'bottom', // Set legend position to bottom
+              align: 'center',     // Align to center
               labels: {
-                generateLabels: function (chart) {
-                  return [
-                    {
-                      text: 'Will Graduate On Time\n(WGOT)', // New line for WGOT
-                      fillStyle: 'rgba(19, 123, 53, 0.8)',
-                      fontColor: 'black'
-                    },
-                    {
-                      text: 'Will Not Graduate On Time\n(WNGOT)', // New line for WNGOT
-                      fillStyle: 'rgba(0, 0, 0, 0.8)',
-                      fontColor: 'black'
-                    }
-                  ];
-                },
-                font: {
-                  size: window.innerWidth < 768 ? 10 : 14
-                }
+                boxWidth: 20, // Box width for legend items
+                padding: 15    // Space between items
               }
-            }
-          },
-          title: {
-            display: true,
-            text: 'Graduation Rates',
-            font: {
-              size: window.innerWidth < 768 ? 16 : 18
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              ticks: {
-                font: {
-                  size: window.innerWidth < 768 ? 10 : 12
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  const label = tooltipItem.label || ''; // Get the original label
+                  const count = tooltipItem.raw || 0; // Get the count for this segment
+                  return `${label}: ${count} Students`; // Customize tooltip text
                 }
               }
             },
-            x: {
-              ticks: {
-                maxRotation: 0,
-                font: {
-                  size: window.innerWidth < 768 ? 10 : 12
-                }
-              }
-            }
-          },
-          animation: {
-            animateScale: true,
-            animateRotate: true
           }
         }
       });
-    })
-    .catch(error => console.error('Error:', error));
+    });
 </script>
 
 

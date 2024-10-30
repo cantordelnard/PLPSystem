@@ -2277,5 +2277,113 @@ def get_factor_influence_counts():
             return None
     else:
         return None
+    
 
+def get_student_at_risk():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT 
+                    p.StudentID, 
+                    s.FirstName, 
+                    s.LastName, 
+                    p.Prediction AS Percentage,
+                    f.FactorName AS Factor,
+                    p.InterventionTag AS Intervention
+                FROM prediction p
+                JOIN students s ON p.StudentID = s.StudentID
+                JOIN factor f ON p.FactorID = f.FactorId
+                WHERE p.Remarks = 'WILL NOT GRADUATE ON TIME'
+            """)
+            students_at_risk = cursor.fetchall()
+            connection.close()
+            
+            # Transform data for the carousel format expected by the frontend
+            return [
+                {
+                    "id": student["StudentID"],
+                    "name": f"{student['FirstName']} {student['LastName']}",
+                    "percentage": f"{student['Percentage']}%",
+                    "factor": student["Factor"],
+                    "intervention": student["Intervention"]
+                }
+                for student in students_at_risk
+            ]
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        return None
 
+def get_students_graduating_on_time():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT 
+                    p.StudentID, 
+                    s.FirstName, 
+                    s.LastName, 
+                    p.Prediction AS Percentage
+                FROM prediction p
+                JOIN students s ON p.StudentID = s.StudentID
+                WHERE p.Remarks = 'GRADUATE ON TIME'
+            """)
+            students_graduating_on_time = cursor.fetchall()
+            connection.close()
+            
+            # Transform data for the carousel format with only needed fields
+            return [
+                {
+                    "id": student["StudentID"],
+                    "name": f"{student['FirstName']} {student['LastName']}",
+                    "percentage": f"{student['Percentage']}%"
+                }
+                for student in students_graduating_on_time
+            ]
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        return None
+    
+
+def get_students_without_prediction():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT 
+                    s.StudentID,
+                    s.FirstName,
+                    s.LastName
+                FROM students s
+                LEFT JOIN prediction p ON s.StudentID = p.StudentID
+                WHERE p.Prediction IS NULL OR p.Remarks = ''
+            """)
+            students_without_prediction = cursor.fetchall()
+            connection.close()
+            
+            # Format data for carousel display
+            return [
+                {
+                    "id": student["StudentID"],
+                    "name": f"{student['FirstName']} {student['LastName']}",
+                    "percentage": "N/A",
+                    "factor": "",
+                    "intervention": ""
+                }
+                for student in students_without_prediction
+            ]
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        return None
