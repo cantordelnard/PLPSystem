@@ -1577,6 +1577,30 @@ form {
     padding: 5px 8px !important;
   }
 
+  .cardBox2 {
+    grid-template-columns: 1fr !important;
+    grid-gap: 10px !important;
+  }
+
+  .cardBox2 .card {
+    height: auto !important;
+    padding: 10px !important;
+  }
+
+  .cardBox2 .card .cardName {
+    font-size: 1rem !important;
+  }
+
+  .numbers.circle {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.2em;
+  }
+
+  .intervention {
+    padding: 0px 0px 0px 30px;
+  }
+
 }
 
 /* Responsive Card Adjustments */
@@ -3168,22 +3192,29 @@ form {
 }
 
 .miniGraph {
-  padding: 20px;
+  flex-grow: 1; /* Ensures chart takes available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+.miniGraph canvas {
+  max-width: 100%; /* Makes canvas fit within container */
+  max-height: 100%;
 }
+
 .carousel-controls button {
   cursor: pointer;
   padding: 5px 10px;
-  background-color: #137b35;
+  background-color: #c0c0c0;
   color: white;
   border: none;
   border-radius: 4px;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.carousel-controls button:hover {
+  background-color: var(--green); /* Change to green on hover */
 }
 
 .cardBox2 {
@@ -3191,7 +3222,7 @@ form {
   width: 100%;
   height: auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
 }
 
@@ -3201,6 +3232,10 @@ form {
   border-radius: 20px;
   border: none;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cardBox2 .card .cardName {
@@ -3273,4 +3308,67 @@ form {
 
 .pagination-right {
   justify-content: flex-end;
+}
+
+.intervention {
+  display: flex;        /* Use flexbox to align items horizontally */
+  align-items: center;  /* Center align items vertically */
+  margin-bottom: 15px;
+}
+
+.cardName {
+  font-size: 1.2em;
+  color: #666;
+  margin-left: 10px;   /* Space between circle and text */
+}
+
+.numbers.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;        /* Adjust size as needed */
+  height: 80px;       /* Adjust size as needed */
+  font-size: 1.5em;   /* Adjust font size as needed */
+  font-weight: bold;
+  border-radius: 50%; /* Makes it circular */
+  color: #fff;        /* Text color */
+  margin-right: 10px; /* Space between the circle and the text */
+}
+
+.numbers.circle.red {
+  background-color: rgba(255, 99, 132, 0.5); /* Similar to example for red */
+}
+
+.numbers.circle.blue {
+  background-color: rgba(54, 162, 235, 0.5); /* Similar to example for blue */
+}
+
+.numbers.circle.yellow {
+  background-color: rgba(255, 206, 86, 0.5); /* Similar to example for yellow */
+}
+
+.inputData .btns {
+  padding: 10px 15px;
+  background: var(--green);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+  border: 0;
+  width: 100%;
+  cursor: pointer; /* Make the cursor a pointer */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.inputData .btns:hover {
+  background-color: var(--lightGreen2); /* Change to light green on hover */
+}
+
+.classifiers .tbl-content table td.centerUpdateDashboard {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.classifiers .tbl-content table th.centerUpdateDashboard {
+  text-align: center;
+  vertical-align: middle;
 }

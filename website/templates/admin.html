@@ -30,14 +30,6 @@
   </a>
 </li>
 <li>
-  <a href="adminPrediction">
-    <span class="icon">
-      <ion-icon name="sparkles-outline"></ion-icon>
-    </span>
-    <span class="title">PREDICTIVE</span>
-  </a>
-</li>
-<li>
   <a href="adminUpload">
     <span class="icon">
       <ion-icon name="cloud-upload-outline"></ion-icon>
@@ -84,6 +76,7 @@
 
 <!-- =============== Main Content ================ -->
 {% block main %}
+
 <div class="content">
   <!-- ====== Welcome Note ====== -->
   <div class="partOne">
@@ -169,15 +162,17 @@
         </div>
         <div class="cardFooter">
           <div class="footer-flex">
+            <div class="inputData">
               <!-- CREATE INTERVENTIONS button (Only for 'Students at Risk') -->
               <form action="{{ url_for('views.perform_academic_intervention') }}" method="POST" id="interventionForm">
-                  <button type="submit" class="btn">CREATE INTERVENTIONS</button>
-              </form>
-              
-              <!-- ALERT STUDENTS button (Only for 'Students without Prediction') -->
+                <button type="submit" class="btns">CREATE INTERVENTIONS</button>
+            </form>
+            </div>
+            <div class="inputData">
               <form action="{{ url_for('views.add_alerts') }}" method="POST" id="alertForm" style="display: none;">
-                  <button type="submit" class="btn">ALERT STUDENTS</button>
+                <button type="submit" class="btns">ALERT STUDENTS</button>
               </form>
+            </div>
               
               <!-- Pagination controls -->
               <div class="pagination">
@@ -197,22 +192,28 @@
           <canvas id="donutChartGenderCount"></canvas>
       </div>
     </div>
-
+     
     <div class="card">
-      <div class="cardName">[ DASHBOARD TITLE FOUR ]</div>
-      <div class="miniGraph">
-          
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="cardName">[ DASHBOARD TITLE FIVE ]</div>
-      <div class="miniGraph">
-          
+      <div>
+          <div class="cardName">TOTAL INTERVENTIONS IMPLEMENTED</div>
+          <br>
+          <div class="intervention">
+            <div class="numbers circle red">{{ academic_intervention_count }}</div>
+              <div class="cardName">Academic Interventions</div>
+          </div>
+  
+          <div class="intervention">
+            <div class="numbers circle blue">{{ behavioral_intervention_count }}</div>
+            <div class="cardName">Behavioral Interventions</div>
+          </div>
+  
+          <div class="intervention">
+            <div class="numbers circle yellow">{{ socioeconomic_intervention_count }}</div>
+              <div class="cardName">Socioeconomic Interventions</div>
+          </div>
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- Add Chart.js library -->
@@ -225,10 +226,6 @@
   const onTimeCount = graduationStatusCounts.on_time;         // Get count of students graduating on time
   const notOnTimeCount = graduationStatusCounts.not_on_time;  // Get count of students not graduating on time
   const notPredictedCount = graduationStatusCounts.not_predicted; // Get count of students with no prediction
-
-  console.log('On Time Count:', onTimeCount);               // Debugging line
-  console.log('Not On Time Count:', notOnTimeCount);         // Debugging line
-  console.log('Not Predicted Count:', notPredictedCount);     // Debugging line
 
   // Now you can use these counts in your polar area chart data
   const ctx = document.getElementById('polarAreaChart').getContext('2d');
@@ -313,9 +310,13 @@
                   <table>
                       <thead>
                           <tr class="bgTr">
-                              <th>STUDID</th>
-                              <th>STUDENT NAME</th>
-                              ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : "<th>PERCENTAGE</th><th>FACTOR</th><th>INTERVENTION</th>"}
+                              <th class="centerUpdateDashboard">STUDID</th>
+                              <th class="centerUpdateDashboard">STUDENT NAME</th>
+                              ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
+                                  <th class="centerUpdateDashboard">PERCENTAGE</th>
+                                  <th class="centerUpdateDashboard">FACTORS</th>
+                                  <th class="centerUpdateDashboard">INTERVENTION</th>
+                              `}
                           </tr>
                       </thead>
                       <tbody>
@@ -323,11 +324,15 @@
 
       paginatedData.forEach(item => {
           tableContent += `
-              <tr>
-                  <td data-label="STUDID">${item.id}</td>
-                  <td data-label="STUDENT NAME">${item.name}</td>
-                  ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `<td data-label="PERCENTAGE">${item.percentage}</td><td data-label="FACTOR">${item.factor || ""}</td><td data-label="INTERVENTION">${item.intervention || ""}</td>`}
-              </tr>
+              <tr class="highlight-row">
+              <td class="centerUpdateDashboard" data-label="STUDID">${item.id}</td>
+              <td class="centerUpdateDashboard" data-label="STUDENT NAME">${item.name}</td>
+              ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
+                  <td class="centerUpdateDashboard" data-label="PERCENTAGE">${item.percentage}</td>
+                  <td class="centerUpdateDashboard" data-label="FACTOR">${item.factor || ""}</td>
+                  <td class="centerUpdateDashboard" data-label="INTERVENTION">${item.intervention || ""}</td>
+              `}
+        </tr>
           `;
       });
 
@@ -471,7 +476,7 @@
             backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
             borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
             borderWidth: 1, 
-            hoverOffset: 5
+            hoverOffset: 3
           }]
         },
         options: {

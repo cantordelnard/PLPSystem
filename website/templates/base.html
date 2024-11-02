@@ -82,12 +82,14 @@
         window.addEventListener("load", () => {
             const loader = document.querySelector(".loader");
     
-            // Immediately hide loader
-            loader.classList.add("loader--hidden");
+            // Check if loader exists
+            if (loader) {
+                loader.classList.add("loader--hidden");
     
-            loader.addEventListener("transitionend", () => {
-                document.body.removeChild(loader);
-            });
+                loader.addEventListener("transitionend", () => {
+                    loader.remove(); // Remove loader directly, if it exists
+                });
+            }
         });
     </script>
     

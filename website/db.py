@@ -2387,3 +2387,75 @@ def get_students_without_prediction():
             return None
     else:
         return None
+    
+# Function to fetch the count of events
+def get_event_count():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT COUNT(*) as count FROM theevents")
+            event_count = cursor.fetchone()['count']
+            connection.close()
+            return event_count
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        print("Failed to connect to the database.")
+        return None
+
+# Function to fetch the count of records in the academicintervention table
+def get_academic_intervention_count():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT COUNT(*) as count FROM academicintervention")
+            academic_count = cursor.fetchone()['count']
+            connection.close()
+            return academic_count
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        print("Failed to connect to the database.")
+        return None
+
+# Function to fetch the count of records in the behavioralintervention table
+def get_behavioral_intervention_count():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT COUNT(*) as count FROM behavioralintervention")
+            behavioral_count = cursor.fetchone()['count']
+            connection.close()
+            return behavioral_count
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        print("Failed to connect to the database.")
+        return None
+
+# Function to fetch the count of records in the socioeconomicintervention table
+def get_socioeconomic_intervention_count():
+    connection = connect_to_database()
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT COUNT(*) as count FROM socioeconomicintervention")
+            socioeconomic_count = cursor.fetchone()['count']
+            connection.close()
+            return socioeconomic_count
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            connection.close()
+            return None
+    else:
+        print("Failed to connect to the database.")
+        return None

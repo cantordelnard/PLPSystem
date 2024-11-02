@@ -110,7 +110,7 @@ graduate_on_time_count = df['graduate_on_time'].sum()
 percentage_graduating_on_time = (graduate_on_time_count / total_students) * 100
 
 # Print the percentage of students graduating on time
-print(f"Percentage of Students Graduating on Time (DATASET): {percentage_graduating_on_time:.2f}%")
+#print(f"Percentage of Students Graduating on Time (DATASET): {percentage_graduating_on_time:.2f}%")
 
 # Prepare the data for predictions
 students_data = df.drop('graduate_on_time', axis=1).to_dict(orient='records')
@@ -125,29 +125,8 @@ for index, input_features in enumerate(students_data):
 
     remark = "Graduate on Time" if prediction[0] == 1 else "Not Graduate on Time"
 
-    # Define main_factor_str based on your logic
-    main_factors = []
-    combined_monthly_income = input_features['mother_monthly_income'] + input_features['father_monthly_income']
+    main_factor_str = "No significant factors identified"  # Placeholder for clarity
 
-    # Check socioeconomic factors
-    if combined_monthly_income < 20000:
-        main_factors.append("Socioeconomic Factor: Low combined income")
-
-    # Check academic factors
-    if input_features['average_grade_first_year'] < 75:
-        main_factors.append("Academic Factor: Low average grade first year")
-
-    if input_features['grades_fundamentals_of_programming'] < 75:
-        main_factors.append("Academic Factor: Low grade in Fundamentals of Programming")
-
-    if input_features['grades_intermediate_programming'] < 75:
-        main_factors.append("Academic Factor: Low grade in Intermediate Programming")
-
-    # Convert main factors list to a string
-    main_factor_str = "; ".join(main_factors) if main_factors else "No significant factors identified"
-
-    # Print the results
-    #print(f"Student {index + 1}: {remark} - Main Factors: {main_factor_str}")
 
 # Set display options to show all rows
 pd.set_option('display.max_rows', None)

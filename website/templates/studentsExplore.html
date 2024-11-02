@@ -321,6 +321,10 @@
   document.getElementById('prediction-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
+    // Display calculating message
+    const resultDiv = document.getElementById('prediction-result');
+    resultDiv.innerHTML = `<p>CACULATING YOUR PREDICTION, PLEASE WAIT...</p>`;
+
     // Collect the form data
     const formData = {
       stud: document.getElementById('stud').value,
@@ -348,8 +352,7 @@
 
     // Collect subject grades
     document.querySelectorAll('input[id^="grades_"]').forEach(input => {
-      // Set value to an empty string if not filled, instead of 0
-      formData[input.name] = input.value.trim() || ''; // Using trim() to prevent spaces
+      formData[input.name] = input.value.trim() || '';
     });
 
     // Check for missing grade info
@@ -371,7 +374,6 @@
       value === null || value === undefined || value === '' || value === '0'
     );
 
-
     // Check for missing behavioral factors
     const behavioralFactors = {
       study_hours: formData.study_hours,
@@ -387,7 +389,6 @@
       coping_effectiveness: formData.coping_effectiveness
     };
 
-    // Check if any behavioral factor is missing or has 'N/A'
     const hasMissingBehavioralFactors = Object.values(behavioralFactors).some(value => !value || value === 'N/A');
 
     if (hasMissingGrades) {
@@ -395,7 +396,7 @@
     } else if (hasMissingBehavioralFactors) {
       showPopupBehavioral();
     } else {
-      // If all behavioral factors are present, proceed with form submission
+      // Proceed with form submission
       fetch('/predict', {
         method: 'POST',
         headers: {
@@ -405,7 +406,6 @@
       })
         .then(response => response.json())
         .then(data => {
-          const resultDiv = document.getElementById('prediction-result');
           resultDiv.innerHTML = `
             <h2>${data.output}</h2>
             <p>${data.result}</p>
@@ -424,7 +424,7 @@
         })
         .catch(error => {
           console.error('Error:', error);
-          document.getElementById('prediction-result').innerHTML = `<p>Error: Unable to fetch the prediction. Please try again later.</p>`;
+          resultDiv.innerHTML = `<p>Error: Unable to fetch the prediction. Please try again later.</p>`;
         });
     }
   });
@@ -449,7 +449,6 @@
     let modal = document.getElementById('gradesPopup');
     modal.classList.remove('show'); // Remove 'show' class to hide the modal
   }
-
 
 </script>
 

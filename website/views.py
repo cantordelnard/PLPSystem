@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, current_app, render_template, session, redirect, url_for, flash, request, jsonify
 import mysql.connector
-from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
+from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_intervention_count, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_behavioral_intervention_count, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_socioeconomic_intervention_count, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
 import logging
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -740,6 +740,10 @@ def admin():
             student_risk = get_student_at_risk()
             students_graduating_on_time = get_students_graduating_on_time()
             students_without_prediction = get_students_without_prediction()
+
+            academic_intervention_count = get_academic_intervention_count()
+            behavioral_intervention_count = get_behavioral_intervention_count()
+            socioeconomic_intervention_count = get_socioeconomic_intervention_count()
             
             if graduation_status_counts:
                 return render_template("admin.html", 
@@ -752,7 +756,10 @@ def admin():
                                        factor_counts=factor_counts,
                                        student_risk=student_risk,
                                        students_graduating_on_time=students_graduating_on_time,
-                                       students_without_prediction=students_without_prediction)
+                                       students_without_prediction=students_without_prediction,
+                                       academic_intervention_count=academic_intervention_count,
+                                       behavioral_intervention_count=behavioral_intervention_count,
+                                       socioeconomic_intervention_count=socioeconomic_intervention_count)
             else:
                 flash("Error retrieving graduation status counts.")
                 return redirect(url_for("auth.login"))
@@ -2235,26 +2242,13 @@ def adminArchive():
         return redirect(url_for("auth.login"))
     
 
-@views.route('/adminPrediction')
-def adminPrediction():
-    if "user_id" in session:
-        user_id = session["user_id"]
-        student_predictions = get_student_predictions()
-
-        # Render the template regardless of whether predictions are found
-        return render_template("adminPrediction.html", student_predictions=student_predictions)
-    else:
-        flash("Please login to access this content.")
-        return redirect(url_for("auth.login"))
-    
-
 @views.route('/perform_academic_intervention', methods=['POST'])
 def perform_academic_intervention():
     if "user_id" in session:
         # Call the intervention function based on the student's factor in prediction
         perform_intervention_based_on_factor()
         flash("Interventions logged successfully for students at risk.")
-        return redirect(url_for("views.adminPrediction"))
+        return redirect(url_for("views.admin"))
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
@@ -2418,7 +2412,7 @@ def add_alerts():
         if connection.is_connected():
             connection.close()
 
-    return redirect(url_for("views.adminPrediction"))
+    return redirect(url_for("views.admin"))
 
 @views.route('/gender-count', methods=['GET'])
 def get_gender_count():
@@ -2446,7 +2440,6 @@ def get_gender_count():
         result["counts"].append(row[1])   # Count
 
     return jsonify(result)
-
 
 
     
