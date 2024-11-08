@@ -130,87 +130,87 @@
 
   <div class="dashboardOne">
     <div class="graph">
-        <div class="cardHeader">
-            <h2>PREDICTION OVERVIEW</h2>
-        </div>
-        <div class="polarGraph">
-            <canvas id="polarAreaChart"></canvas>
-        </div>
+      <div class="cardHeader">
+        <h2>PREDICTION OVERVIEW</h2>
+      </div>
+      <div class="polarGraph">
+        <canvas id="polarAreaChart"></canvas>
+      </div>
     </div>
 
     <div class="dashboardTwo newData-two">
-        <div class="cardHeader">
-            <h2>FACTORS INFLUENCING GRADUATION PREDICTIONS</h2>
-        </div>
-        <div class="barGraph">
-            <canvas id="factorInfluenceChart"></canvas>
-        </div>
+      <div class="cardHeader">
+        <h2>FACTORS INFLUENCING GRADUATION PREDICTIONS</h2>
+      </div>
+      <div class="barGraph">
+        <canvas id="factorInfluenceChart"></canvas>
+      </div>
     </div>
 
     <div class="dashboardThree newData-three">
-        <div class="cardHeader">
-            <h2 id="carouselTitle">[ DASHBOARD TITLE TWO ]</h2>
-            <div class="carousel-controls">
-                <button onclick="prevSlide()">&#10094;</button>
-                <button onclick="nextSlide()">&#10095;</button>
-            </div>
+      <div class="cardHeader">
+        <h2 id="carouselTitle">[ DASHBOARD TITLE TWO ]</h2>
+        <div class="carousel-controls">
+          <button onclick="prevSlide()">&#10094;</button>
+          <button onclick="nextSlide()">&#10095;</button>
         </div>
-        <div class="dashboardCenter">
-            <div id="carouselContent" class="carousel-content">
-                <p>Hello World</p>
-            </div>
+      </div>
+      <div class="dashboardCenter">
+        <div id="carouselContent" class="carousel-content">
+          <p>Hello World</p>
         </div>
-        <div class="cardFooter">
-          <div class="footer-flex">
-            <div class="inputData">
-              <!-- CREATE INTERVENTIONS button (Only for 'Students at Risk') -->
-              <form action="{{ url_for('views.perform_academic_intervention') }}" method="POST" id="interventionForm">
-                <button type="submit" class="btns">CREATE INTERVENTIONS</button>
+      </div>
+      <div class="cardFooter">
+        <div class="footer-flex">
+          <div class="inputData">
+            <!-- CREATE INTERVENTIONS button (Only for 'Students at Risk') -->
+            <form action="{{ url_for('views.perform_academic_intervention') }}" method="POST" id="interventionForm">
+              <button type="submit" class="btns">PROCESS INTERVENTIONS</button>
             </form>
-            </div>
-            <div class="inputData">
-              <form action="{{ url_for('views.add_alerts') }}" method="POST" id="alertForm" style="display: none;">
-                <button type="submit" class="btns">ALERT STUDENTS</button>
-              </form>
-            </div>
-              
-              <!-- Pagination controls -->
-              <div class="pagination">
-                  <button id="prevPageButton" onclick="changePage(-1)">Previous</button>
-                  <span id="pageNumber">Page 1</span>
-                  <button id="nextPageButton" onclick="changePage(1)">Next</button>
-              </div>
           </div>
+          <div class="inputData">
+            <form action="{{ url_for('views.add_alerts') }}" method="POST" id="alertForm" style="display: none;">
+              <button type="submit" class="btns">ALERT STUDENTS</button>
+            </form>
+          </div>
+
+          <!-- Pagination controls -->
+          <div class="pagination">
+            <button id="prevPageButton" onclick="changePage(-1)">Previous</button>
+            <span id="pageNumber">Page 1</span>
+            <button id="nextPageButton" onclick="changePage(1)">Next</button>
+          </div>
+        </div>
       </div>
     </div>
-</div>
+  </div>
 
   <div class="cardBox2">
     <div class="card">
       <div class="cardName">GENDER DISTRIBUTION</div>
       <div class="miniGraph">
-          <canvas id="donutChartGenderCount"></canvas>
+        <canvas id="donutChartGenderCount"></canvas>
       </div>
     </div>
-     
+
     <div class="card">
       <div>
-          <div class="cardName">TOTAL INTERVENTIONS IMPLEMENTED</div>
-          <br>
-          <div class="intervention">
-            <div class="numbers circle red">{{ academic_intervention_count }}</div>
-              <div class="cardName">Academic Interventions</div>
-          </div>
-  
-          <div class="intervention">
-            <div class="numbers circle blue">{{ behavioral_intervention_count }}</div>
-            <div class="cardName">Behavioral Interventions</div>
-          </div>
-  
-          <div class="intervention">
-            <div class="numbers circle yellow">{{ socioeconomic_intervention_count }}</div>
-              <div class="cardName">Socioeconomic Interventions</div>
-          </div>
+        <div class="cardName">TOTAL INTERVENTIONS IMPLEMENTED</div>
+        <br>
+        <div class="intervention">
+          <div class="numbers circle red">{{ academic_intervention_count }}</div>
+          <div class="cardName">Academic Interventions</div>
+        </div>
+
+        <div class="intervention">
+          <div class="numbers circle blue">{{ behavioral_intervention_count }}</div>
+          <div class="cardName">Behavioral Interventions</div>
+        </div>
+
+        <div class="intervention">
+          <div class="numbers circle yellow">{{ socioeconomic_intervention_count }}</div>
+          <div class="cardName">Socioeconomic Interventions</div>
+        </div>
       </div>
     </div>
   </div>
@@ -281,30 +281,30 @@
   const itemsPerPage = 7;
 
   const carouselData = [
-      {
-          title: "STUDENTS AT RISK",
-          data: JSON.parse('{{ student_risk | tojson | safe }}')
-      },
-      {
-          title: "STUDENTS WITHOUT PREDICTION",
-          data: JSON.parse('{{ students_without_prediction | tojson | safe }}')
-      },
-      {
-          title: "STUDENTS GRADUATING ON TIME",
-          data: JSON.parse('{{ students_graduating_on_time | tojson | safe }}')
-      }
+    {
+      title: "STUDENTS AT RISK",
+      data: JSON.parse('{{ student_risk | tojson | safe }}')
+    },
+    {
+      title: "STUDENTS WITHOUT PREDICTION",
+      data: JSON.parse('{{ students_without_prediction | tojson | safe }}')
+    },
+    {
+      title: "STUDENTS GRADUATING ON TIME",
+      data: JSON.parse('{{ students_graduating_on_time | tojson | safe }}')
+    }
   ];
 
   let currentSlide = 0;
   let currentPage = 1;
 
   function generateTable(data) {
-      const start = (currentPage - 1) * itemsPerPage;
-      const paginatedData = data.slice(start, start + itemsPerPage);
-      const isGraduatingOnTimeSlide = carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME";
-      const isWithoutPredictionSlide = carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION";
+    const start = (currentPage - 1) * itemsPerPage;
+    const paginatedData = data.slice(start, start + itemsPerPage);
+    const isGraduatingOnTimeSlide = carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME";
+    const isWithoutPredictionSlide = carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION";
 
-      let tableContent = `
+    let tableContent = `
           <div class="classifiers">
               <div class="tbl-content">
                   <table>
@@ -322,8 +322,8 @@
                       <tbody>
       `;
 
-      paginatedData.forEach(item => {
-          tableContent += `
+    paginatedData.forEach(item => {
+      tableContent += `
               <tr class="highlight-row">
               <td class="centerUpdateDashboard" data-label="STUDID">${item.id}</td>
               <td class="centerUpdateDashboard" data-label="STUDENT NAME">${item.name}</td>
@@ -334,69 +334,69 @@
               `}
         </tr>
           `;
-      });
+    });
 
-      tableContent += `
+    tableContent += `
               </tbody>
           </table>
           </div>
       </div>
       `;
 
-      return tableContent;
+    return tableContent;
   }
 
   function changePage(direction) {
-      const totalPages = Math.ceil(carouselData[currentSlide].data.length / itemsPerPage);
-      currentPage += direction;
+    const totalPages = Math.ceil(carouselData[currentSlide].data.length / itemsPerPage);
+    currentPage += direction;
 
-      // Ensure the page number is within bounds
-      if (currentPage < 1) currentPage = 1;
-      if (currentPage > totalPages) currentPage = totalPages;
+    // Ensure the page number is within bounds
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
 
-      updateCarousel();
-      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
-      document.getElementById("prevPageButton").disabled = currentPage === 1;
-      document.getElementById("nextPageButton").disabled = currentPage === totalPages;
+    updateCarousel();
+    document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
+    document.getElementById("prevPageButton").disabled = currentPage === 1;
+    document.getElementById("nextPageButton").disabled = currentPage === totalPages;
   }
 
   function updateCarousel() {
     document.getElementById("carouselTitle").innerText = carouselData[currentSlide].title;
     document.getElementById("carouselContent").innerHTML = generateTable(carouselData[currentSlide].data);
-    
+
     // Show/hide the CREATE INTERVENTIONS button
-    document.getElementById("interventionForm").style.display = 
-        carouselData[currentSlide].title === "STUDENTS AT RISK" ? "block" : "none";
+    document.getElementById("interventionForm").style.display =
+      carouselData[currentSlide].title === "STUDENTS AT RISK" ? "block" : "none";
 
     // Show/hide the ALERT STUDENTS button
-    document.getElementById("alertForm").style.display = 
-        carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION" ? "block" : "none";
+    document.getElementById("alertForm").style.display =
+      carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION" ? "block" : "none";
 
     // Toggle pagination alignment for "STUDENTS GRADUATING ON TIME" slide
     const pagination = document.querySelector(".pagination");
     if (carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME") {
-        pagination.classList.add("pagination-right");
+      pagination.classList.add("pagination-right");
     } else {
-        pagination.classList.remove("pagination-right");
+      pagination.classList.remove("pagination-right");
     }
-}
+  }
 
   function prevSlide() {
-      currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
-      currentPage = 1;
-      updateCarousel();
-      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
-      document.getElementById("prevPageButton").disabled = true;
-      document.getElementById("nextPageButton").disabled = false;
+    currentSlide = (currentSlide - 1 + carouselData.length) % carouselData.length;
+    currentPage = 1;
+    updateCarousel();
+    document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
+    document.getElementById("prevPageButton").disabled = true;
+    document.getElementById("nextPageButton").disabled = false;
   }
 
   function nextSlide() {
-      currentSlide = (currentSlide + 1) % carouselData.length;
-      currentPage = 1;
-      updateCarousel();
-      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
-      document.getElementById("prevPageButton").disabled = true;
-      document.getElementById("nextPageButton").disabled = false;
+    currentSlide = (currentSlide + 1) % carouselData.length;
+    currentPage = 1;
+    updateCarousel();
+    document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
+    document.getElementById("prevPageButton").disabled = true;
+    document.getElementById("nextPageButton").disabled = false;
   }
 
   // Initial content display
@@ -447,7 +447,7 @@
           },
           tooltip: {
             callbacks: {
-              label: function(tooltipItem) {
+              label: function (tooltipItem) {
                 const index = tooltipItem.dataIndex; // Get the index of the bar
                 const numberOfStudents = data[index]; // Get the number of students for that bar
                 return `${labels[index]}: ${numberOfStudents} Students`; // Customize tooltip text
@@ -475,7 +475,7 @@
             data: data.counts,
             backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
             borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-            borderWidth: 1, 
+            borderWidth: 1,
             hoverOffset: 3
           }]
         },
@@ -493,7 +493,7 @@
             },
             tooltip: {
               callbacks: {
-                label: function(tooltipItem) {
+                label: function (tooltipItem) {
                   const label = tooltipItem.label || ''; // Get the original label
                   const count = tooltipItem.raw || 0; // Get the count for this segment
                   return `${label}: ${count} Students`; // Customize tooltip text

@@ -1,97 +1,57 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
 
-<!-- =============== Title ================ -->
-{% block title %}TEST PAGE{% endblock %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.css">
+  <link rel="icon" href="{{ url_for('static', filename='images/plpLogo.svg') }}">
+  <title>PLP System | About Us</title>
+</head>
 
-<!-- =============== Sidebars ================ -->
-{% block sidebar %}
-<li class="active">
-    <a href="#">
-        <span class="icon">
-            <ion-icon name="person-circle-outline"></ion-icon>
-        </span>
-        <span class="title">DELNARD</span>
-    </a>
-</li>
-<li>
-    <a href="#">
-        <span class="icon">
-            <ion-icon name="person-circle-outline"></ion-icon>
-        </span>
-        <span class="title">KYLLE JASPER</span>
-    </a>
-</li>
-<li>
-    <a href="#">
-        <span class="icon">
-            <ion-icon name="person-circle-outline"></ion-icon>
-        </span>
-        <span class="title">JOHN PAUL</span>
-    </a>
-</li>
-{% endblock %}
+<body>
 
-<!-- =============== Main Content ================ -->
-{% block main %}
-<div class="content">
-  <div class="studentHome">
+  <!-- Loading Screen -->
+  <div class="loader"></div>
 
-    <div class="plpBldg">
-      <div class="partThree">
-        <h1>WELCOME, YA'LL!</h1>
-      </div>
+  <!-- =============== Main ================ -->
+  <div class="aboutUsContainer">
+    <div class="aboutUsTitle">
+      <h1>ABOUT US</h1>
     </div>
-    <div class="marquee">
-      <ul class="marquee-content">
-        <li><img src="static/images/PLP.png" alt="Image 1"></li>
-        <li><img src="static/images/CAS.png" alt="Image 2"></li>
-        <li><img src="static/images/CBA.png" alt="Image 3"></li>
-        <li><img src="static/images/CIHM.png" alt="Image 4"></li>
-        <li><img src="static/images/COE.png" alt="Image 5"></li>
-        <li><img src="static/images/COEd.png" alt="Image 6"></li>
-        <li><img src="static/images/CONursing.png" alt="Image 7"></li>
-        <li><img src="static/images/CSS.png" alt="Image 8"></li>
-      </ul>
+    <div class="aboutUsTitle">
+      <h2>THE DEVELOPERS</h2>
+      <p>NAME, IMAGE, ROLE</p>
     </div>
-    <div class="plpAbout">
-      <div class="aboutContext">
-        <h1>ABOUT PLP</h1>
-        <p>On March 15, 1999, The Sangguniang Panlungsod Ng Pasig Passed Ordinance No. 11, Series Of 1999, Establishing
-          The Pamantasan Ng Lungsod Ng Pasig, And Appropriated Funds For Its Operations. The Authority Of The
-          Sangguniang Panlungsod Ng Pasig To Establish The Pamantasan Is Article III, Sections 447, 458, 468 Of The
-          Local Government Code Of 1991 Which Allowed Institutions To Be Established And Operated By Local Government
-          Units.</p>
-      </div>
-
-      <div class="aboutImages">
-        <img src="static/images/dp1.jpg" alt="PLP Events" loading="lazy">
-        <img src="static/images/dp2.jpg" alt="PLP Events" loading="lazy">
-        <img src="static/images/dp3.jpg" alt="PLP Events" loading="lazy">
-      </div>
-
-      <div class="layout-container">
-        <div class="content-card">
-          <h1>MISSION</h1>
-          <p>We, a community of service-oriented individuals, supported by the City Government of Pasig, are committed
-            to lifelong learning and to produce graduates strong in their global outlook, cultural identity, and social
-            responsibility through teaching strategies, methodologies, relevant research and dedicated public service.
-          </p>
-        </div>
-        <div class="content-card">
-          <h1>VISION</h1>
-          <p>The Pamantasan ng Lungsod ng Pasig is a leading center for academic excellence among locally funded
-            colleges and universities that produces responsible and productive individuals who are responsive to the
-            changing demands of development locally and globally. </p>
-        </div>
-        <div class="content-card full-width">
-          <h1>CORE VALUES</h1>
-          <p>Academic Excellence, Cultural Identity, Peace Education, Sustainable Development, Social Equity and
-            Responsibility, and Global Competitiveness.</p>
-        </div>
-      </div>
-
+    <div class="aboutUsTitle">
+      <h2>THE ABSTRACT</h2>
+      <p>SYSTEM DESCRIPTION</p>
+    </div>
+    <div class="aboutUsTitle">
+      <h2>THE FOOTER</h2>
+      <p>EXIT ROUTE</p>
     </div>
   </div>
-</div>
 
-{% endblock %}
+  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script type="text/javascript">
+    window.addEventListener("load", () => {
+      const loader = document.querySelector(".loader");
+
+      // Check if loader exists
+      if (loader) {
+        loader.classList.add("loader--hidden");
+
+        loader.addEventListener("transitionend", () => {
+          loader.remove(); // Remove loader directly, if it exists
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

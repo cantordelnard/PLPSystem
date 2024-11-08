@@ -136,6 +136,33 @@ body {
   transform: translateY(-20px);
 }
 
+/* Footer Styling */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: #eef7ff;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 8px;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Remove default link styling */
+.footer-link {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Ensure text color is inherited */
+}
+
+/* Ensure the footer is still clickable */
+.footer-link:hover {
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+}
+
+
 /* Mobile responsiveness */
 @media (max-width: 500px) {
   .flash-messages {

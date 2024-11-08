@@ -108,8 +108,8 @@
     <div class="thequestion">
       <h4>Do you have a regular study schedule?</h4><br>
     </div>
-    <label><input type="radio" name="study_schedule" value="Yes" {% if form_data.RegularStudySchedule == 1 %}checked{% endif %} {% if form_data %}disabled{% endif %}> Yes</label><br>
-    <label><input type="radio" name="study_schedule" value="No" {% if form_data.RegularStudySchedule == 0 %}checked{% endif %} {% if form_data %}disabled{% endif %}> No</label>
+    <label><input type="radio" name="study_schedule" value="Yes" {% if form_data.RegularStudySchedule == "Yes" %}checked{% endif %} {% if form_data %}disabled{% endif %}> Yes</label><br>
+    <label><input type="radio" name="study_schedule" value="No" {% if form_data.RegularStudySchedule == "No" %}checked{% endif %} {% if form_data %}disabled{% endif %}> No</label>
   </div>
 </div>
 

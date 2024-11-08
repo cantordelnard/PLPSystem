@@ -1498,6 +1498,26 @@ form {
     font-size: 0.9rem; /* Adjust paragraph font size */
   }
 
+  .cardUploadTwo {
+    padding: 30px;
+    width: 350px !important;
+    height: auto !important;
+    text-align: center; /* Align content to the left */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: -20px !important;
+  margin-bottom: 50px !important;
+  }
+
+  .cardUploadTwo h2 {
+    font-size: 1.5rem; /* Adjust title font size */
+  }
+
+  .cardUploadTwo p {
+    font-size: 0.9rem; /* Adjust paragraph font size */
+  }
+
   .cardArchive {
     padding: 30px;
     width: 350px !important;
@@ -2811,6 +2831,26 @@ form {
   margin-bottom: 15px;
 }
 
+.cardUploadTwo {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  width: 450px;
+  height: 40vh;
+  text-align: center; /* Align content to the left */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: -20px;
+  margin-bottom: 50px;
+}
+
+.cardUploadTwo p {
+  color: #555;
+  margin-bottom: 15px;
+}
+
 .upload-btn {
   padding: 10px;
   margin-top: 10px;
@@ -2836,7 +2876,7 @@ form {
 .upload-btn-right {
   margin-left: auto;
   margin-top: 30px;
-  background-color: var(--green);
+  background-color: #c0c0c0;
   padding: 10px 20px;
   border-radius: 5px;
   color: #fff;
@@ -2846,13 +2886,13 @@ form {
 }
 
 .upload-btn-right:hover {
-  background-color: var(--lightGreen2);
+  background-color: var(--green);
 }
 
 .upload-btn-right-archive {
   margin-left: auto;
   margin-top: 10px;
-  background-color: var(--green);
+  background-color: #c0c0c0;
   padding: 10px 50px;
   border-radius: 5px;
   color: #fff;
@@ -2862,7 +2902,7 @@ form {
 }
 
 .upload-btn-right-archive:hover {
-  background-color: var(--lightGreen2);
+  background-color: var(--green);
 }
 
 #file {
@@ -3372,3 +3412,40 @@ form {
   text-align: center;
   vertical-align: middle;
 }
+.aboutUsContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content:flex-start;
+  gap: 30px;
+  height: 100lvh;
+  background-color: yellow;
+  padding: 50px;
+}
+
+.aboutUsTitle {
+  background-color: var(--green);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aboutUsTitle h1 {
+  font-size: 50px;
+  color: white;
+  font-weight: 700;
+}
+
+.aboutUsTitle h2 {
+  font-size: 30px;
+  color: white;
+  font-weight: 400;
+}
+
+.aboutUsTitle p {
+  font-size: 18px;
+  color: var(--black2);
+}
+
+

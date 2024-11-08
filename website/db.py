@@ -119,6 +119,10 @@ def insert_users(df):
     cursor = conn.cursor()
 
     for index, row in df.iterrows():
+        # Hash the password from the DataFrame
+        hashed_password = bcrypt.hashpw(row['Password'].encode('utf-8'), bcrypt.gensalt())
+        
+        # Insert the user data into the database with the hashed password
         cursor.execute(""" 
             INSERT INTO users (UserID, Username, Password, RoleID) 
             VALUES (%s, %s, %s, %s)
@@ -126,7 +130,7 @@ def insert_users(df):
                 Username = VALUES(Username), 
                 Password = VALUES(Password), 
                 RoleID = VALUES(RoleID)
-            """, (row['UserID'], row['Username'], row['Password'], row['RoleID']))
+            """, (row['UserID'], row['Username'], hashed_password, row['RoleID']))
     
     conn.commit()
     cursor.close()
@@ -2459,3 +2463,98 @@ def get_socioeconomic_intervention_count():
     else:
         print("Failed to connect to the database.")
         return None
+    
+def process_behavioral_data(df):
+    # Define the scoring criteria
+    scores = {
+        'StudyHours': {
+            'Less than 5 hours': 1, '5-10 hours': 2, '11-15 hours': 3, 
+            '16-20 hours': 4, 'More than 20 hours': 5
+        },
+        'StudyStrategies': {
+            'Never': 1, 'Rarely': 2, 'Sometimes': 3, 'Often': 4, 'Always': 5
+        },
+        'RegularStudySchedule': {'Yes': 5, 'No': 1},
+        'AttendanceRate': {
+            'Less than 50%': 1, '50-70%': 2, '71-90%': 3, 'More than 90%': 4
+        },
+        'ClassParticipation': {
+            'Not at all': 1, 'Slightly': 2, 'Moderately': 3, 
+            'Very actively': 4, 'Extremely actively': 5
+        },
+        'TimeManagementRating': {'Poor': 1, 'Fair': 2, 'Good': 3, 'Very Good': 4, 'Excellent': 5},
+        'StudyDeadlinesFrequency': {'Never': 1, 'Rarely': 2, 'Sometimes': 3, 'Often': 4, 'Always': 5},
+        'MotivationLevel': {
+            'Not motivated': 1, 'Slightly motivated': 2, 'Moderately motivated': 3, 
+            'Very motivated': 4, 'Extremely motivated': 5
+        },
+        'EngagementLevel': {
+            'Not engaged': 1, 'Slightly engaged': 2, 'Moderately engaged': 3, 
+            'Very engaged': 4, 'Extremely engaged': 5
+        },
+        'StressFrequency': {'Never': 5, 'Rarely': 4, 'Sometimes': 3, 'Often': 2, 'Always': 1},
+        'CopingEffectiveness': {
+            'Not effective': 1, 'Slightly effective': 2, 'Moderately effective': 3, 
+            'Very effective': 4, 'Extremely effective': 5
+        },
+    }
+
+    # Connect to the database
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    for _, row in df.iterrows():
+        total_score = 0
+        total_questions = 0
+
+        # Calculate score for each field based on provided values
+        for field, options in scores.items():
+            if row[field] in options:
+                total_score += options[row[field]]
+                total_questions += 1
+
+        # Calculate the average percentage
+        average_percentage = (total_score / (total_questions * 5)) * 100 if total_questions > 0 else 0
+
+        # Insert each row into the database
+        cursor.execute("""
+            INSERT INTO behavioral (
+                StudentID, StudyHours, StudyStrategies, RegularStudySchedule,
+                AttendanceRate, ClassParticipation, TimeManagementRating,
+                StudyDeadlinesFrequency, MotivationLevel, EngagementLevel,
+                StressFrequency, CopingEffectiveness, AveragePercentage
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            row['StudentID'], row['StudyHours'], row['StudyStrategies'],
+            row['RegularStudySchedule'], row['AttendanceRate'], row['ClassParticipation'],
+            row['TimeManagementRating'], row['StudyDeadlinesFrequency'],
+            row['MotivationLevel'], row['EngagementLevel'], row['StressFrequency'],
+            row['CopingEffectiveness'], average_percentage
+        ))
+
+    # Commit changes and close the database connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def process_grades_data(df):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    for _, row in df.iterrows():
+        # Insert data directly from the Excel file
+        cursor.execute("""
+            INSERT INTO grades (
+                StudentID, SubjectID, ProfessorID, MidtermGrade,
+                FinalGrade, SchoolYearID, SemesterID, ClassID, AverageGrade
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            row['StudentID'], row['SubjectID'], row['ProfessorID'],
+            row['MidtermGrade'], row['FinalGrade'], row['SchoolYearID'],
+            row['SemesterID'], row['ClassID'], row['AverageGrade']
+        ))
+
+    # Commit changes and close the connection
+    conn.commit()
+    cursor.close()
+    conn.close()

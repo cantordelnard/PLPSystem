@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, current_app, render_template, session, redirect, url_for, flash, request, jsonify
 import mysql.connector
-from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_intervention_count, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_behavioral_intervention_count, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_socioeconomic_intervention_count, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
+from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_intervention_count, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_behavioral_intervention_count, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_socioeconomic_intervention_count, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, process_behavioral_data, process_grades_data, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
 import logging
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -220,6 +220,7 @@ def bulk_upload():
 
     return redirect(url_for('views.adminUpload'))
 
+
 def check_duplicates_in_db(df_users):
     conn = connect_to_database()
     cursor = conn.cursor()
@@ -234,6 +235,128 @@ def check_duplicates_in_db(df_users):
     cursor.close()
     conn.close()
     return duplicate_entries
+
+
+@views.route('/behavioral_bulk_upload', methods=['POST'])
+def behavioral_bulk_upload():
+    file = request.files['file']
+    if not file:
+        flash('No file selected')
+        return redirect(url_for('views.adminUpload'))
+
+    try:
+        xl = pd.ExcelFile(file)
+        df_behavioral = xl.parse('BEHAVIORAL')
+
+        validate_behavioral_data(df_behavioral)
+
+        # Check for duplicates
+        duplicates = check_behavioral_duplicates(df_behavioral)
+        if duplicates:
+            # Render with duplicate data to show in popup
+            custom_duplicates = [{'entry_type': 'Behavioral', 'identifier': dup['StudentID']} for dup in duplicates]
+            return render_template('adminUpload.html', show_duplicate_popup=True, duplicates=custom_duplicates)
+
+        process_behavioral_data(df_behavioral)
+        flash('Bulk upload for Behavioral Data was Successful!')
+    except Exception as e:
+        flash(f'An error occurred: {str(e)}')
+
+    return redirect(url_for('views.adminUpload'))
+
+
+def validate_behavioral_data(df):
+    required_columns = [
+        'StudentID', 'StudyHours', 'StudyStrategies', 'RegularStudySchedule',
+        'AttendanceRate', 'ClassParticipation', 'TimeManagementRating',
+        'StudyDeadlinesFrequency', 'MotivationLevel', 'EngagementLevel',
+        'StressFrequency', 'CopingEffectiveness'
+    ]
+    for col in required_columns:
+        if col not in df.columns:
+            raise ValueError(f"Missing required column: {col}")
+
+def check_behavioral_duplicates(df):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    duplicates = []
+    for index, row in df.iterrows():
+        cursor.execute("SELECT * FROM behavioral WHERE StudentID = %s", (row['StudentID'],))
+        if cursor.fetchone():
+            duplicates.append(row)  # Add row to duplicates if it already exists
+
+    cursor.close()
+    conn.close()
+    return duplicates
+
+
+@views.route('/grades_bulk_upload', methods=['POST'])
+def grades_bulk_upload():
+    file = request.files['file']
+    if not file:
+        flash('No file selected')
+        return redirect(url_for('views.adminUpload'))
+
+    try:
+        xl = pd.ExcelFile(file)
+        df_grades = xl.parse('GRADES')
+
+        # Step 1: Validate the uploaded data
+        validate_grades_data(df_grades)
+
+        # Step 2: Check for duplicates
+        duplicates = check_grades_duplicates(df_grades)
+        if duplicates:
+            # Render with duplicate data to show in popup
+            custom_duplicates = [{'entry_type': 'Grade', 'identifier': f"{dup['StudentID']} - {dup['SubjectID']}"} for dup in duplicates]
+            return render_template('adminUpload.html', show_duplicate_popup=True, duplicates=custom_duplicates)
+
+        # Step 3: Process the data and insert into the database
+        process_grades_data(df_grades)
+        flash('Bulk upload for Student Grades was Successful!')
+    except Exception as e:
+        flash(f'An error occurred: {str(e)}')
+
+    return redirect(url_for('views.adminUpload'))
+
+
+def validate_grades_data(df):
+    required_columns = [
+        'StudentID', 'SubjectID', 'ProfessorID', 'MidtermGrade',
+        'FinalGrade', 'SchoolYearID', 'SemesterID', 'ClassID'
+    ]
+    for col in required_columns:
+        if col not in df.columns:
+            raise ValueError(f"Missing required column: {col}")
+
+    # Validate numeric fields
+    numeric_fields = ['MidtermGrade', 'FinalGrade']
+    for field in numeric_fields:
+        if not pd.api.types.is_numeric_dtype(df[field]):
+            raise ValueError(f"Invalid data type for {field}. It must be numeric.")
+
+
+def check_grades_duplicates(df):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    duplicates = []
+    for _, row in df.iterrows():
+        cursor.execute("""
+            SELECT * FROM grades
+            WHERE StudentID = %s AND SubjectID = %s
+            AND SchoolYearID = %s AND SemesterID = %s
+            AND ClassID = %s
+        """, (row['StudentID'], row['SubjectID'], row['SchoolYearID'], row['SemesterID'], row['ClassID']))
+        
+        if cursor.fetchone():
+            duplicates.append(row)
+
+    cursor.close()
+    conn.close()
+    return duplicates
+
 
 
 #<!-- =============== BASE TEMPLATE ================ -->

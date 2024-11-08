@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 <!-- =============== Title ================ -->
@@ -53,25 +52,25 @@
 {% block popupmessage %}
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
-  {% for category, message in messages %}
-  <div id="flash-message" class="info">
-    <div class="info__icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
-        <path fill="#393a37"
-          d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
-        </path>
-      </svg>
-    </div>
-    <div class="info__title">{{ message }}</div>
-    <div class="info__close">
-      <svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
-          fill="#393a37"></path>
-      </svg>
-    </div>
+{% for category, message in messages %}
+<div id="flash-message" class="info">
+  <div class="info__icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none">
+      <path fill="#393a37"
+        d="m12 1.5c-5.79844 0-10.5 4.70156-10.5 10.5 0 5.7984 4.70156 10.5 10.5 10.5 5.7984 0 10.5-4.7016 10.5-10.5 0-5.79844-4.7016-10.5-10.5-10.5zm.75 15.5625c0 .1031-.0844.1875-.1875.1875h-1.125c-.1031 0-.1875-.0844-.1875-.1875v-6.375c0-.1031.0844-.1875.1875-.1875h1.125c.1031 0 .1875.0844.1875.1875zm-.75-8.0625c-.2944-.00601-.5747-.12718-.7808-.3375-.206-.21032-.3215-.49305-.3215-.7875s.1155-.57718.3215-.7875c.2061-.21032.4864-.33149.7808-.3375.2944.00601.5747.12718.7808.3375.206.21032.3215.49305.3215.7875s-.1155.57718-.3215.7875c-.2061.21032-.4864.33149-.7808.3375z">
+      </path>
+    </svg>
   </div>
-  {% endfor %}
+  <div class="info__title">{{ message }}</div>
+  <div class="info__close">
+    <svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"
+        fill="#393a37"></path>
+    </svg>
+  </div>
+</div>
+{% endfor %}
 {% endif %}
 {% endwith %}
 {% endblock %}
@@ -83,18 +82,37 @@
     <h1>UPLOAD BULK INFORMATION</h1>
 
     <div class="containerUpload">
-        <div class="cardUpload">
-          <form method="POST" action="{{ url_for('views.bulk_upload_schoolyear') }}" enctype="multipart/form-data">
-            <h2>MAINTENANCE</h2>
-            <p>Upload Data for School Year, Classes, and Professor Advisory.</p>
-            <input type="file" name="file" id="file" accept=".xlsx, .xls" required>
-            <button type="submit" class="btn upload-btn-right">Upload</button>
-          </form>
-        </div>
+      <div class="cardUpload">
+        <form method="POST" action="{{ url_for('views.bulk_upload_schoolyear') }}" enctype="multipart/form-data">
+          <h2>MAINTENANCE</h2>
+          <p>Upload Data for School Year, Classes, and Professor Advisory.</p>
+          <input type="file" name="file" id="file" accept=".xlsx, .xls" required>
+          <button type="submit" class="btn upload-btn-right">Upload</button>
+        </form>
+      </div>
       <div class="cardUpload">
         <form method="POST" action="{{ url_for('views.bulk_upload') }}" enctype="multipart/form-data">
           <h2>USERS</h2>
           <p>Upload Data for Admins, Professors, and Students.</p>
+          <input type="file" name="file" id="file" accept=".xlsx, .xls" required>
+          <button type="submit" class="btn upload-btn-right">Upload</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="containerUpload">
+      <div class="cardUploadTwo">
+        <form method="POST" action="{{ url_for('views.grades_bulk_upload') }}" enctype="multipart/form-data">
+          <h2>STUDENT GRADES</h2>
+          <p>Upload Data for Student Grades.</p>
+          <input type="file" name="file" id="file" accept=".xlsx, .xls" required>
+          <button type="submit" class="btn upload-btn-right">Upload</button>
+        </form>
+      </div>
+      <div class="cardUploadTwo">
+        <form method="POST" action="{{ url_for('views.behavioral_bulk_upload') }}" enctype="multipart/form-data">
+          <h2>BEHAVIORAL SURVEY</h2>
+          <p>Upload Data for Students Behavioral Answers.</p>
           <input type="file" name="file" id="file" accept=".xlsx, .xls" required>
           <button type="submit" class="btn upload-btn-right">Upload</button>
         </form>
@@ -117,16 +135,17 @@
       </thead>
       <tbody>
         {% if custom_duplicates %}
-          {% for user in custom_duplicates %}
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">{{ user.UserID }}</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">{{ user.Username }}</td>
-            </tr>
-          {% endfor %}
+        {% for user in custom_duplicates %}
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">{{ user.UserID }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">{{ user.Username }}</td>
+        </tr>
+        {% endfor %}
         {% else %}
-          <tr>
-            <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">No duplicate users found.</td>
-          </tr>
+        <tr>
+          <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">No duplicate users found.
+          </td>
+        </tr>
         {% endif %}
       </tbody>
     </table>
@@ -150,22 +169,55 @@
       </thead>
       <tbody>
         {% if duplicates %}
-          {% for duplicate in duplicates %}
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">{{ duplicate.entry_type }}</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">{{ duplicate.identifier }}</td>
-            </tr>
-          {% endfor %}
+        {% for duplicate in duplicates %}
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">{{ duplicate.entry_type }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">{{ duplicate.identifier }}</td>
+        </tr>
+        {% endfor %}
         {% else %}
-          <tr>
-            <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">No duplicates found.</td>
-          </tr>
+        <tr>
+          <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">No duplicates found.</td>
+        </tr>
         {% endif %}
       </tbody>
     </table>
-    
+
     <div class="popup-buttons">
       <button onclick="closeDuplicateModal()" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="duplicatePopupTwo" class="popup-modal {% if show_duplicate_popup %}show{% endif %}">
+  <div class="popup-content-explore">
+    <h3>POSSIBLE DUPLICATE ENTRY/IES</h3>
+    <p id="popupText">Duplicate entries found in your upload:</p>
+    <table id="duplicateTable" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: #137b35; color: #fff;">
+          <th style="border: 1px solid #ddd; padding: 8px;">Entry Type</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if duplicates %}
+        {% for duplicate in duplicates %}
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">{{ duplicate.entry_type }}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">{{ duplicate.identifier }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">No duplicates found.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    <div class="popup-buttons">
+      <button onclick="closeModal()" class="cancel-btn">Cancel</button>
     </div>
   </div>
 </div>
@@ -192,7 +244,7 @@
     reader.readAsBinaryString(file);
     return true;
   }
-  
+
   // Function for Custom Popup
   function showCustomPopup() {
     let modal = document.getElementById('customPopup');
@@ -210,28 +262,36 @@
     modal.classList.add('show');
   }
 
-  // Function to close the popup
+  // Function to close the duplicate popup
   function closeDuplicateModal() {
+    console.log("closeDuplicateModal called");  // Debug log
     let modal = document.getElementById('duplicatePopup');
     modal.classList.remove('show');
   }
+
+  function closeModal() {
+    console.log("closeModal called");  // Debug log
+    let modal = document.getElementById('duplicatePopupTwo');
+    modal.classList.remove('show');
+}
+
 </script>
 
 <!-- Trigger popups independently -->
 {% if show_popup %}
-  <script>
-    window.onload = function() {
-      openDuplicateModal();
-    };
-  </script>
+<script>
+  window.onload = function () {
+    openDuplicateModal();
+  };
+</script>
 {% endif %}
 
 {% if show_custom_popup %}
-  <script>
-    window.onload = function() {
-      showCustomPopup();
-    };
-  </script>
+<script>
+  window.onload = function () {
+    showCustomPopup();
+  };
+</script>
 {% endif %}
 
 {% endblock %}
