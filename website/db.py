@@ -2,7 +2,7 @@ import bcrypt
 import mysql.connector
 import numpy as np
 
-'''
+
 #<!-- =============== DATABASE CONNECTION LOCAL ================ -->
 db_config = {
     "host": "localhost",
@@ -19,7 +19,7 @@ db_config = {
     "password": "iln0oyv4l4t0kdyj",
     "database": "fpnzzwqo0h0jrll9"
 }
-
+'''
 def connect_to_database():
     try:
         connection = mysql.connector.connect(**db_config)
@@ -2541,20 +2541,31 @@ def process_grades_data(df):
     conn = connect_to_database()
     cursor = conn.cursor()
 
+    # Disable foreign key checks
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+
     for _, row in df.iterrows():
-        # Insert data directly from the Excel file
-        cursor.execute("""
-            INSERT INTO grades (
-                StudentID, SubjectID, ProfessorID, MidtermGrade,
-                FinalGrade, SchoolYearID, SemesterID, ClassID, AverageGrade
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (
-            row['StudentID'], row['SubjectID'], row['ProfessorID'],
-            row['MidtermGrade'], row['FinalGrade'], row['SchoolYearID'],
-            row['SemesterID'], row['ClassID'], row['AverageGrade']
-        ))
+        try:
+            # Insert data directly from the Excel file
+            cursor.execute("""
+                INSERT INTO grades (
+                    StudentID, SubjectID, ProfessorID, MidtermGrade,
+                    FinalGrade, SchoolYearID, SemesterID, ClassID, AverageGrade
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                row['StudentID'], row['SubjectID'], row['ProfessorID'],
+                row['MidtermGrade'], row['FinalGrade'], row['SchoolYearID'],
+                row['SemesterID'], row['ClassID'], row['AverageGrade']
+            ))
+
+        except Exception as e:
+            print(f"Error inserting row: {row}\nException: {e}")
+
+    # Enable foreign key checks
+    cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
 
     # Commit changes and close the connection
     conn.commit()
     cursor.close()
     conn.close()
+
