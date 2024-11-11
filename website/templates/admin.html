@@ -304,44 +304,53 @@
     const isGraduatingOnTimeSlide = carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME";
     const isWithoutPredictionSlide = carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION";
 
+    // Check if there are no students in the data
+    if (data.length === 0) {
+      return `
+      <div class="no-data-message">
+        <p>No students available for this category.</p>
+      </div>
+    `;
+    }
+
     let tableContent = `
-          <div class="classifiers">
-              <div class="tbl-content">
-                  <table>
-                      <thead>
-                          <tr class="bgTr">
-                              <th class="centerUpdateDashboard">STUDID</th>
-                              <th class="centerUpdateDashboard">STUDENT NAME</th>
-                              ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
-                                  <th class="centerUpdateDashboard">PERCENTAGE</th>
-                                  <th class="centerUpdateDashboard">FACTORS</th>
-                                  <th class="centerUpdateDashboard">INTERVENTION</th>
-                              `}
-                          </tr>
-                      </thead>
-                      <tbody>
-      `;
+        <div class="classifiers">
+            <div class="tbl-content">
+                <table>
+                    <thead>
+                        <tr class="bgTr">
+                            <th class="centerUpdateDashboard">STUDID</th>
+                            <th class="centerUpdateDashboard">STUDENT NAME</th>
+                            ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
+                                <th class="centerUpdateDashboard">PERCENTAGE</th>
+                                <th class="centerUpdateDashboard">FACTORS</th>
+                                <th class="centerUpdateDashboard">INTERVENTION</th>
+                            `}
+                        </tr>
+                    </thead>
+                    <tbody>
+    `;
 
     paginatedData.forEach(item => {
       tableContent += `
-              <tr class="highlight-row">
-              <td class="centerUpdateDashboard" data-label="STUDID">${item.id}</td>
-              <td class="centerUpdateDashboard" data-label="STUDENT NAME">${item.name}</td>
-              ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
-                  <td class="centerUpdateDashboard" data-label="PERCENTAGE">${item.percentage}</td>
-                  <td class="centerUpdateDashboard" data-label="FACTOR">${item.factor || ""}</td>
-                  <td class="centerUpdateDashboard" data-label="INTERVENTION">${item.intervention || ""}</td>
-              `}
-        </tr>
-          `;
+            <tr class="highlight-row">
+            <td class="centerUpdateDashboard" data-label="STUDID">${item.id}</td>
+            <td class="centerUpdateDashboard" data-label="STUDENT NAME">${item.name}</td>
+            ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
+                <td class="centerUpdateDashboard" data-label="PERCENTAGE">${item.percentage}</td>
+                <td class="centerUpdateDashboard" data-label="FACTOR">${item.factor || ""}</td>
+                <td class="centerUpdateDashboard" data-label="INTERVENTION">${item.intervention || ""}</td>
+            `}
+          </tr>
+        `;
     });
 
     tableContent += `
-              </tbody>
-          </table>
-          </div>
-      </div>
-      `;
+            </tbody>
+        </table>
+        </div>
+    </div>
+    `;
 
     return tableContent;
   }

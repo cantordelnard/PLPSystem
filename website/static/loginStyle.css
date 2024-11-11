@@ -141,10 +141,10 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  color: #eef7ff;
+  color: rgb(255,255,255,0.6);
   padding: 15px 0;
   text-align: center;
-  font-size: 8px;
+  font-size: 8.5px;
 }
 
 .footer p {

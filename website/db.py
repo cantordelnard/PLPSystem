@@ -14,10 +14,10 @@ db_config = {
 #<!-- =============== DATABASE CONNECTION HEROKU ================ -->
 '''
 db_config = {
-    "host": "s0znzigqvfehvff5.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "user": "hkcekjqb50br9q52",
-    "password": "n9ymqr6wbfqvbrgr",
-    "database": "uw7ef945eu5qv52o"
+    "host": "gtizpe105piw2gfq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "user": "xg67haofud3g5u2l",
+    "password": "iln0oyv4l4t0kdyj",
+    "database": "fpnzzwqo0h0jrll9"
 }
 
 def connect_to_database():
