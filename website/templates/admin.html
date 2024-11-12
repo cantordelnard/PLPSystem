@@ -321,10 +321,10 @@
                     <tr class="bgTr">
                         <th class="centerUpdateDashboard">STUDID</th>
                         <th class="centerUpdateDashboard">STUDENT NAME</th>
-                        ${isGraduatingOnTimeSlide ? `
+                        ${isGraduatingOnTimeSlide || isAtRiskSlide ? `
                             <th class="centerUpdateDashboard">PERCENTAGE</th>
                         ` : ""}
-                        ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
+                        ${isGraduatingOnTimeSlide || isWithoutPredictionSlide || isAtRiskSlide ? "" : `
                             <th class="centerUpdateDashboard">FACTORS</th>
                             <th class="centerUpdateDashboard">INTERVENTION</th>
                         `}
@@ -338,10 +338,10 @@
         <tr class="highlight-row">
         <td class="centerUpdateDashboard" data-label="STUDID">${item.id}</td>
         <td class="centerUpdateDashboard" data-label="STUDENT NAME">${item.name}</td>
-        ${isGraduatingOnTimeSlide ? `
+        ${isGraduatingOnTimeSlide || isAtRiskSlide ? `
             <td class="centerUpdateDashboard" data-label="PERCENTAGE">${item.percentage || ""}</td>
         ` : ""}
-        ${isGraduatingOnTimeSlide || isWithoutPredictionSlide ? "" : `
+        ${isGraduatingOnTimeSlide || isWithoutPredictionSlide || isAtRiskSlide ? "" : `
             <td class="centerUpdateDashboard" data-label="FACTOR">${item.factor || ""}</td>
             <td class="centerUpdateDashboard" data-label="INTERVENTION">${item.intervention || ""}</td>
         `}
@@ -357,6 +357,7 @@
 `;
 
     return tableContent;
+
 
 
   }
