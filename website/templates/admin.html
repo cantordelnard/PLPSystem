@@ -302,6 +302,7 @@
     const start = (currentPage - 1) * itemsPerPage;
     const paginatedData = data.slice(start, start + itemsPerPage);
     const isGraduatingOnTimeSlide = carouselData[currentSlide].title === "STUDENTS GRADUATING ON TIME";
+    const isAtRiskSlide = carouselData[currentSlide].title === "STUDENTS AT RISK";  // Check for "At Risk" slide
     const isWithoutPredictionSlide = carouselData[currentSlide].title === "STUDENTS WITHOUT PREDICTION";
 
     // Check if there are no students in the data
@@ -321,7 +322,7 @@
                     <tr class="bgTr">
                         <th class="centerUpdateDashboard">STUDID</th>
                         <th class="centerUpdateDashboard">STUDENT NAME</th>
-                        ${isGraduatingOnTimeSlide || isAtRiskSlide ? `
+                        ${isGraduatingOnTimeSlide || isAtRiskSlide ? `  <!-- Show Percentage for At Risk and On Time -->
                             <th class="centerUpdateDashboard">PERCENTAGE</th>
                         ` : ""}
                         ${isGraduatingOnTimeSlide || isWithoutPredictionSlide || isAtRiskSlide ? "" : `
@@ -346,7 +347,7 @@
             <td class="centerUpdateDashboard" data-label="INTERVENTION">${item.intervention || ""}</td>
         `}
       </tr>
-    `;
+  `;
     });
 
     tableContent += `
@@ -357,10 +358,7 @@
 `;
 
     return tableContent;
-
-
-
-  }
+  } a
 
   function changePage(direction) {
     const totalPages = Math.ceil(carouselData[currentSlide].data.length / itemsPerPage);
