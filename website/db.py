@@ -1609,13 +1609,13 @@ def log_academic_intervention(academic_students):
                 for grade in low_grades:
                     # Check for duplicate in academicIntervention
                     check_query = """
-                    SELECT COUNT(*) FROM academicIntervention
+                    SELECT COUNT(*) FROM academicintervention
                     WHERE ProfID = %s AND SubjID = %s AND StudID = %s
                     """
                     cursor.execute(check_query, (grade['ProfessorID'], grade['SubjectID'], student_id))
                     if cursor.fetchone()['COUNT(*)'] == 0:
                         insert_query = """
-                        INSERT INTO academicIntervention (ProfID, SubjID, StudID, Comment)
+                        INSERT INTO academicintervention (ProfID, SubjID, StudID, Comment)
                         VALUES (%s, %s, %s, %s)
                         """
                         cursor.execute(insert_query, (grade['ProfessorID'], grade['SubjectID'], student_id, ""))
@@ -1623,7 +1623,7 @@ def log_academic_intervention(academic_students):
                         print(f"Duplicate entry detected for StudentID {student_id}, SubjectID {grade['SubjectID']}")
             
             connection.commit()
-            print("Academic interventions logged.")
+            print("Academic Interventions Logged.")
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             connection.rollback()
@@ -1638,7 +1638,7 @@ def insert_socioeconomic_interventions(socioeconomic_students):
             cursor = connection.cursor(dictionary=True)
 
             # Fetch all events for FactorID 1; if not found, use EventID 0 as default
-            cursor.execute("SELECT EventID FROM theEvents WHERE FactorID = 1")
+            cursor.execute("SELECT EventID FROM theevents WHERE FactorID = 1")
             events = cursor.fetchall() or [{'EventID': 0}]  # Default to EventID 0 if no events found
 
             for event in events:  # Loop through each event or default
@@ -1663,7 +1663,7 @@ def insert_socioeconomic_interventions(socioeconomic_students):
 
             # Commit intervention records
             connection.commit()
-            print("Socioeconomic interventions logged.")
+            print("Socioeconomic Interventions Logged.")
 
             # Update the interventionTag in prediction table for 'WILL NOT GRADUATE ON TIME' remarks
             update_query = """
@@ -1692,7 +1692,7 @@ def insert_behavioral_interventions(behavioral_students):
             cursor = connection.cursor(dictionary=True)
 
             # Fetch all events for FactorID 3; if not found, use EventID 0 as default
-            cursor.execute("SELECT EventID FROM theEvents WHERE FactorID = 3")
+            cursor.execute("SELECT EventID FROM theevents WHERE FactorID = 3")
             events = cursor.fetchall() or [{'EventID': 0}]  # Default to EventID 0 if no events found
 
             for event in events:  # Loop through each event or default
@@ -1717,7 +1717,7 @@ def insert_behavioral_interventions(behavioral_students):
 
             # Commit intervention records
             connection.commit()
-            print("Behavioral interventions logged.")
+            print("Behavioral Interventions Logged.")
 
             # Update the interventionTag in prediction table for 'WILL NOT GRADUATE ON TIME' remarks
             update_query = """
@@ -1750,7 +1750,7 @@ def get_academic_interventions(professor_id):
                 ai.ProfID,
                 ai.SubjID,
                 s.SubjectName,
-                MAX(ai.Comment) AS Comment  -- Adjust this if you want to aggregate comments differently
+                MAX(ai.Comment) AS Comment
             FROM 
                 academicintervention ai
             JOIN 
@@ -1791,7 +1791,7 @@ def perform_intervention_based_on_factor():
     if behavioral_students:
         insert_behavioral_interventions(behavioral_students)
 
-    print("Interventions successfully logged.")
+    print("Interventions Successfully Logged.")
 
     
 
