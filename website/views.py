@@ -2084,24 +2084,14 @@ def add_intervention():
         title = request.form['title']
         description = request.form['description']
         link = request.form['link']
-        picture = request.files['picture']
         location = request.form['location']
         date = request.form['date']
         time = request.form['time']
         factor_id = request.form['factor_id']  # New dropdown for FactorID
 
-        # Define dynamic path for the upload folder
-        upload_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'upload')
+        # Default image path (relative to the 'static' folder)
+        picture_filename = 'events.png'  # Default image located in 'static/images/'
 
-        # Ensure the upload folder exists
-        if not os.path.exists(upload_folder):
-            os.makedirs(upload_folder)
-
-        # Save the picture file to the 'static/upload' folder
-        picture_filename = picture.filename
-        picture_path = os.path.join(upload_folder, picture_filename)
-        picture.save(picture_path)
-        
         try:
             # Connect to the database
             connection = connect_to_database()
@@ -2129,6 +2119,7 @@ def add_intervention():
             connection.close()
 
         return redirect(url_for('views.adminMaintenance'))
+
     
 @views.route('/studentsEvent', methods=['GET', 'POST'])
 def studentsEvent():

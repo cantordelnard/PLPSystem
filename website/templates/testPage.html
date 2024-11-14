@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='aboutStyle.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/ionicons.min.css">
   <link rel="icon" href="{{ url_for('static', filename='images/plpLogo.svg') }}">
   <title>PLP System | About Us</title>
@@ -15,43 +15,131 @@
   <!-- Loading Screen -->
   <div class="loader"></div>
 
+  <a href="{{ url_for('auth.logout') }}">
+    <ion-icon name="chevron-back-circle" class="sticky-icon"></ion-icon>
+  </a>
+  
+
+
   <!-- =============== Main ================ -->
   <div class="aboutUsContainer">
     <div class="aboutUsTitle">
       <h1>ABOUT US</h1>
     </div>
-    <div class="aboutUsTitle">
-      <h2>THE DEVELOPERS</h2>
-      <p>NAME, IMAGE, ROLE, SOCIALS</p>
-    </div>
-    <div class="aboutUsTitle">
-      <h2>THE ABSTRACT</h2>
-      <p>SYSTEM DESCRIPTION</p>
-    </div>
-    <div class="aboutUsTitle">
-      <h2>THE FOOTER</h2>
-      <p>EXIT ROUTE</p>
-    </div>
-  </div>
 
-  <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script type="text/javascript">
-    window.addEventListener("load", () => {
-      const loader = document.querySelector(".loader");
+    <div class="card__container">
+      <article class="card__article card__green">
+        <div class="card__scale-1"></div>
+        <div class="card__scale-2"></div>
 
-      // Check if loader exists
-      if (loader) {
-        loader.classList.add("loader--hidden");
+        <img class="card__shape-1" src="{{ url_for('static', filename='images/aboutDelnard.png') }}"
+          alt="Delnard Cantor">
 
-        loader.addEventListener("transitionend", () => {
-          loader.remove(); // Remove loader directly, if it exists
-        });
-      }
-    });
-  </script>
+
+        <div class="card__data">
+          <h2 class="card__title">DELNARD R. CANTOR</h2>
+
+          <p class="card__description">
+            SYSTEM ANALYST
+          </p>
+
+        </div>
+      </article>
+
+      <article class="card__article card__green">
+        <div class="card__scale-1"></div>
+        <div class="card__scale-2"></div>
+
+        <img class="card__shape-1" src="{{ url_for('static', filename='images/aboutKylle.png') }}"
+          alt="Kylle Jasper Lavilla">
+
+        <div class="card__data">
+          <h2 class="card__title">KYLLE JASPER J. LAVILLA</h2>
+
+          <p class="card__description">
+            DATA ANALYST
+          </p>
+
+        </div>
+      </article>
+
+      <article class="card__article card__green">
+        <div class="card__scale-1"></div>
+        <div class="card__scale-2"></div>
+
+        <img class="card__shape-1" src="{{ url_for('static', filename='images/aboutPaul.png') }}"
+          alt="John Paul Martinez">
+
+        <div class="card__data">
+          <h2 class="card__title">JOHN PAUL B. MARTINEZ</h2>
+
+          <p class="card__description">
+            PROJECT MANAGER
+          </p>
+
+        </div>
+      </article>
+    </div>
+
+    <div class="aboutContent">
+      <h2>PREDICTING TIMELY PROGRAM COMPLETION OF BSIT STUDENTS USING LOGISTIC REGRESSION ANALYSIS</h2>
+      <p>A logistic regression analysis was used to predict timely graduation rates for Bachelor of Science in Information
+        Technology (BSIT) students at Pamantasan ng Lungsod ng Pasig (PLP) based on their academic, socioeconomic, and
+        behavioral factors. The model comprises a dataset ranging from student records from the classes of 2020 to 2023
+        and has an accuracy of 86.23% in predicting students at risk. Interventions are carried out on the identified
+        factors of at-risk students. Students with academic challenges will have additional academic requirements to
+        support their learning. Those under the socioeconomic factor will be encouraged to participate in events to equip
+        them with relevant resources and support for their circumstances. Students with behavioral challenges will be
+        encouraged to consult the guidance counselor on their concerns. These interventions are prompted when the system
+        identifies a student at risk of not graduating on time. These also contribute toward increasing graduation rates
+        at PLP, which leads to the effective use of institutional resources and better student outcomes.</p>
+    </div>
+
+    <div class="aboutContentTwo">
+      <img src="{{ url_for('static', filename='images/aboutUs.jpg') }}" alt="The Developers" class="aboutImage">
+      <div class="aboutText">
+        <p>
+          First and foremost, we give God, the Almighty, praise and thanks for his blessings throughout this capstone project
+          and for enabling us to successfully complete it. For his excellent support during this project, our capstone coordinator,
+          Prof. Federico G. Nueva, MT, has our warmest gratitude.
+        </p>
+        <p>
+          Prof. Riegie Dy Tan, DIT, our capstone adviser and college dean, thank you for continually reminding us of the capstone
+          project process. You always inspire us every day by giving us a confidence boost and providing us with some encouragement.
+          Lastly, we thank our family for their unwavering support throughout this journey. They have never stopped cheering us on,
+          helping us out financially when we needed it, and having faith in our ability to finish this capstone project.
+        </p>
+        <p>
+          Researchers also thank the respondents for allowing us to have their evaluation and feedback on our developed system, and
+          we find their evaluation helpful for further improvement of the system. This cannot be possible without everyone’s effort
+          and support. Thank you all so much. To God be the glory.
+        </p>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script type="text/javascript">
+      window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader");
+
+        // Check if loader exists
+        if (loader) {
+          loader.classList.add("loader--hidden");
+
+          loader.addEventListener("transitionend", () => {
+            loader.remove(); // Remove loader directly, if it exists
+          });
+        }
+      });
+    </script>
 
 </body>
+
+<footer class="footer">
+  <p>&copy; 2024 Pamantasan ng Lungsod Ng Pasig | All Rights Reserved.</p>
+</footer>
+
 
 </html>
