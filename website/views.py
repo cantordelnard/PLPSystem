@@ -558,8 +558,8 @@ def baseUpdate():
 
 
 #<!-- =============== TEST PAGE ================ -->
-@views.route('/testPage')
-def testPage():
+@views.route('/aboutUs')
+def aboutUs():
     return render_template("testPage.html")
 
 #<!-- =============== TEST PAGE ================ -->
