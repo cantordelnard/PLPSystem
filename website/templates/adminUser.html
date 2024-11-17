@@ -31,20 +31,20 @@
 </li>
 <li>
     <a href="adminUpload">
-      <span class="icon">
-        <ion-icon name="cloud-upload-outline"></ion-icon>
-      </span>
-      <span class="title">UPLOAD</span>
+        <span class="icon">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+        </span>
+        <span class="title">UPLOAD</span>
     </a>
 </li>
 <li>
     <a href="adminArchive">
-      <span class="icon">
-        <ion-icon name="archive-outline"></ion-icon>
-      </span>
-      <span class="title">ARCHIVE</span>
+        <span class="icon">
+            <ion-icon name="archive-outline"></ion-icon>
+        </span>
+        <span class="title">ARCHIVE</span>
     </a>
-  </li>
+</li>
 {% endblock %}
 
 
@@ -105,7 +105,8 @@
                 <div class="list">
                     <div class="cardHeader">
                         <h2>ADMIN LIST</h2>
-                        <input class="inputSeacrh" type="text" id="adminSearchInput" onkeyup="searchFunction('adminSearchInput', 'adminTable')" placeholder="Search Admins">
+                        <input class="inputSeacrh" type="text" id="adminSearchInput"
+                            onkeyup="searchFunction('adminSearchInput', 'adminTable')" placeholder="Search Admins">
                     </div>
                     <div class="tbl-content">
                         <table id="adminTable">
@@ -134,7 +135,7 @@
                                             onclick="showPopup('admin', '{{ admin.AdminID }}', '{{ admin.FirstName }}', '{{ admin.LastName }}', 'archive');">
                                             <ion-icon name="archive" class="archiveIcon"></ion-icon>
                                         </a>-->
-                                    </td>      
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -148,7 +149,7 @@
                         <h2 id="form-title">ADD NEW ADMIN</h2>
                     </div>
                     <div class="inputData">
-                        <form method="POST" action="{{ url_for('views.adminUser') }}">
+                        <form method="POST" action="{{ url_for('views.adminUser') }}" id="adminForm">
                             <input type="hidden" name="role_id" value="1">
                             <input type="hidden" name="user_id" id="user_id">
                             <div class="input-group">
@@ -159,12 +160,18 @@
                             <div class="input-group">
                                 <label class="label">First Name:</label>
                                 <input autocomplete="off" type="text" id="first_name" name="first_name"
-                                    placeholder="Enter first name" class="input">
+                                    placeholder="Enter first name" class="input" onblur="validateName('first_name')"
+                                    required>
+                                <span id="first_name_error" style="color: red; display: none; font-size: 11px;">Cannot
+                                    contain numbers.</span>
                             </div>
                             <div class="input-group">
                                 <label class="label">Last Name:</label>
                                 <input autocomplete="off" type="text" id="last_name" name="last_name"
-                                    placeholder="Enter last name" class="input">
+                                    placeholder="Enter last name" class="input" onblur="validateName('last_name')"
+                                    required>
+                                <span id="last_name_error" style="color: red; display: none; font-size: 11px;">Cannot
+                                    contain numbers.</span>
                             </div>
                             <div class="input-group">
                                 <label class="label">Email address:</label>
@@ -190,7 +197,9 @@
                 <div class="list">
                     <div class="cardHeader">
                         <h2>PROFESSOR LIST</h2>
-                        <input class="inputSeacrh" type="text" id="professorSearchInput" onkeyup="searchFunction('professorSearchInput', 'professorTable')" placeholder="Search Professors">
+                        <input class="inputSeacrh" type="text" id="professorSearchInput"
+                            onkeyup="searchFunction('professorSearchInput', 'professorTable')"
+                            placeholder="Search Professors">
                     </div>
                     <div class="tbl-content">
                         <table id="professorTable">
@@ -213,7 +222,8 @@
                                     <td data-label="Username">{{ professor.Username }}</td>
                                     <td data-label="Email">{{ professor.Email }}</td>
                                     <td class="centerUpdate" data-label="Action">
-                                        <a href="{{ url_for('views.update_professor', professor_id=professor.ProfessorID) }}">
+                                        <a
+                                            href="{{ url_for('views.update_professor', professor_id=professor.ProfessorID) }}">
                                             <ion-icon name="create" class="updateIcon"></ion-icon>
                                         </a>
                                         <!--
@@ -235,7 +245,7 @@
                         <h2>ADD NEW PROFESSOR</h2>
                     </div>
                     <div class="inputData">
-                        <form method="POST" action="{{ url_for('views.adminUser') }}">
+                        <form method="POST" action="{{ url_for('views.adminUser') }}" id="professorForm">
                             <input type="hidden" name="role_id" value="2">
                             <div class="input-group">
                                 <label class="label">Username:</label>
@@ -244,13 +254,19 @@
                             </div>
                             <div class="input-group">
                                 <label class="label">First Name:</label>
-                                <input autocomplete="off" type="text" id="first_name" name="first_name"
-                                    placeholder="Enter first name" class="input" required>
+                                <input autocomplete="off" type="text" id="professor_first_name" name="first_name"
+                                    placeholder="Enter first name" class="input"
+                                    onblur="validateName('professor_first_name')" required>
+                                <span id="professor_first_name_error"
+                                    style="color: red; display: none; font-size: 11px;">Cannot contain numbers.</span>
                             </div>
                             <div class="input-group">
                                 <label class="label">Last Name:</label>
-                                <input autocomplete="off" type="text" id="last_name" name="last_name"
-                                    placeholder="Enter last name" class="input" required>
+                                <input autocomplete="off" type="text" id="professor_last_name" name="last_name"
+                                    placeholder="Enter last name" class="input"
+                                    onblur="validateName('professor_last_name')" required>
+                                <span id="professor_last_name_error"
+                                    style="color: red; display: none; font-size: 11px;">Cannot contain numbers.</span>
                             </div>
                             <div class="input-group">
                                 <label class="label">Department:</label>
@@ -285,10 +301,12 @@
                 <div class="list">
                     <div class="cardHeader">
                         <h2>STUDENT LIST</h2>
-                        <input class="inputSeacrh" type="text" id="studentSearchInput" onkeyup="searchFunction('studentSearchInput', 'studentTable')" placeholder="Search Students">
+                        <input class="inputSeacrh" type="text" id="studentSearchInput"
+                            onkeyup="searchFunction('studentSearchInput', 'studentTable')"
+                            placeholder="Search Students">
                     </div>
                     <div class="tbl-content">
-                           <table id="studentTable">
+                        <table id="studentTable">
                             <thead>
                                 <tr class="bgTr">
                                     <th width="80px">StudID</th>
@@ -332,33 +350,35 @@
                         <h2>ADD NEW STUDENT</h2>
                     </div>
                     <div class="inputData">
-                        <form method="POST" action="{{ url_for('views.adminUser') }}">
+                        <form method="POST" action="{{ url_for('views.adminUser') }}" id="studentForm">
                             <input type="hidden" name="role_id" value="3">
-                
+
                             <div class="input-group">
                                 <label class="label">Username:</label>
                                 <input autocomplete="off" type="text" id="username" name="username"
                                     placeholder="Enter username" class="input" required>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Student ID:</label>
-                                <input autocomplete="off" type="text" id="student_id" name="student_id"
+                                <input autocomplete="off" type="number" id="student_id" name="student_id"
                                     placeholder="Enter student ID" class="input" required>
                             </div>
-                
-                            <div class="input-group">
-                                <label class="label">First Name:</label>
-                                <input autocomplete="off" type="text" id="first_name" name="first_name"
-                                    placeholder="Enter first name" class="input" required>
+
+                            <div class="input-group"> <label class="label">First Name:</label> <input autocomplete="off"
+                                    type="text" id="student_first_name" name="first_name" placeholder="Enter first name"
+                                    class="input" onblur="validateName('student_first_name')" required> <span
+                                    id="student_first_name_error"
+                                    style="color: red; display: none; font-size: 11px;">Cannot contain numbers.</span>
                             </div>
-                
-                            <div class="input-group">
-                                <label class="label">Last Name:</label>
-                                <input autocomplete="off" type="text" id="last_name" name="last_name"
-                                    placeholder="Enter last name" class="input" required>
+
+                            <div class="input-group"> <label class="label">Last Name:</label> <input autocomplete="off"
+                                    type="text" id="student_last_name" name="last_name" placeholder="Enter last name"
+                                    class="input" onblur="validateName('student_last_name')" required> <span
+                                    id="student_last_name_error"
+                                    style="color: red; display: none; font-size: 11px;">Cannot contain numbers.</span>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Department:</label>
                                 <select name="program_id" id="program_id" class="input" required>
@@ -368,7 +388,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Specialization:</label>
                                 <select name="specialization_id" id="specialization_id" class="input">
@@ -379,7 +399,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Year Level:</label>
                                 <select name="year_level_id" id="year_level_id" class="input" required>
@@ -389,7 +409,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Class:</label>
                                 <select name="class_id" id="class_id" class="input" required>
@@ -399,24 +419,25 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Email address:</label>
                                 <input autocomplete="off" name="email" id="email" class="input" type="email"
                                     placeholder="Enter email" required>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Password:</label>
                                 <input autocomplete="off" name="password" id="password" class="input" type="password"
                                     placeholder="Enter password" required>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Age:</label>
-                                <input autocomplete="off" type="number" id="age" name="age" placeholder="Enter age" class="input" required>
+                                <input autocomplete="off" type="number" id="age" name="age" placeholder="Enter age"
+                                    class="input" required>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Gender:</label>
                                 <select name="gender" id="gender" class="input" required>
@@ -425,44 +446,49 @@
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
-                
-                            <div class="input-group">
-                                <label class="label">Mother's Occupation:</label>
-                                <input autocomplete="off" type="text" id="mother_occupation" name="mother_occupation"
-                                    placeholder="Enter mother's occupation" class="input" required>
+
+                            <div class="input-group"> <label class="label">Mother's Occupation:</label> <input
+                                    autocomplete="off" type="text" id="mother_occupation" name="mother_occupation"
+                                    placeholder="Enter mother's occupation" class="input"
+                                    onblur="validateName('mother_occupation')" required> <span
+                                    id="mother_occupation_error"
+                                    style="color: red; display: none; font-size: 11px;">Cannot contain numbers.</span>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Mother's Salary:</label>
-                                <input autocomplete="off" type="number" step="0.01" id="mother_salary" name="mother_salary"
-                                    placeholder="Enter mother's salary" class="input" required>
+                                <input autocomplete="off" type="number" step="0.01" id="mother_salary"
+                                    name="mother_salary" placeholder="Enter mother's salary" class="input" required>
                             </div>
-                
-                            <div class="input-group">
-                                <label class="label">Father's Occupation:</label>
-                                <input autocomplete="off" type="text" id="father_occupation" name="father_occupation"
-                                    placeholder="Enter father's occupation" class="input" required>
+
+                            <div class="input-group"> <label class="label">Father's Occupation:</label> <input
+                                    autocomplete="off" type="text" id="father_occupation" name="father_occupation"
+                                    placeholder="Enter father's occupation" class="input"
+                                    onblur="validateName('father_occupation')" required> <span
+                                    id="father_occupation_error"
+                                    style="color: red; display: none; font-size: 11px;">Cannot contain numbers.</span>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Father's Salary:</label>
-                                <input autocomplete="off" type="number" step="0.01" id="father_salary" name="father_salary"
-                                    placeholder="Enter father's salary" class="input" required>
+                                <input autocomplete="off" type="number" step="0.01" id="father_salary"
+                                    name="father_salary" placeholder="Enter father's salary" class="input" required>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Number of Siblings:</label>
-                                <input autocomplete="off" type="number" id="number_of_siblings" name="number_of_siblings"
-                                    placeholder="Enter number of siblings" class="input" required>
+                                <input autocomplete="off" type="number" id="number_of_siblings"
+                                    name="number_of_siblings" placeholder="Enter number of siblings" class="input"
+                                    required>
                             </div>
-                
+
                             <div class="input-group">
                                 <label class="label">Senior High School Average:</label>
                                 <input autocomplete="off" type="number" step="0.01" id="senior_high_school_average"
-                                    name="senior_high_school_average" placeholder="Enter senior high school average" class="input"
-                                    required>
+                                    name="senior_high_school_average" placeholder="Enter senior high school average"
+                                    class="input" required>
                             </div>
-                
+
                             <button type="submit" class="btn">Add Student</button>
                         </form>
                     </div>
@@ -483,6 +509,47 @@
     </div>
 </div>
 
+<script>
+    function validateName(fieldId) {
+        const nameField = document.getElementById(fieldId);
+        const errorSpan = document.getElementById(fieldId + '_error');
+        const namePattern = /^[A-Za-z\s]+$/;
+
+        if (!namePattern.test(nameField.value)) {
+            errorSpan.style.display = 'inline';
+            nameField.style.borderColor = 'red';
+        } else {
+            errorSpan.style.display = 'none';
+            nameField.style.borderColor = '';
+        }
+    }
+
+    function validateFormOnSubmit(formId, fieldIds) {
+        const form = document.getElementById(formId);
+
+        form.onsubmit = function(event) {
+            let valid = true;
+            fieldIds.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!/^[A-Za-z\s]+$/.test(field.value)) {
+                    valid = false;
+                    field.style.borderColor = 'red';
+                    document.getElementById(fieldId + '_error').style.display = 'inline';
+                }
+            });
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        };
+    }
+
+    validateFormOnSubmit('adminForm', ['first_name', 'last_name']);
+    validateFormOnSubmit('professorForm', ['professor_first_name', 'professor_last_name']);
+    validateFormOnSubmit('studentForm', ['student_first_name', 'student_last_name', 'mother_occupation', 'father_occupation']);
+</script>
+
+
 <!-- ------ FILTERING OUT TABLES ------ -->
 <script>
     function searchFunction(inputId, tableId) {
@@ -491,15 +558,15 @@
         filter = input.value.toUpperCase();
         table = document.getElementById(tableId);
         tr = table.getElementsByTagName("tr");
-    
+
         for (i = 1; i < tr.length; i++) {
-            tr[i].style.display = "none"; 
+            tr[i].style.display = "none";
             td = tr[i].getElementsByTagName("td");
             for (j = 0; j < td.length; j++) {
                 if (td[j]) {
                     txtValue = td[j].textContent || td[j].innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = ""; 
+                        tr[i].style.display = "";
                         break;
                     }
                 }
@@ -507,10 +574,10 @@
         }
     }
 
-    </script>
-    <script>
-        // Show the popup with dynamic content
-        function showPopup(entityType, entityID, firstName, lastName, action) {
+</script>
+<script>
+    // Show the popup with dynamic content
+    function showPopup(entityType, entityID, firstName, lastName, action) {
         let entityText;
         let actionText;
 
@@ -536,7 +603,7 @@
 
         document.getElementById("customPopup").style.display = "flex";
 
-        document.getElementById("confirmButton").onclick = function() {
+        document.getElementById("confirmButton").onclick = function () {
             if (entityType === 'admin' && action === 'archive') {
                 window.location.href = `/delete/${entityType}/${entityID}`;
             } else {
@@ -546,10 +613,10 @@
     }
 
 
-        // Hide the popup
-        function hidePopup() {
-            document.getElementById("customPopup").style.display = "none";
-        }
+    // Hide the popup
+    function hidePopup() {
+        document.getElementById("customPopup").style.display = "none";
+    }
 
-    </script>
+</script>
 {% endblock %}

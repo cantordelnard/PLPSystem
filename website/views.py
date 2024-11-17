@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, current_app, render_template, session, redirect, url_for, flash, request, jsonify
 import mysql.connector
-from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_intervention_count, get_academic_interventions, get_admin_count, get_archived_schoolyears, get_average_percentage, get_behavioral_intervention_count, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_socioeconomic_intervention_count, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, process_behavioral_data, process_grades_data, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
+from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_intervention_count, get_academic_interventions, get_academic_risk_students, get_admin_count, get_archived_schoolyears, get_average_percentage, get_behavioral_intervention_count, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_socioeconomic_intervention_count, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, process_behavioral_data, process_grades_data, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
 import logging
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -750,21 +750,27 @@ def predict():
     else:
         intervention_tag = None  # or "-" if you prefer dash
 
-    # Save or update the prediction in the database
+    # Check if the interventionTag is already set to "Yes" in the database
     connection = connect_to_database()
     if connection:
         try:
             cursor = connection.cursor()
 
             # Check if the prediction already exists for the student
-            select_query = "SELECT Prediction FROM prediction WHERE StudentID = %s"
+            select_query = "SELECT interventionTag FROM prediction WHERE StudentID = %s"
             cursor.execute(select_query, (student_id,))
             existing_record = cursor.fetchone()
 
             if existing_record:
-                # If a prediction exists, update it
-                existing_prediction = existing_record[0]
-                if existing_prediction != probability:
+                existing_intervention_tag = existing_record[0]
+
+                # If the intervention tag is 'Yes', don't proceed with further intervention or updates
+                if existing_intervention_tag == 'Yes':
+                    print(f"Intervention tag already set to 'Yes' for Student ID {student_id}. Skipping further intervention.")
+                    return jsonify({'result': result, 'output': output, 'comment': comment})
+
+                else:
+                    # Proceed with updating if the tag is not 'Yes'
                     update_query = """
                     UPDATE prediction
                     SET Prediction = %s, Remarks = %s, FactorID = %s, interventionTag = %s
@@ -773,7 +779,7 @@ def predict():
                     cursor.execute(update_query, (probability, remarks, factor_id, intervention_tag, student_id))
                     connection.commit()
             else:
-                # Insert a new record
+                # Insert a new record if no prediction exists
                 insert_query = """
                 INSERT INTO prediction (StudentID, Prediction, Remarks, FactorID, interventionTag)
                 VALUES (%s, %s, %s, %s, %s)
@@ -793,6 +799,7 @@ def predict():
             connection.close()
 
     return jsonify({'result': result, 'output': output, 'comment': comment})
+
 
 
 @views.route('/students')
@@ -1001,53 +1008,53 @@ def adminMaintenance():
             if form_type == 'school_year':
                 schoolyearid = request.form['schoolyearid']
                 year = request.form['year']
-                add_schoolyear(schoolyearid, year)
-                flash('School year added successfully!')
+                success, message = add_schoolyear(schoolyearid, year)
+                flash(message, 'success' if success else 'error')
 
             elif form_type == 'program':
                 program_id = request.form['program_id']
                 program_name = request.form['program_name']
-                add_program(program_id, program_name)
-                flash('Program added successfully!')
+                success, message = add_program(program_id, program_name)
+                flash(message, 'success' if success else 'error')
 
             elif form_type == 'specialization':
                 specialization_id = request.form['specialization_id']
                 specialization_name = request.form['specialization_name']
                 program_name = request.form['program_name']
-                add_specialization(specialization_id, specialization_name, program_name)
-                flash('Specialization added successfully!')
+                success, message = add_specialization(specialization_id, specialization_name, program_name)
+                flash(message, 'success' if success else 'error')
 
             elif form_type == 'subject':
-                subject_id = request.form['subject_id']  # This should be treated as a string
+                subject_id = request.form['subject_id']
                 print(f"SubjectID type: {type(subject_id)}, value: {subject_id}")
                 subject_name = request.form['subject_name']
                 subject_units = request.form['subject_units']
                 subject_program_name = request.form['subject_program_name']
-                add_subject(subject_id, subject_name, subject_units, subject_program_name)
-                flash('Subject added successfully!')
+                success, message = add_subject(subject_id, subject_name, subject_units, subject_program_name)
+                flash(message, 'success' if success else 'error')
 
             elif form_type == 'class':
                 class_id = request.form['class_id']
                 class_name = request.form['class_name']
                 class_year = request.form['class_year']
-                add_class(class_id, class_name, class_year)
-                flash('Class added successfully!')
+                success, message = add_class(class_id, class_name, class_year)
+                flash(message, 'success' if success else 'error')
 
             elif form_type == 'professor_advisory':
                 advisory_id = request.form['advisory_id']
-                professor_id = request.form['professor_id']   # Corrected to match HTML form field name
-                class_id = request.form['class_id']           # Corrected to match HTML form field name
-                subject_id = request.form['subject_id']       # Corrected to match HTML form field name
-                semester_id = request.form['semester_id']     # Corrected to match HTML form field name
-                
-                # Check for duplicates in the professor advisory
+                professor_id = request.form['professor_id']
+                class_id = request.form['class_id']
+                subject_id = request.form['subject_id']
+                semester_id = request.form['semester_id']
+
                 success = add_professoradvisory(advisory_id, professor_id, class_id, subject_id, semester_id)
                 if success:
-                    flash('Professor Advisory added successfully!')
+                    flash('Professor Advisory added successfully!', 'success')
                 else:
                     flash('A duplicate professor advisory was found. No new entry added.', 'error')
 
             return redirect(url_for('views.adminMaintenance'))
+
 
         # Fetch lists for displaying options in the form
         schoolyear = get_schoolyear_list()
@@ -1059,18 +1066,21 @@ def adminMaintenance():
         professors = get_professor_list()
         semesters = get_semesters_list()
 
-        return render_template("adminMaintenance.html", 
-                               schoolyear=schoolyear, 
-                               program=program, 
-                               specialization=specialization, 
-                               subject=subject, 
-                               classes=classes, 
-                               professoradvisory=professoradvisory,
-                               professors=professors,
-                               semesters=semesters)
+        return render_template(
+            "adminMaintenance.html",
+            schoolyear=schoolyear,
+            program=program,
+            specialization=specialization,
+            subject=subject,
+            classes=classes,
+            professoradvisory=professoradvisory,
+            professors=professors,
+            semesters=semesters
+        )
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
+
     
 #<!-- =============== ERROR UPDATE ================ -->
 @views.route('/loadUpdatePage', methods=['GET'])
@@ -1128,16 +1138,23 @@ def update_school_year(id):
         elif request.method == 'POST':
             year = request.form['year']
             try:
+                # Call the update function, it will raise an error if a duplicate year exists
                 update_schoolyear(id, year)
-                flash('School year updated successfully!')
+                flash('School year updated successfully!', 'success')
+                return redirect(url_for('views.adminMaintenance'))
+            except ValueError as ve:
+                # Handle the case where the year already exists in the database
+                flash(f'Error updating school year: {str(ve)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
             except Exception as e:
+                # Handle any other database or unknown errors
                 flash(f'Error updating school year: {str(e)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
     
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
+
     
 @views.route('/update_program/<int:id>', methods=['GET', 'POST'])
 def update_program(id):
@@ -1151,17 +1168,25 @@ def update_program(id):
                 return redirect(url_for('views.adminMaintenance'))
         
         elif request.method == 'POST':
-            programName = request.form['programName']
+            program_name = request.form['programName']
             try:
-                update_program_db(id, programName)  # Call the renamed function
-                flash('Program Name updated successfully!')
+                # Call the update function, it will raise an error if a duplicate program name exists
+                update_program_db(id, program_name)
+                flash('Program Name updated successfully!', 'success')
+                return redirect(url_for('views.adminMaintenance'))
+            except ValueError as ve:
+                # Handle the case where the program name already exists in the database
+                flash(f'Error updating program: {str(ve)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
             except Exception as e:
-                flash(f'Error updating school year: {str(e)}', 'error')
+                # Handle any other database or unknown errors
+                flash(f'Error updating program: {str(e)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
+    
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
+
     
 @views.route('/update_specialization/<int:id>', methods=['GET', 'POST'])
 def update_specialization(id):
@@ -1179,22 +1204,30 @@ def update_specialization(id):
             specialization_name = request.form['specialization_name']
             program_id = request.form['program_id']  # Get program ID from the form
             try:
+                # Call the update function, it will raise an error if a duplicate specialization name exists
                 update_specialization_db(id, specialization_name, program_id)
-                flash('Specialization updated successfully!')
+                flash('Specialization updated successfully!', 'success')
+                return redirect(url_for('views.adminMaintenance'))
+            except ValueError as ve:
+                # Handle the case where the specialization name already exists in the database
+                flash(f'Error updating specialization: {str(ve)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
             except Exception as e:
+                # Handle any other database or unknown errors
                 flash(f'Error updating specialization: {str(e)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
+    
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
+
 
 @views.route('/update_subject/<subject_id>', methods=['GET', 'POST'])
 def update_subject(subject_id):
     if "user_id" in session:
         if request.method == 'GET':
             subject_data = get_subject_by_id(subject_id)
-            programs = get_program_list()
+            programs = get_program_list()  # Fetch the list of programs
             if subject_data and programs:
                 return render_template('update_subject.html', data=subject_data, programs=programs)
             else:
@@ -1204,25 +1237,33 @@ def update_subject(subject_id):
         elif request.method == 'POST':
             subject_name = request.form['subject_name']
             subject_units = request.form['subject_units']
-            program_id = request.form['program_id']
+            program_id = request.form['program_id']  # Get program ID from the form
             try:
+                # Call the update function, which now checks for duplicate subjects
                 update_subject_db(subject_id, subject_name, subject_units, program_id)
-                flash('Subject updated successfully!')
+                flash('Subject updated successfully!', 'success')
+                return redirect(url_for('views.adminMaintenance'))
+            except ValueError as ve:
+                # Handle the case where the subject name already exists in the database
+                flash(f'Error updating subject: {str(ve)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
             except Exception as e:
+                # Handle any other database or unknown errors
                 flash(f'Error updating subject: {str(e)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
+    
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
+
 
 
 @views.route('/update_class/<int:id>', methods=['GET', 'POST'])
 def update_class(id):
     if "user_id" in session:
         class_data = get_class_by_id(id)
-        classes = get_class_list()
-        school_years = get_schoolyear_list()
+        classes = get_class_list()  # Fetch the list of classes
+        school_years = get_schoolyear_list()  # Fetch the list of school years
 
         if not class_data:
             flash('Class not found!', 'error')
@@ -1236,21 +1277,21 @@ def update_class(id):
                 class_name = request.form['class_name']
                 year = request.form['year']
 
-                print(f"Received form data - class_name: {class_name}, year: {year}")
-
+                # Call the update function, which now checks for duplicates
                 update_class_db(id, class_name, year)
-                flash('Class updated successfully!')
+                flash('Class updated successfully!', 'success')
                 return redirect(url_for('views.adminMaintenance'))
-            except KeyError as e:
-                flash(f'Missing form field: {str(e)}', 'error')
+            except ValueError as ve:
+                # Handle the case where the class name already exists in the school year
+                flash(f'Error updating class: {str(ve)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
             except Exception as e:
+                # Handle any other database or unknown errors
                 flash(f'Error updating class: {str(e)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
-
 
 @views.route('/update_professoradvisory/<int:id>', methods=['GET', 'POST'])
 def update_professoradvisory(id):
@@ -1277,88 +1318,21 @@ def update_professoradvisory(id):
                 subject_id = request.form['subject_id']
                 semester_id = request.form['semester_id']
 
+                # Call the update function, which checks for duplicates
                 update_professoradvisory_db(id, professor_id, class_id, subject_id, semester_id)
-                flash('Professor advisory updated successfully!')
+                flash('Professor advisory updated successfully!', 'success')
                 return redirect(url_for('views.adminMaintenance'))
-            except KeyError as e:
-                flash(f'Missing form field: {str(e)}', 'error')
+            except ValueError as ve:
+                # Handle the case where the advisory already exists with the same class and subject
+                flash(f'Error updating professor advisory: {str(ve)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
             except Exception as e:
+                # Handle any other database or unknown errors
                 flash(f'Error updating professor advisory: {str(e)}', 'error')
                 return redirect(url_for('views.adminMaintenance'))
     else:
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
-
-
-
-
-
-
-
-#<!-- =============== ERROR UPDATE ================ -->
-@views.route('/updateData', methods=['POST'])
-def updateData():
-    if "user_id" in session:
-        form_type = request.form.get('form_type')
-        id = request.form.get('id')
-        
-        try:
-            if form_type == 'school_year':
-                schoolyear_id = request.form['schoolyear_id']
-                year = request.form['year']
-                update_schoolyear(schoolyear_id, year)
-                flash('School year updated successfully!')
-            
-            elif form_type == 'program':
-                program_id = request.form['program_id']
-                program_name = request.form['program_name']
-                update_program(program_id, program_name)
-                flash('Program updated successfully!')
-            
-            elif form_type == 'specialization':
-                specialization_id = request.form['specialization_id']
-                specialization_name = request.form['specialization_name']
-                program_id = request.form['program_id']
-                update_specialization(specialization_id, specialization_name, program_id)
-                flash('Specialization updated successfully!')
-            
-            elif form_type == 'subject':
-                subject_id = request.form['subject_id']
-                subject_name = request.form['subject_name']
-                subject_units = request.form['subject_units']
-                program_id = request.form['program_id']
-                update_subject(subject_id, subject_name, subject_units, program_id)
-                flash('Subject updated successfully!')
-            
-            elif form_type == 'class':
-                class_id = request.form['class_id']
-                class_name = request.form['class_name']
-                schoolyear_id = request.form['schoolyear_id']
-                update_class(class_id, class_name, schoolyear_id)
-                flash('Class updated successfully!')
-            
-            elif form_type == 'professor_advisory':
-                advisory_id = request.form['advisory_id']
-                professor_id = request.form['professor_id']
-                class_id = request.form['class_id']
-                subject_id = request.form['subject_id']
-                semester_id = request.form['semester_id']
-                update_professoradvisory(advisory_id, professor_id, class_id, subject_id, semester_id)
-                flash('Professor Advisory updated successfully!')
-            
-            return redirect(url_for('views.adminMaintenance'))
-        
-        except Exception as e:
-            error_msg = f'Error updating: {str(e)}'
-            logging.error(error_msg)  # Log the error for debugging
-            flash(error_msg, 'error')  # Flash the error message
-            return redirect(url_for('views.adminMaintenance'))
-    
-    else:
-        flash("Please login to access this content.")
-        return redirect(url_for("auth.login"))
-    
 
 #<!-- =============== ADMIN UPLOAD DASHBOARD ================ -->
 @views.route('/adminUpload')
@@ -2355,18 +2329,20 @@ def adminArchive():
         flash("Please login to access this content.")
         return redirect(url_for("auth.login"))
     
-
 @views.route('/perform_academic_intervention', methods=['POST'])
 def perform_academic_intervention():
     if "user_id" in session:
-        # Call the intervention function based on the student's factor in prediction
+        all_students = get_academic_risk_students()
+        if not all_students:
+            flash("No students at risk to process interventions.", "error")
+            return redirect(url_for("views.admin"))
+
         perform_intervention_based_on_factor()
-        flash("Interventions logged successfully for students at risk.")
+        flash("Interventions logged successfully for students at risk.", "success")
         return redirect(url_for("views.admin"))
     else:
-        flash("Please login to access this content.")
+        flash("Please login to access this content.", "error")
         return redirect(url_for("auth.login"))
-    
 
 @views.route('/professorAdditionalAcadReq')
 def professorAdditionalAcadReq():
@@ -2500,6 +2476,10 @@ def add_alerts():
         cursor.execute(query)
         students_without_prediction = cursor.fetchall()
 
+        if not students_without_prediction:
+            flash("No students without prediction data to alert.", "error")
+            return redirect(url_for("views.admin"))
+
         for student in students_without_prediction:
             student_id = student[0]  # Use index to get StudentID
             
@@ -2514,11 +2494,11 @@ def add_alerts():
                 cursor.execute(insert_query, (student_id, alert_message))
         
         connection.commit()
-        flash("Alerts added for students without prediction data", "success")
+        flash("Alerts added for students without prediction data.", "success")
         
     except mysql.connector.Error as err:
         print(f"Error adding alerts: {err}")
-        flash("Error adding alerts", "error")
+        flash("Error adding alerts.", "error")
     
     finally:
         if cursor:
@@ -2527,6 +2507,7 @@ def add_alerts():
             connection.close()
 
     return redirect(url_for("views.admin"))
+
 
 @views.route('/gender-count', methods=['GET'])
 def get_gender_count():

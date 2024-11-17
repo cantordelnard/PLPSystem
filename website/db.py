@@ -1073,67 +1073,124 @@ def get_semesters_list():
             return None
     else:
         return None
+
+def check_duplicate_entry(table, column, value):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    try:
+        query = f"SELECT 1 FROM {table} WHERE {column} = %s LIMIT 1"
+        cursor.execute(query, (value,))
+        result = cursor.fetchone()
+    except mysql.connector.Error as err:
+        print(f"Database Error: {err}")
+        result = None
+    finally:
+        cursor.close()
+        conn.close()
     
+    return result is not None
+
 
 def add_schoolyear(schoolyearid, year):
+    if check_duplicate_entry('schoolyear', 'SchoolYearID', schoolyearid):
+        return False, 'SchoolYearID already exists.'
+    if check_duplicate_entry('schoolyear', 'Year', year):
+        return False, 'Year already exists.'
+
     conn = connect_to_database()
     cursor = conn.cursor()
     cursor.execute("INSERT INTO schoolyear (SchoolYearID, Year) VALUES (%s, %s)", (schoolyearid, year))
     conn.commit()
     cursor.close()
     conn.close()
+    return True, 'School year added successfully!'
+
 
 def add_program(program_id, program_name):
+    if check_duplicate_entry('collegeprograms', 'ProgramID', program_id):
+        return False, 'ProgramID already exists.'
+    if check_duplicate_entry('collegeprograms', 'ProgramName', program_name):
+        return False, 'ProgramName already exists.'
+
     conn = connect_to_database()
     cursor = conn.cursor()
     cursor.execute("INSERT INTO collegeprograms (ProgramID, ProgramName) VALUES (%s, %s)", (program_id, program_name))
     conn.commit()
     cursor.close()
     conn.close()
+    return True, 'Program added successfully!'
+
 
 def add_specialization(specialization_id, specialization_name, program_name):
+    if check_duplicate_entry('specializations', 'SpecializationID', specialization_id):
+        return False, 'SpecializationID already exists.'
+    if check_duplicate_entry('specializations', 'SpecializationName', specialization_name):
+        return False, 'SpecializationName already exists.'
+
     conn = connect_to_database()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO specializations (SpecializationID, SpecializationName, ProgramID) VALUES (%s, %s, %s)", (specialization_id, specialization_name, program_name))
+    cursor.execute(
+        "INSERT INTO specializations (SpecializationID, SpecializationName, ProgramID) VALUES (%s, %s, %s)",
+        (specialization_id, specialization_name, program_name)
+    )
     conn.commit()
     cursor.close()
     conn.close()
+    return True, 'Specialization added successfully!'
+
 
 def add_subject(subject_id, subject_name, subject_units, subject_program_name):
+    if check_duplicate_entry('subjects', 'SubjectID', subject_id):
+        return False, 'SubjectID already exists.'
+    if check_duplicate_entry('subjects', 'SubjectName', subject_name):
+        return False, 'SubjectName already exists.'
+
     conn = connect_to_database()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO subjects (SubjectID, SubjectName, Units, ProgramID) VALUES (%s, %s, %s, %s)", (subject_id, subject_name, subject_units, subject_program_name))
+    cursor.execute(
+        "INSERT INTO subjects (SubjectID, SubjectName, Units, ProgramID) VALUES (%s, %s, %s, %s)",
+        (subject_id, subject_name, subject_units, subject_program_name)
+    )
     conn.commit()
     cursor.close()
     conn.close()
+    return True, 'Subject added successfully!'
+
 
 def add_class(class_id, class_name, class_year):
+    if check_duplicate_entry('classes', 'ClassID', class_id):
+        return False, 'ClassID already exists.'
+    if check_duplicate_entry('classes', 'ClassName', class_name):
+        return False, 'ClassName already exists.'
+
     conn = connect_to_database()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO classes (ClassID, ClassName, SchoolYearID) VALUES (%s, %s, %s)", (class_id, class_name, class_year))
+    cursor.execute(
+        "INSERT INTO classes (ClassID, ClassName, SchoolYearID) VALUES (%s, %s, %s)",
+        (class_id, class_name, class_year)
+    )
     conn.commit()
     cursor.close()
     conn.close()
+    return True, 'Class added successfully!'
+
 
 def add_professoradvisory(advisory_id, professor_id, class_id, subject_id, semester_id):
+    # Check if AdvisoryID already exists
+    if check_duplicate_entry('professoradvisory', 'AdvisoryID', advisory_id):
+        return False  # Indicate that the AdvisoryID already exists
+
+    # Check if there is already an advisory assignment for the given professor, class, subject, and semester
+    if check_duplicate_entry('professoradvisory', 'ProfessorID', professor_id) and \
+       check_duplicate_entry('professoradvisory', 'ClassID', class_id) and \
+       check_duplicate_entry('professoradvisory', 'SubjectID', subject_id) and \
+       check_duplicate_entry('professoradvisory', 'SemesterID', semester_id):
+        return False  # Indicate that a duplicate advisory assignment was found
+
+    # If no duplicates were found, proceed with the insertion
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    # Check if a professor is already assigned for the same class and subject in the same semester
-    check_query = """
-        SELECT * FROM professoradvisory 
-        WHERE ProfessorID = %s AND ClassID = %s AND SubjectID = %s AND SemesterID = %s
-    """
-    cursor.execute(check_query, (professor_id, class_id, subject_id, semester_id))
-    result = cursor.fetchone()
-
-    if result:
-        # If a record exists, do not insert a new one and return a message
-        cursor.close()
-        conn.close()
-        return False  # Indicate that a duplicate was found
-
-    # If no duplicate was found, proceed with the insertion
+    
     insert_query = """
         INSERT INTO professoradvisory (AdvisoryID, ProfessorID, ClassID, SubjectID, SemesterID)
         VALUES (%s, %s, %s, %s, %s)
@@ -1144,6 +1201,7 @@ def add_professoradvisory(advisory_id, professor_id, class_id, subject_id, semes
     cursor.close()
     conn.close()
     return True  # Indicate that the insertion was successful
+
 
 
 def get_schoolyear_by_id(schoolyear_id):
@@ -1233,80 +1291,152 @@ def get_professoradvisory_by_id(advisory_id):
     else:
         return None
 
-
-
-
-
 def update_schoolyear(school_year_id, year):
     conn = connect_to_database()
     cursor = conn.cursor()
+    
     try:
+        # Check if the year already exists in the database
+        check_query = "SELECT 1 FROM schoolyear WHERE Year = %s AND SchoolYearID != %s"
+        cursor.execute(check_query, (year, school_year_id))
+        result = cursor.fetchone()
+        
+        if result:
+            # Duplicate found, return a message indicating failure
+            raise ValueError("This school year already exists.")
+        
+        # If no duplicate found, proceed with the update
         query = "UPDATE schoolyear SET Year = %s WHERE SchoolYearID = %s"
         cursor.execute(query, (year, school_year_id))
         conn.commit()
         print(f"Updated school year {school_year_id} to {year}")
+        
     except mysql.connector.Error as err:
         print(f"Error updating school year: {err}")
+        raise  # Re-raise the error to be caught by the view function
+    except ValueError as ve:
+        raise ve  # Raise the custom ValueError for duplicate detection
     finally:
         cursor.close()
         conn.close()
-
-
 
 def update_program_db(program_id, program_name):
     conn = connect_to_database()
     cursor = conn.cursor()
     
     try:
+        # Check if the program name already exists in the database (excluding the current program)
+        check_query = "SELECT 1 FROM collegeprograms WHERE ProgramName = %s AND ProgramID != %s"
+        cursor.execute(check_query, (program_name, program_id))
+        result = cursor.fetchone()
+        
+        if result:
+            # If the program name already exists, raise a ValueError for duplicate entry
+            raise ValueError("This program name already exists.")
+        
+        # If no duplicate found, proceed with the update
         query = "UPDATE collegeprograms SET ProgramName = %s WHERE ProgramID = %s"
         cursor.execute(query, (program_name, program_id))
         conn.commit()
         print(f"Updated program {program_id} to {program_name}")
+        
     except mysql.connector.Error as err:
         print(f"Error updating program: {err}")
+        raise  # Re-raise the error to be caught by the view function
+    except ValueError as ve:
+        raise ve  # Raise the custom ValueError for duplicate detection
     finally:
         cursor.close()
         conn.close()
-
 
 def update_specialization_db(specialization_id, specialization_name, program_id):
     conn = connect_to_database()
     cursor = conn.cursor()
     
     try:
+        # Check if the specialization name already exists in the program (excluding the current specialization)
+        check_query = """
+            SELECT 1 FROM specializations
+            WHERE SpecializationName = %s AND ProgramID = %s AND SpecializationID != %s
+        """
+        cursor.execute(check_query, (specialization_name, program_id, specialization_id))
+        result = cursor.fetchone()
+        
+        if result:
+            # If the specialization name already exists within the same program, raise an error
+            raise ValueError("This specialization name already exists for the selected program.")
+        
+        # If no duplicate is found, proceed with the update
         query = "UPDATE specializations SET SpecializationName = %s, ProgramID = %s WHERE SpecializationID = %s"
         cursor.execute(query, (specialization_name, program_id, specialization_id))
         conn.commit()
         print(f"Updated specialization {specialization_id} to {specialization_name} for program {program_id}")
+        
     except mysql.connector.Error as err:
         print(f"Error updating specialization: {err}")
+        raise  # Re-raise the error to be caught by the view function
+    except ValueError as ve:
+        raise ve  # Raise the custom ValueError for duplicate detection
     finally:
         cursor.close()
         conn.close()
+
 
 
 def update_subject_db(subject_id, subject_name, subject_units, program_id):
     conn = connect_to_database()
     cursor = conn.cursor()
+    
     try:
-        cursor.execute("""
+        # Check if the subject name already exists in the program (excluding the current subject being updated)
+        check_query = """
+            SELECT 1 FROM subjects
+            WHERE SubjectName = %s AND ProgramID = %s AND SubjectID != %s
+        """
+        cursor.execute(check_query, (subject_name, program_id, subject_id))
+        result = cursor.fetchone()
+        
+        if result:
+            # If the subject name already exists within the same program, raise an error
+            raise ValueError("This subject name already exists for the selected program.")
+        
+        # If no duplicate is found, proceed with the update
+        query = """
             UPDATE subjects
             SET SubjectName = %s, Units = %s, ProgramID = %s
             WHERE SubjectID = %s
-        """, (subject_name, subject_units, program_id, subject_id))
+        """
+        cursor.execute(query, (subject_name, subject_units, program_id, subject_id))
         conn.commit()
+        print(f"Updated subject {subject_id} to {subject_name} for program {program_id}")
+        
     except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        print(f"Error updating subject: {err}")
+        raise  # Re-raise the error to be caught by the view function
+    except ValueError as ve:
+        raise ve  # Raise the custom ValueError for duplicate detection
     finally:
         cursor.close()
         conn.close()
-
 
 def update_class_db(class_id, class_name, schoolyear_id):
     conn = connect_to_database()
     cursor = conn.cursor()
 
     try:
+        # Check if a class with the same name already exists in the selected school year (excluding the class being updated)
+        check_query = """
+            SELECT 1 FROM classes 
+            WHERE ClassName = %s AND SchoolYearID = %s AND ClassID != %s
+        """
+        cursor.execute(check_query, (class_name, schoolyear_id, class_id))
+        result = cursor.fetchone()
+
+        if result:
+            # If the class name already exists in the selected school year, raise an error
+            raise ValueError("This class name already exists for the selected school year.")
+        
+        # Proceed with the class update if no duplicate is found
         query = "UPDATE classes SET ClassName = %s, SchoolYearID = %s WHERE ClassID = %s"
         cursor.execute(query, (class_name, schoolyear_id, class_id))
         conn.commit()
@@ -1315,23 +1445,39 @@ def update_class_db(class_id, class_name, schoolyear_id):
             print(f"Updated class {class_id} to {class_name}, year {schoolyear_id}")
         else:
             print(f"No rows updated for class {class_id}")
-
+    
     except mysql.connector.Error as err:
         print(f"Error updating class: {err}")
-
+        raise  # Re-raise the error to be caught in the view function
+    except ValueError as ve:
+        raise ve  # Raise the custom ValueError for duplicate detection
     finally:
         cursor.close()
         conn.close()
-
-
-
 
 def update_professoradvisory_db(advisory_id, professor_id, class_id, subject_id, semester_id):
     conn = connect_to_database()
     cursor = conn.cursor()
 
     try:
-        query = "UPDATE professoradvisory SET ProfessorID = %s, ClassID = %s, SubjectID = %s, SemesterID = %s WHERE AdvisoryID = %s"
+        # Check if a professor is already assigned to the same subject in the same class
+        check_query = """
+            SELECT 1 FROM professoradvisory
+            WHERE ClassID = %s AND SubjectID = %s AND AdvisoryID != %s
+        """
+        cursor.execute(check_query, (class_id, subject_id, advisory_id))
+        result = cursor.fetchone()
+
+        if result:
+            # If there is an existing professor advisory for the same class and subject, raise an error
+            raise ValueError("This class already has a professor assigned for the selected subject.")
+
+        # Proceed with updating the professor advisory
+        query = """
+            UPDATE professoradvisory 
+            SET ProfessorID = %s, ClassID = %s, SubjectID = %s, SemesterID = %s 
+            WHERE AdvisoryID = %s
+        """
         cursor.execute(query, (professor_id, class_id, subject_id, semester_id, advisory_id))
         conn.commit()
 
@@ -1343,10 +1489,14 @@ def update_professoradvisory_db(advisory_id, professor_id, class_id, subject_id,
     except mysql.connector.Error as err:
         print(f"Error updating professor advisory: {err}")
         conn.rollback()
-
+        raise
+    except ValueError as ve:
+        raise ve  # Raise the custom error for duplicate advisory detection
     finally:
         cursor.close()
         conn.close()
+
+
 
 
 
@@ -1596,6 +1746,8 @@ def log_academic_intervention(academic_students):
             cursor = connection.cursor(dictionary=True)
             for student in academic_students:
                 student_id = student['StudentID']
+                
+                # Query to check for low grades in specific subjects
                 grade_query = """
                 SELECT g.SubjectID, g.AverageGrade, g.ProfessorID
                 FROM grades g
@@ -1607,28 +1759,47 @@ def log_academic_intervention(academic_students):
                 low_grades = cursor.fetchall()
 
                 for grade in low_grades:
-                    # Check for duplicate in academicIntervention
+                    # Check for duplicate entry in academicIntervention
                     check_query = """
                     SELECT COUNT(*) FROM academicintervention
                     WHERE ProfID = %s AND SubjID = %s AND StudID = %s
                     """
                     cursor.execute(check_query, (grade['ProfessorID'], grade['SubjectID'], student_id))
                     if cursor.fetchone()['COUNT(*)'] == 0:
+                        # Insert intervention record if no duplicate is found
                         insert_query = """
                         INSERT INTO academicintervention (ProfID, SubjID, StudID, Comment)
                         VALUES (%s, %s, %s, %s)
                         """
                         cursor.execute(insert_query, (grade['ProfessorID'], grade['SubjectID'], student_id, ""))
+
                     else:
                         print(f"Duplicate entry detected for StudentID {student_id}, SubjectID {grade['SubjectID']}")
             
+            # Commit changes for academic interventions
             connection.commit()
             print("Academic Interventions Logged.")
+
+            # Update interventionTag to 'Yes' in the prediction table for relevant students
+            update_query = """
+            UPDATE prediction
+            SET interventionTag = 'Yes'
+            WHERE StudentID = %s
+            AND Remarks IN ('AT RISK', 'NEEDS INTERVENTION')
+            """
+            for student in academic_students:
+                cursor.execute(update_query, (student['StudentID'],))
+            
+            # Commit updates for interventionTag in prediction table
+            connection.commit()
+            print("Prediction table updated with interventionTag for academic students.")
+
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             connection.rollback()
         finally:
             connection.close()
+
     
 
 def insert_socioeconomic_interventions(socioeconomic_students):

@@ -138,7 +138,7 @@
                             </thead>
                             <tbody>
                                 {% for year in schoolyear %}
-                                {% if year.SchoolYearID != 0 %}  <!-- Condition to check if SchoolYearID is not 0 -->
+                                {% if year.SchoolYearID != 0 %} <!-- Condition to check if SchoolYearID is not 0 -->
                                 <tr class="highlight-row">
                                     <td class="centerUpdate" data-label="SCHOOL YEAR ID">{{ year.SchoolYearID }}</td>
                                     <td class="centerUpdate" data-label="YEAR">{{ year.Year }}</td>
@@ -159,21 +159,25 @@
                 <!-- ADD -->
                 <div class="newData">
                     <div class="cardHeader">
-                        <h2>ADD NEW SCHOOL YEAR</h2>
+                        <h2>ADD NEW PROGRAM</h2>
                     </div>
                     <div class="inputData">
-                        <form method="post" action="{{ url_for('views.adminMaintenance') }}">
+                        <form method="post" action="{{ url_for('views.adminMaintenance') }}"
+                            onsubmit="return validateForm()">
                             <input type="hidden" name="form_type" value="school_year">
+
                             <div class="input-group">
                                 <label class="label">School Year ID:</label>
-                                <input autocomplete="off" type="text" id="schoolyearid" name="schoolyearid"
+                                <input autocomplete="off" type="number" id="schoolyearid" name="schoolyearid"
                                     placeholder="Enter school year ID" class="input" required>
                             </div>
+
                             <div class="input-group">
                                 <label class="label">Year:</label>
                                 <input autocomplete="off" type="text" id="year" name="year" placeholder="Enter year"
                                     class="input" required>
                             </div>
+
                             <button type="submit" class="btn">Add School Year</button>
                         </form>
                     </div>
@@ -235,9 +239,9 @@
                             </div>
                             <div class="input-group">
                                 <label class="label">Program Name:</label>
-                                <input autocomplete="off" type="text" id="program_name" name="program_name"
-                                    placeholder="Enter program name" class="input" required>
+                                <input autocomplete="off" type="text" id="program_name" name="program_name" placeholder="Enter program name" class="input" pattern="[A-Za-z\s]+" title="Program name cannot contain numbers." required>
                             </div>
+                            
                             <button type="submit" class="btn">Add Program</button>
                         </form>
                     </div>
@@ -269,7 +273,8 @@
                             <tbody>
                                 {% for specialization in specialization %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate" data-label="SPECIALIZATION ID">{{ specialization.SpecializationID }}</td>
+                                    <td class="centerUpdate" data-label="SPECIALIZATION ID">{{
+                                        specialization.SpecializationID }}</td>
                                     <td data-label="SPECIALIZATION NAME">{{ specialization.SpecializationName }}</td>
                                     <td data-label="PROGRAM NAME">{{ specialization.ProgramName }}</td>
                                     <td class="small-width centerUpdate" data-label="ACTION">
@@ -300,10 +305,11 @@
                             </div>
                             <div class="input-group">
                                 <label class="label">Specialization Name:</label>
-                                <input autocomplete="off" type="text" id="specialization_name"
-                                    name="specialization_name" placeholder="Enter specialization name" class="input"
-                                    required>
+                                <input autocomplete="off" type="text" id="specialization_name" name="specialization_name"
+                                    placeholder="Enter specialization name" class="input" required
+                                    pattern="^[^0-9]*$" title="Specialization Name cannot contain numbers">
                             </div>
+                            
                             <div class="input-group">
                                 <label class="label">Program Name:</label>
                                 <select id="program_name" name="program_name" class="input" required>
@@ -423,7 +429,7 @@
                             </thead>
                             <tbody>
                                 {% for class in classes %}
-                                {% if class.ClassID != 0 %}  <!-- Condition to check if ClassID is not 0 -->
+                                {% if class.ClassID != 0 %} <!-- Condition to check if ClassID is not 0 -->
                                 <tr class="highlight-row">
                                     <td class="centerUpdate" data-label="CLASS ID">{{ class.ClassID }}</td>
                                     <td class="centerUpdate" data-label="CLASS NAME">{{ class.ClassName }}</td>
@@ -452,7 +458,7 @@
                             <input type="hidden" name="form_type" value="class">
                             <div class="input-group">
                                 <label class="label">Class ID:</label>
-                                <input autocomplete="off" type="text" id="class_id" name="class_id"
+                                <input autocomplete="off" type="number" id="class_id" name="class_id"
                                     placeholder="Enter class ID" class="input" required>
                             </div>
                             <div class="input-group">
@@ -504,11 +510,16 @@
                             <tbody>
                                 {% for professoradvisory in professoradvisory %}
                                 <tr class="highlight-row">
-                                    <td class="centerUpdate" data-label="ADVISORY ID">{{ professoradvisory.AdvisoryID }}</td>
-                                    <td data-label="PROFESSOR NAME">{{ professoradvisory.FirstName }} {{ professoradvisory.LastName }}</td>
-                                    <td class="centerUpdate" data-label="CLASS NAME">{{ professoradvisory.ClassName }}</td>
-                                    <td class="centerUpdate" data-label="SUBJECT NAME">{{ professoradvisory.SubjectName }}</td>
-                                    <td class="centerUpdate" data-label="SEMESTER">{{ professoradvisory.SemesterName }}</td>
+                                    <td class="centerUpdate" data-label="ADVISORY ID">{{ professoradvisory.AdvisoryID }}
+                                    </td>
+                                    <td data-label="PROFESSOR NAME">{{ professoradvisory.FirstName }} {{
+                                        professoradvisory.LastName }}</td>
+                                    <td class="centerUpdate" data-label="CLASS NAME">{{ professoradvisory.ClassName }}
+                                    </td>
+                                    <td class="centerUpdate" data-label="SUBJECT NAME">{{ professoradvisory.SubjectName
+                                        }}</td>
+                                    <td class="centerUpdate" data-label="SEMESTER">{{ professoradvisory.SemesterName }}
+                                    </td>
                                     <td class="small-width centerUpdate" data-label="ACTION">
                                         <a
                                             href="{{ url_for('views.update_professoradvisory', id=professoradvisory.AdvisoryID) }}">
@@ -532,7 +543,7 @@
                             <input type="hidden" name="form_type" value="professor_advisory">
                             <div class="input-group">
                                 <label class="label">Advisory ID:</label>
-                                <input autocomplete="off" type="text" id="advisory_id" name="advisory_id"
+                                <input autocomplete="off" type="number" id="advisory_id" name="advisory_id"
                                     placeholder="Enter advisory ID" class="input" required>
                             </div>
                             <div class="input-group">
@@ -687,6 +698,61 @@
 </div>
 </div>
 </div>
+
+<!-- Modal structure -->
+<div id="customPopup" class="popup-modal">
+    <div class="new-popup-content">
+        <h3>NOTIFICATION</h3>
+        <p id="popupText">Kindly proceed with your prediction to enhance your learning experience.</p>
+        <div class="popup-buttons">
+            <button id="confirmButton" class="confirm-btn-explore" onclick="hidePopup()">Continue</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var schoolYearId = document.getElementById("schoolyearid").value;
+        var year = document.getElementById("year").value;
+
+        // Regex patterns
+        var yearPattern = /^[0-9\-]+$/;  // Allow numbers and dash for year
+        var schoolYearIdPattern = /^[0-9]+$/;  // Only numbers for school year ID
+
+        // Validate School Year ID: only numbers
+        if (!schoolYearIdPattern.test(schoolYearId)) {
+            showPopup("School Year ID must be a number (e.g., 2024).");
+            return false;
+        }
+
+        // Validate Year: numbers and dash allowed
+        if (!yearPattern.test(year)) {
+            showPopup("Year must contain only numbers and dashes (e.g., 2024-2025).");
+            return false;
+        }
+
+        return true; // Form is valid
+    }
+
+    // Show the popup modal with a custom message
+    function showPopup(message) {
+        var popup = document.getElementById("customPopup");
+        var popupText = document.getElementById("popupText");
+
+        popupText.textContent = message;
+        popup.style.display = "block";  // Show the modal
+    }
+
+    // Hide the popup modal
+    function hidePopup() {
+        var popup = document.getElementById("customPopup");
+        popup.style.display = "none";  // Hide the modal
+    }
+
+
+
+</script>
+
 <script>
 
     function searchFunction(inputId, tableId) {
@@ -738,7 +804,7 @@
                         <td class="centerUpdate" data-label="PICTURE"><img src="${event.ImagePath}" alt="Event Picture" style="width: 100px; height: auto"></td>
                         <td class="small-width centerUpdateEvent" data-label="ACTIONS">
                             <ion-icon name="create" class="updateIconEvent" onclick="updateEvent(${event.EventID})"></ion-icon>
-                            <ion-icon name="archive" class="archiveIconEvent" onclick="deleteEvent(${event.EventID})"></ion-icon>
+                            <!--<ion-icon name="archive" class="archiveIconEvent" onclick="deleteEvent(${event.EventID})"></ion-icon>-->
                         </td>
                     `;
                         tableBody.appendChild(row);
