@@ -303,13 +303,22 @@
                                 <input autocomplete="off" type="number" id="specialization_id" name="specialization_id"
                                     placeholder="Enter specialization ID" class="input" required>
                             </div>
+                          
                             <div class="input-group">
                                 <label class="label">Specialization Name:</label>
-                                <input autocomplete="off" type="text" id="specialization_name" name="specialization_name"
-                                    placeholder="Enter specialization name" class="input" required
-                                    pattern="^[^0-9]*$" title="Specialization Name cannot contain numbers">
+                                <input 
+                                    autocomplete="off" 
+                                    type="text" 
+                                    id="specialization_name" 
+                                    name="specialization_name"
+                                    placeholder="Enter specialization name" 
+                                    class="input" 
+                                    required
+                                    pattern="^[a-zA-Z\s]+$" 
+                                    title="Specialization Name can only contain letters and spaces. Special characters and numbers are not allowed.">
                             </div>
                             
+                         
                             <div class="input-group">
                                 <label class="label">Program Name:</label>
                                 <select id="program_name" name="program_name" class="input" required>
@@ -380,11 +389,21 @@
                                 <input autocomplete="off" type="text" id="subject_id" name="subject_id"
                                     placeholder="Enter subject ID" class="input" required>
                             </div>
+                         
                             <div class="input-group">
                                 <label class="label">Subject Name:</label>
-                                <input autocomplete="off" type="text" id="subject_name" name="subject_name"
-                                    placeholder="Enter subject name" class="input" required>
+                                <input 
+                                    autocomplete="off" 
+                                    type="text" 
+                                    id="subject_name" 
+                                    name="subject_name" 
+                                    placeholder="Enter subject name" 
+                                    class="input" 
+                                    required
+                                    pattern="^[a-zA-Z0-9\s]+$" 
+                                    title="Subject Name can only contain letters, numbers, and spaces. Special characters are not allowed.">
                             </div>
+                            
                             <div class="input-group">
                                 <label class="label">Units:</label>
                                 <input autocomplete="off" type="number" id="subject_units" name="subject_units"
@@ -464,7 +483,7 @@
                             <div class="input-group">
                                 <label class="label">Class Name:</label>
                                 <input autocomplete="off" type="text" id="class_name" name="class_name"
-                                    placeholder="Enter class name" class="input" required>
+                                    placeholder="Enter class name" class="input" required pattern="^[a-zA-Z0-9\s]+$" title="Class name should only contain letters, numbers, and spaces.">
                             </div>
 
                             <div class="input-group">
