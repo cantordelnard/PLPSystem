@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, current_app, render_template, session, redirect, url_for, flash, request, jsonify
+from flask import Blueprint, current_app, render_template, session, redirect, url_for, flash, request, jsonify, send_file, render_template
 import mysql.connector
 from .db import add_class, add_or_update_academic_requirement, add_professoradvisory, add_program, add_schoolyear, add_specialization, add_subject, archive_schoolyear_data, connect_to_database, fetch_academic_interventions, fetch_alerts, fetch_behavioral_interventions, fetch_prediction, fetch_socioeconomic_interventions, fetch_student_id, get_academic_intervention_count, get_academic_interventions, get_academic_risk_students, get_admin_count, get_archived_schoolyears, get_average_percentage, get_behavioral_intervention_count, get_class_by_id, get_classes_list, get_existing_comment, get_existing_link, get_factor_influence_counts, get_graduation_status_counts, get_professor_classes_subjects, get_professor_count, get_professor_id_by_user_id, get_professor_list, get_professoradvisory_by_id, get_professoradvisory_list, get_program_by_id, get_schoolyear_by_id, get_schoolyear_list, get_semesters_list, get_socioeconomic_intervention_count, get_specialization_by_id, get_student_at_risk, get_student_count, get_student_grades, get_student_grades_archive, get_student_info, get_admin_info, get_professors_info, get_student_info_explore, get_student_predictions_by_professor_and_subject, get_students_by_class, get_students_graduating_on_time, get_students_without_prediction, get_subject_by_id, get_subject_count, get_subject_details, get_subject_list, insert_admins, insert_classes, insert_prof, insert_professoradvisory, insert_schoolyears, insert_students, insert_user, get_program_list, get_specialization_list, get_class_list, get_year_level_list, insert_users, perform_intervention_based_on_factor, process_behavioral_data, process_grades_data, update_class_db, update_professoradvisory_db, update_program_db, update_schoolyear, update_specialization_db, update_subject_db
 import logging
@@ -8,9 +8,20 @@ from sklearn.pipeline import Pipeline
 from .models import model
 from werkzeug.utils import secure_filename
 import bcrypt
+from io import BytesIO
+from .test_reportlab import generate_pdf
+
 
 logging.basicConfig(level=logging.DEBUG)
 views = Blueprint('views', __name__)
+
+@views.route('/generate_report', methods=["POST"])
+def generate_report():
+    # Generate the PDF and save to a byte stream
+    pdf_buffer = generate_pdf()
+    
+    # Send the in-memory PDF file to the user for download
+    return send_file(pdf_buffer, as_attachment=True, download_name="Student Predicted Report.pdf", mimetype='application/pdf')
 
 def validate_excel_maintenance(df_schoolyear, df_classes, df_prof_advisory):
     required_schoolyear_columns = ['Year']
@@ -731,7 +742,7 @@ def predict():
     prediction = model.named_steps['classifier'].predict(processed_input)[0]
     probability = model.named_steps['classifier'].predict_proba(processed_input)[:, 1][0] * 100
     output = "GRADUATE ON TIME" if prediction == 1 else "WILL NOT GRADUATE ON TIME"
-    result = f"You have a {probability:.2f}% chance of graduating on time."
+    result = f"You have a {probability:.2f}% Sucess Rate."
 
     # Get the average percentage for the specific student
     student_id = int(data.get('stud'))

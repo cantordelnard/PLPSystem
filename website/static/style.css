@@ -3403,6 +3403,23 @@ form {
   background-color: var(--lightGreen2); /* Change to light green on hover */
 }
 
+.inputData .btnsa {
+  padding: 15px;
+  background: var(--green);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+  border: 0;
+  width: 100%;
+  cursor: pointer; /* Make the cursor a pointer */
+  transition: background-color 0.3s ease; /* Smooth transition */
+  margin-top: 20px;
+}
+
+.inputData .btnsa:hover {
+  background-color: var(--lightGreen2); /* Change to light green on hover */
+}
+
 .classifiers .tbl-content table td.centerUpdateDashboard {
   text-align: center;
   vertical-align: middle;

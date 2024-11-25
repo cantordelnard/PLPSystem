@@ -104,14 +104,6 @@ def get_feature_importance(model, feature_names):
 
 feature_importance = get_feature_importance(model, feature_names)
 
-# Percentage of students graduating on time
-total_students = len(df)
-graduate_on_time_count = df['graduate_on_time'].sum()
-percentage_graduating_on_time = (graduate_on_time_count / total_students) * 100
-
-# Print the percentage of students graduating on time
-#print(f"Percentage of Students Graduating on Time (DATASET): {percentage_graduating_on_time:.2f}%")
-
 # Prepare the data for predictions
 students_data = df.drop('graduate_on_time', axis=1).to_dict(orient='records')
 

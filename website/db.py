@@ -472,14 +472,7 @@ def get_student_grades_archive(student_id):
             connection.close()  # Ensure connection is closed
     else:
         return []  # Return an empty list if connection fails
-
-
-
-
-
-
-
-
+    
 
 #<!-- =============== FETCHING ADMINS INFORMATION FOR DASHBOARD ================ -->
 def get_admin_info(user_id):
