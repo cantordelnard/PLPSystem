@@ -5,6 +5,7 @@ from reportlab.lib import colors
 from reportlab.lib.units import inch
 from reportlab.platypus import Table, TableStyle
 from datetime import datetime
+import pytz
 from .db import get_student_at_risk, get_students_graduating_on_time, get_students_without_prediction  # Adjust to your actual function to fetch data from the DB
 
 def generate_pdf():
@@ -15,8 +16,11 @@ def generate_pdf():
     c = canvas.Canvas(pdf_buffer, pagesize=letter)
     width, height = letter  # Letter page size in points
 
-    # Fetch current date and time
-    report_generated_at = datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
+    # Define the timezone for the Philippines
+    philippine_timezone = pytz.timezone('Asia/Manila')
+
+    # Get the current time in the Philippine timezone
+    report_generated_at = datetime.now(philippine_timezone).strftime("%B %d, %Y %I:%M:%S %p")
 
     # Function to add a footer
     def add_footer():
