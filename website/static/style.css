@@ -1621,6 +1621,14 @@ form {
     padding: 0px 0px 0px 30px;
   }
 
+  .no-design-container {
+    justify-content: center; /* Center the button within the container */
+  }
+
+  .no-design-button {
+    margin: 0 auto; /* Ensure it's centered */
+  }
+
 }
 
 /* Responsive Card Adjustments */
@@ -3463,6 +3471,28 @@ form {
 .aboutUsTitle p {
   font-size: 18px;
   color: var(--black2);
+}
+
+.no-design-container {
+  display: flex;
+  justify-content: flex-start; /* Default alignment */
+}
+
+.no-design-button {
+  display: inline-block; 
+  padding: 10px 20px; 
+  background-color: #137b35; 
+  color: #fff; 
+  text-decoration: none; 
+  border-radius: 5px; 
+  font-size: 14px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.no-design-button:hover {
+  background-color: var(--lightGreen2);
+  transition: 0.3s;
 }
 
 
